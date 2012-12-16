@@ -1,7 +1,8 @@
-webfx
+WebFX
 =====
+The purpose of this project is to investigate the capabilities of using JavaFX (FXML + JS + CSS) to build rich web pages, instead of using HTML.
 
-Using JavaFX as the new HTML for web browsing
+Idea is to build an FX browser, a security layer, a navigation scheme where one FXML can tell the browser to go to another FXML and a protocol for server-side communication.
 
 Steps
 =====
