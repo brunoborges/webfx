@@ -21,6 +21,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 /**
  *
@@ -55,6 +56,8 @@ public class BrowserFXController implements Initializable {
     public void getFXML()  {
         try {
             FileChooser chooser = new FileChooser();                  
+            ExtensionFilter extensionFilter = new ExtensionFilter(" FXML Files (*.fxml)", "*.fxml");
+            chooser.getExtensionFilters().add(extensionFilter);
             File selectedFile =chooser.showOpenDialog(null);
             FXMLLoader loader=new FXMLLoader();            
             Parent root = loader.load(getClass().getResource(selectedFile.getName()));
