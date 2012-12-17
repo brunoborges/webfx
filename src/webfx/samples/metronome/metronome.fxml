@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?language javascript?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="370.0" prefWidth="320.0" xmlns:fx="http://javafx.com/fxml">
+  <children>
+    <HBox id="HBox" alignment="CENTER" layoutX="36.0" layoutY="328.0" spacing="5.0">
+      <children>
+        <Button fx:id="startButton" mnemonicParsing="false" onAction="handleStartButtonAction(event);" text="Start" />
+        <Button fx:id="pauseButton" mnemonicParsing="false" onAction="handlePauseButtonAction(event);" text="Pause" />
+        <Button fx:id="resumeButton" mnemonicParsing="false" onAction="handleResumeButtonAction(event);" text="Resume" />
+        <Button fx:id="stopButton" mnemonicParsing="false" onAction="handleStopButtonAction(event);" text="Stop" />
+      </children>
+    </HBox>
+    <Circle fx:id="circle" fill="DODGERBLUE" layoutX="64.0" layoutY="58.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+  </children>
+  
+  <fx:script source="metronome.js" />
+</AnchorPane>

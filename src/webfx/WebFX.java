@@ -4,6 +4,9 @@
  */
 package webfx;
 
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,17 +18,20 @@ import javafx.stage.Stage;
  * @author bruno
  */
 public class WebFX extends Application {
-    
+
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("browser.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("browser.fxml"));
+        Parent root = (Parent) fxmlLoader.load();
+        BrowserFXController controller = fxmlLoader.getController();
         
         Scene scene = new Scene(root);
-        
+        controller.setupShortcuts(scene);
+        stage.setTitle("WebFX");
         stage.setScene(scene);
         stage.show();
     }
-    
+
     /**
      * The main() method is ignored in correctly deployed JavaFX application.
      * main() serves only as fallback in case the application can not be
