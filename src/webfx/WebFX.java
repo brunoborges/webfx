@@ -4,9 +4,6 @@
  */
 package webfx;
 
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
