@@ -14,7 +14,7 @@ Running the WebFX browser
 This URL is a pure, static HTML rendered by WebView, with links to sample applications that are pure FXML+CSS+Javascript.
 You may also want to go to a HTML5 website, such as this one from Mozilla HTML5 Showcase:
 
-- https://developer.mozilla.org/en-US/demos/detail/honey-pursuit-yet-another-love-saga/launch
+- http://html5demos.com/canvas
 
 Resource Bundles
 =====
