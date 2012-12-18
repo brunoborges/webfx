@@ -29,12 +29,15 @@ public class WebFX extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("browser.fxml"), ResourceBundle.getBundle("webfx/browser", locale));
         Parent root = (Parent) fxmlLoader.load();
-        BrowserFXController controller = fxmlLoader.getController();
 
+        BrowserFXController controller = fxmlLoader.getController();
         controller.setLocale(locale);
 
         Scene scene = new Scene(root);
-        controller.setupShortcuts(scene);
+        
+        BrowserShortcuts shortcuts = new BrowserShortcuts(scene);
+        shortcuts.setup(controller);
+
         stage.setTitle("WebFX");
         stage.setScene(scene);
         stage.show();

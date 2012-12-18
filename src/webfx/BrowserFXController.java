@@ -60,7 +60,7 @@ public class BrowserFXController {
     /**
      * Internal
      */
-    private SingleSelectionModel<Tab> selectedTab;
+    private SingleSelectionModel<Tab> selectionTab;
     private ConcurrentHashMap<Integer, BrowserTab> browserMap = new ConcurrentHashMap<>();
     private Locale locale;
 
@@ -74,7 +74,7 @@ public class BrowserFXController {
         Tab tab = new Tab("New tab");
         tab.setClosable(true);
         tabPane.getTabs().add(tab);
-        selectedTab.selectLast();
+        selectionTab.selectLast();
     }
 
     public void stop() {
@@ -96,9 +96,9 @@ public class BrowserFXController {
     public void closeTab() {
         LOGGER.info("Close Tab...");
         if (tabPane.getTabs().size() > 1) {
-            int indexBrowserTab = selectedTab.getSelectedIndex();
+            int indexBrowserTab = selectionTab.getSelectedIndex();
             browserMap.remove(indexBrowserTab);
-            tabPane.getTabs().remove(selectedTab.getSelectedIndex());
+            tabPane.getTabs().remove(selectionTab.getSelectedIndex());
         }
     }
 
@@ -130,19 +130,30 @@ public class BrowserFXController {
             browserTab.goTo(url);
         }
 
-        selectedTab.getSelectedItem().textProperty().bind(browserTab.titleProperty());
-        selectedTab.getSelectedItem().contentProperty().bind(browserTab.contentProperty());
-        browserMap.put(selectedTab.getSelectedIndex(), browserTab);
+        selectionTab.getSelectedItem().textProperty().bind(browserTab.titleProperty());
+        selectionTab.getSelectedItem().contentProperty().bind(browserTab.contentProperty());
+        browserMap.put(selectionTab.getSelectedIndex(), browserTab);
     }
 
     public void initialize() {
+        urlField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> ov, Boolean oldValue, Boolean newValue) {
+                if (newValue.booleanValue()) {
+                    urlField.textProperty().unbind();
+                } else if (selectedBrowser() != null) {
+                    urlField.textProperty().bind(selectedBrowser().locationProperty());
+                }
+            }
+        });
+
         tabPane.getTabs().addListener(new ListChangeListener<Tab>() {
             @Override
             public void onChanged(Change<? extends Tab> change) {
                 ObservableList<? extends Tab> tabs = change.getList();
 
                 // disabled the close tab menu item if selected tab is not cloeable
-                closeTab.disableProperty().bind(selectedTab.getSelectedItem().closableProperty().not());
+                closeTab.disableProperty().bind(selectionTab.getSelectedItem().closableProperty().not());
 
                 // set the first tab closeable if more than one tab
                 tabs.get(0).setClosable(tabs.size() > 1);
@@ -154,12 +165,23 @@ public class BrowserFXController {
             }
         });
 
-        selectedTab = tabPane.selectionModelProperty().getValue();
+        selectionTab = tabPane.selectionModelProperty().getValue();
 
-        tabPane.selectionModelProperty().addListener(new ChangeListener<SingleSelectionModel<Tab>>() {
+
+
+        tabPane.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
             @Override
-            public void changed(ObservableValue<? extends SingleSelectionModel<Tab>> ov, SingleSelectionModel<Tab> t, SingleSelectionModel<Tab> t1) {
-                urlField.textProperty().bind(selectedBrowser().locationProperty());
+            public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
+                LOGGER.info("selecao da tab mudou");
+                if (selectedBrowser() == null) {
+                    LOGGER.info("nao tem browser selecionado");
+                    urlField.textProperty().unbind();
+                    urlField.textProperty().setValue("");
+                    urlField.setText("");
+                } else {
+                    LOGGER.info("existe um browser selecionado");
+                    urlField.textProperty().bind(selectedBrowser().locationProperty());
+                }
             }
         });
 
@@ -179,40 +201,10 @@ public class BrowserFXController {
     }
 
     private BrowserTab selectedBrowser() {
-        return browserMap.get(selectedTab.getSelectedIndex());
-    }
-
-    void setupShortcuts(Scene scene) {
-        final ObservableMap<KeyCombination, Runnable> accelerators = scene.getAccelerators();
-
-        accelerators.put(
-                new KeyCodeCombination(KeyCode.T, KeyCombination.SHORTCUT_DOWN),
-                new Runnable() {
-            @Override
-            public void run() {
-                newTab();
-            }
-        });
-        accelerators.put(
-                new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN),
-                new Runnable() {
-            @Override
-            public void run() {
-                closeTab();
-            }
-        });
-        accelerators.put(
-                new KeyCodeCombination(KeyCode.Q, KeyCombination.SHORTCUT_DOWN),
-                new Runnable() {
-            @Override
-            public void run() {
-                System.exit(0);
-            }
-        });
+        return browserMap.get(selectionTab.getSelectedIndex());
     }
 
     void setLocale(Locale locale) {
         this.locale = locale;
     }
-
 }

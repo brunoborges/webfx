@@ -10,6 +10,8 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -20,9 +22,15 @@ import javafx.scene.web.WebView;
  */
 public class HTMLTab implements BrowserTab {
 
-    final WebView browser = new WebView();
-    final WebEngine webEngine = browser.getEngine();
-    private SimpleObjectProperty<Node> contentProperty = new SimpleObjectProperty<>((Node) browser);
+    final WebView browser;
+    final WebEngine webEngine;
+    private SimpleObjectProperty<Node> contentProperty;
+
+    public HTMLTab() {
+        browser = new WebView();
+        webEngine = browser.getEngine();
+        contentProperty = new SimpleObjectProperty<>((Node) browser);
+    }
 
     @Override
     public void back() {
