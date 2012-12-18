@@ -4,10 +4,9 @@
  */
 package webfx;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -17,10 +16,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SingleSelectionModel;
@@ -29,15 +25,12 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
 
 /**
  *
  * @author bruno
  */
-public class BrowserFXController {
+public class BrowserFXController implements TabManager {
 
     private static final Logger LOGGER = Logger.getLogger(BrowserFXController.class.getName());
     /**
@@ -103,26 +96,24 @@ public class BrowserFXController {
     }
 
     public void openFXPage() {
-        //try {
         String sUrl = urlField.getText();
         if (sUrl.indexOf("://") == -1) {
             sUrl = "http://" + sUrl;
         }
 
+        openFXPage(sUrl);
+    }
+
+    public void openFXPage(String sUrl) {
         URL url = null;
-        URLConnection urlConnection = null;
         try {
             url = new URL(sUrl);
-            urlConnection = url.openConnection();
-        } catch (IOException ex) {
+        } catch (MalformedURLException ex) {
             Logger.getLogger(BrowserFXController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        String contentType = urlConnection.getContentType();
-        LOGGER.log(Level.INFO, "Content-type: {0}", contentType);
-
         BrowserTab browserTab;
-        if (contentType.startsWith("text/html") == false) {
+        if (sUrl.endsWith(".fxml")) {
             browserTab = new FXTab();
             browserTab.goTo(url, locale);
         } else {
@@ -130,9 +121,11 @@ public class BrowserFXController {
             browserTab.goTo(url);
         }
 
+        browserTab.setTabManager(this);
         selectionTab.getSelectedItem().textProperty().bind(browserTab.titleProperty());
         selectionTab.getSelectedItem().contentProperty().bind(browserTab.contentProperty());
         browserMap.put(selectionTab.getSelectedIndex(), browserTab);
+        urlField.setText(sUrl);
     }
 
     public void initialize() {
@@ -204,5 +197,11 @@ public class BrowserFXController {
 
     void setLocale(Locale locale) {
         this.locale = locale;
+    }
+
+    @Override
+    public void openInNewTab(URL url) {
+        newTab();
+        openFXPage(url.toString());
     }
 }

@@ -35,6 +35,7 @@ public class FXTab implements BrowserTab {
 
     private static final Logger LOGGER = Logger.getLogger(BrowserFXController.class.getName());
     private ReadOnlyStringWrapper titleProperty = new ReadOnlyStringWrapper();
+    private ReadOnlyStringWrapper locationProperty = new ReadOnlyStringWrapper();
     private FXMLLoader loader;
     private Locale locale;
     private URL url;
@@ -63,6 +64,7 @@ public class FXTab implements BrowserTab {
         this.scriptEngine = null;
         this.contentProperty.set(null);
         this.titleProperty.set(null);
+        this.locationProperty.set(null);
 
         try {
             File file = new File(url.getFile());
@@ -90,6 +92,8 @@ public class FXTab implements BrowserTab {
 
             String title = extractTitle(loader);
             titleProperty.set(title);
+            
+            locationProperty.set(url.toString());
 
             contentProperty.set(loadedNode);
 
@@ -111,7 +115,7 @@ public class FXTab implements BrowserTab {
 
     @Override
     public ReadOnlyStringProperty locationProperty() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return locationProperty;
     }
 
     @Override
@@ -121,7 +125,8 @@ public class FXTab implements BrowserTab {
 
     @Override
     public void stop() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //contentProperty.setValue(null);
+        contentProperty.getValue().setDisable(true);
     }
 
     private String extractTitle(FXMLLoader loader) {
@@ -172,5 +177,9 @@ public class FXTab implements BrowserTab {
     @Override
     public void goTo(URL url) {
         goTo(url, Locale.getDefault());
+    }
+
+    @Override
+    public void setTabManager(TabManager tm) {
     }
 }

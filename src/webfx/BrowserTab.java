@@ -34,4 +34,6 @@ public interface BrowserTab {
 
     public void stop();
     
+    public void setTabManager(TabManager tm);
+    
 }
