@@ -5,6 +5,7 @@
 package webfx;
 
 import java.net.URL;
+import java.util.Locale;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.scene.web.WebEngine;
@@ -18,7 +19,7 @@ public class HTMLTab implements BrowserTab {
 
     final WebView browser = new WebView();
     final WebEngine webEngine = browser.getEngine();
-    
+
     @Override
     public void back() {
         webEngine.executeScript("history.back()");
@@ -60,5 +61,10 @@ public class HTMLTab implements BrowserTab {
     @Override
     public void stop() {
         webEngine.getLoadWorker().cancel();
+    }
+
+    @Override
+    public void goTo(URL url, Locale locale) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

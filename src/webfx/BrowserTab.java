@@ -5,6 +5,8 @@
 package webfx;
 
 import java.net.URL;
+import java.util.Locale;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.scene.Node;
 
@@ -14,13 +16,15 @@ import javafx.scene.Node;
  */
 public interface BrowserTab {
     
-    public Node getContent();
+    public ObjectProperty<Node> contentProperty();
     
     public void forward();
     
     public void back();
     
     public void goTo(URL url);
+    
+    public void goTo(URL url, Locale locale);
     
     public ReadOnlyStringProperty titleProperty();
     

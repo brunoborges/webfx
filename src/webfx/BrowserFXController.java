@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +19,6 @@ import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -62,6 +62,7 @@ public class BrowserFXController {
      */
     private SingleSelectionModel<Tab> selectedTab;
     private ConcurrentHashMap<Integer, BrowserTab> browserMap = new ConcurrentHashMap<>();
+    private Locale locale;
 
     public void exit() {
         LOGGER.info("Exiting...");
@@ -95,6 +96,8 @@ public class BrowserFXController {
     public void closeTab() {
         LOGGER.info("Close Tab...");
         if (tabPane.getTabs().size() > 1) {
+            int indexBrowserTab = selectedTab.getSelectedIndex();
+            browserMap.remove(indexBrowserTab);
             tabPane.getTabs().remove(selectedTab.getSelectedIndex());
         }
     }
@@ -116,26 +119,20 @@ public class BrowserFXController {
         }
 
         String contentType = urlConnection.getContentType();
-        LOGGER.info("Content-type: " + contentType);
+        LOGGER.log(Level.INFO, "Content-type: {0}", contentType);
 
-        Parent page = null;
-
+        BrowserTab browserTab;
         if (contentType.startsWith("text/html") == false) {
-            try {
-                page = FXMLLoader.load(url);
-                // access the ScriptEngine and extract the title from 'webfx' object
-            } catch (IOException ex) {
-                Logger.getLogger(BrowserFXController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            browserTab = new FXTab();
+            browserTab.goTo(url, locale);
         } else {
-            HTMLTab htmlTab = new HTMLTab();
-            page = htmlTab.getContent();
-            htmlTab.goTo(url);
-            browserMap.put(selectedTab.getSelectedIndex(), htmlTab);
-            selectedTab.getSelectedItem().textProperty().bind(htmlTab.titleProperty());
+            browserTab = new HTMLTab();
+            browserTab.goTo(url);
         }
 
-        selectedTab.getSelectedItem().setContent(page);
+        selectedTab.getSelectedItem().textProperty().bind(browserTab.titleProperty());
+        selectedTab.getSelectedItem().contentProperty().bind(browserTab.contentProperty());
+        browserMap.put(selectedTab.getSelectedIndex(), browserTab);
     }
 
     public void initialize() {
@@ -213,4 +210,9 @@ public class BrowserFXController {
             }
         });
     }
+
+    void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
 }
