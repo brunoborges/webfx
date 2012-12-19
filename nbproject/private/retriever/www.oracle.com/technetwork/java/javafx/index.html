@@ -1,0 +1,674 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><script type="text/javascript">
+   var _U = "undefined";
+   var g_HttpRelativeWebRoot = "/ocom/";
+   var SSContributor = false;
+   var SSForceContributor = false;
+   var SSHideContributorUI = false;
+   var ssUrlPrefix = "/technetwork/";
+   var ssUrlType = "2";
+   
+   var g_navNode_Path = new Array();
+       g_navNode_Path[0] = 'otnen';
+       g_navNode_Path[1] = 'otnen_java';
+       g_navNode_Path[2] = 'otnen_javafx';
+   var g_ssSourceNodeId = "otnen_javafx";
+   var g_ssSourceSiteId = "otnen";
+</script>
+<script id="SSNavigationFunctionsScript" type="text/javascript" src="/ocom/websites/otnen/sitenavigationfunctions.js"></script>
+<script id="SSNavigationScript" type="text/javascript" src="/ocom/websites/otnen/sitenavigation.js"></script>
+
+<script type="text/javascript">
+	var g_strLanguageId = "en";
+</script>
+	<script type="text/javascript" src="/ocom/resources/wcm/sitestudio/wcm.toggle.js"></script>
+	<script type="text/javascript" src="/ocom/resources/sitestudio/ssajax/ssajax.js"></script>
+
+
+
+  <script id="ssInfo" type="text/xml" warning="DO NOT MODIFY!">
+  <ssinfo >
+    <fragmentinstance  id="fragment14" fragmentid="Universal_Localization_Fragment" library="server:UNIVERSAL_LOCALIZATION_FRAG">
+    </fragmentinstance>
+    <fragmentinstance  id="fragment16" fragmentid="Universal_Localization_Fragment" library="server:UNIVERSAL_LOCALIZATION_FRAG">
+    </fragmentinstance>
+    <fragmentinstance  id="fragment17" fragmentid="Universal_Localization_Fragment" library="server:UNIVERSAL_LOCALIZATION_FRAG">
+    </fragmentinstance>
+    <fragmentinstance  id="fragment18" fragmentid="universal-search-fragment" library="server:UNIVERSAL-SEARCH-FRAGMET-LIB">
+      
+    </fragmentinstance>
+    <fragmentinstance  id="fragment22" fragmentid="Universal_Localization_Fragment" library="server:UNIVERSAL_LOCALIZATION_FRAG">
+    </fragmentinstance>
+    <fragmentinstance  id="fragment23" fragmentid="ocom-commonassets" library="server:OCOM-FRAGMENT-LIBRARAY">
+      
+    </fragmentinstance>
+    <fragmentinstance  id="fragment24" fragmentid="ExternalNavigationHorizontal" library="server:EXTERNALNAVHORIZONTALLIB">
+    </fragmentinstance>
+    <fragmentinstance  id="fragment25" fragmentid="ExternalNavVertical" library="server:EXTERNAL_NAV_VERTICAL">
+    </fragmentinstance>
+    <fragmentinstance  id="fragment27" fragmentid="Universal_Localization_Fragment" library="server:UNIVERSAL_LOCALIZATION_FRAG">
+    </fragmentinstance>
+    <fragmentinstance  id="fragment28" fragmentid="Universal_Localization_Fragment" library="server:UNIVERSAL_LOCALIZATION_FRAG">
+    </fragmentinstance>
+    <fragmentinstance  id="fragment29" fragmentid="ExternalBreadCrumb" library="server:EXTERNAL_BREADCRUMB">
+    </fragmentinstance>
+    <fragmentinstance  id="fragment32" fragmentid="universal-metatag" library="server:UNIVERSAL-FRAGMENTS">
+    </fragmentinstance>
+    <fragmentinstance  id="fragment33" fragmentid="ExternalNavTabsTop" library="server:EXTERNAL_NAV_TABS_TOP">
+    </fragmentinstance>
+    <fragmentinstance  id="fragment35" fragmentid="universal-webcache-integration" library="server:UNIVERSAL-WEBCACHE-INTEGRATION">
+      
+    </fragmentinstance>
+    <fragmentinstance  id="fragment37" fragmentid="Universal_Localization_Fragment" library="server:UNIVERSAL_LOCALIZATION_FRAG">
+    </fragmentinstance>
+    <fragmentinstance  id="fragment38" fragmentid="sitecatalyst-otn-standard" library="server:SITECATALYST-OTN-STANDARD">
+      
+    </fragmentinstance>
+    <fragmentinstance  id="fragment39" fragmentid="universal-addthis-print-email" library="server:UNIVERSAL-FRAGMENTS">
+      
+    </fragmentinstance>
+      <fragmentinstance  id="fragment40" fragmentid="mosaic-header-content" library="server:MOSAIC-HEADER-CONTENT">
+        
+      </fragmentinstance>
+  </ssinfo>
+  </script>
+
+  
+  
+
+  <script language="JavaScript" src="/us/assets/oraclelib.js" type="text/javascript">
+  </script>
+  <style type="text/css">
+    HTML,BODY,TD,H1,H2,H3,H4,OL,UL,DL,LI,DT,DD {font-family:arial,helvetica,sans-serif;}
+    HTML,BODY,TD,CODE,KBD,TT,OL,UL,DL,LI,DT,DD {font-size:12px;}
+    a:link {color:#000;text-decoration:none;}
+    a:visited {color:#000;text-decoration:none;}
+    a:hover {color:#FF0000;text-decoration:underline;}
+
+    #Wrapper_FixedWidth {text-align: left; margin: 0px auto; padding: 0px; border:0; width: 1000px;}
+    #Wrapper_FixedWidth_Header {margin: 0 0 15px 0; width:100%; display:block; }
+    #Wrapper_FixedWidth_Leftnav {float: left; width: 181px;}
+    #Wrapper_FixedWidth_Rightnav {float: right;  width: 185px; }
+    #Wrapper_FixedWidth_Centercontent {float: left; width: 810px;}
+    #Wrapper_FixedWidth_Maincontent {float: left; width: 595px;}
+    #Wrapper_FixedWidth_Footer{ clear: both; }
+    .header{display:block; width:100%; padding:2px 0px 5px 0px; margin:0px 0px 10px 0px;}
+    .logo{width:140px; float:left; padding:12px 0px 0px 12px;}
+    .welcomeMsg{text-align:right; font-size:10px; padding:5px 12px 0px 0px; float:right;}
+    .secureSearch{text-align:right; padding:10px 0px 0px 0px; margin-top:20px;}
+    .greybarhomebot{background: #DCDCDC;height: 7px; margin-top: 7px; float:left; width:100%; margin-top:20px;}
+    .footerLinks {font-size:10px;}
+    .sngPsta {font-size:11px;line-height:13px;color:#000;text-align:left;}
+    a.sngPsta:link {color:#000;text-decoration:none;display:block;padding:3px 10px;}
+    a.sngPsta:visited {color:#000;text-decoration:none;display:block;padding:3px 10px;}
+    a.sngPsta:hover {color:#fff;text-decoration:none;display:block;background-color:#9a9a9a;padding:3px 10px;}
+    /* For Mosaic */
+    ul#navigation li.top-level p a.noimg {background:none;}
+    /* For Mosaic */
+    #centerSectBlankPS {display: block;min-width: 570px;}
+    .lock {position:absolute; top:1px;*top:1px; left:152px; margin:0px; padding:0px;}
+  </style>
+  <link media="screen" href="/us/assets/master-master.css" type="text/css" rel="stylesheet" />
+  <link media="screen" href="/us/assets/otn-otn.css" type="text/css" rel="stylesheet" />
+  <link media="screen" href="/us/assets/ocom-decouple-ocom-decouple.css" type="text/css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="/us/assets/ocom-mosaic.css" />
+<link rel="stylesheet" type="text/css" href="/us/assets/master-mosaic.css" />  
+<script language="JavaScript" type="text/javascript" src="/us/assets/jquery.js"></script>
+<script language="JavaScript" type="text/javascript" src="/us/assets/oraclelib-mosaic.js"></script>
+  <!--<link media="screen" href="/ocom/groups/systemobject/@mktg_admin/documents/systemobject/sdn.css" type="text/css" rel="stylesheet" /> -->
+
+<!--SS_BEGIN_SNIPPET(fragment32,code)-->			<!--SS_END_SNIPPET(fragment32,code)-->
+
+  <style type="text/css">
+    <!-- Add logo class to styles.css file -->
+    .logo{FLOAT: left; WIDTH: 151px;  PADDING-TOP: 4px}
+    #centerSectBlankPS {display: block;min-width: 570px;}
+    .sunquicklinks_wrapper{DISPLAY: block; FLOAT: right; WIDTH: 200px; TEXT-ALIGN: right;}
+    .welcomesignin_wrapper{FLOAT: left; WIDTH: 634px; *width:621px; TEXT-ALIGN: right;VERTICAL-ALIGN: bottom; PADDING-TOP: 12px}
+    .logo_wrapper{DISPLAY: block; MARGIN-BOTTOM: 6px; float:left; WIDTH: 974px; HEIGHT: 40px;}
+  </style><!--Mosaic Header --><!--[if IE]>
+  <STYLE>
+    .logo_align{margin-bottom: 4px; margin-left:0px;}
+    .search_position{margin:7px 3px 14px 16px;}
+    #panelDiv_search .contentBg{padding:15px 5px 5px 5px; } 
+    ul#navigation div.submenu {border-bottom:1px solid #b7b7b7;}
+    ul#navigation div.submenu .bottomleft{background:none; width:15px; height:30px; float:left;  margin-left:-16px; margin-bottom:-42px; }
+    ul#navigation div.submenu .bottomcenter{background:none; height:30px;  margin-left:15px; margin-right:15px; float:left; width:360px;} 
+    ul#navigation div.submenu .bottomright{background:none; width:15px; height:30px; float:left; margin-left:360px; }
+    ul#navigation div.submenu .partner_bottomleft{ background:none; width:15px; height:30px;  float:left; margin-left:-16px; margin-bottom:-42px; clear:left; margin-top:15px;}
+    ul#navigation div.submenu .partner_bottomcenter{  background:none; width:362px; height:30px; margin-left:15px;  float:center;}
+    ul#navigation div.submenu .partner_bottomright{  background:none; width:15px; height:30px; float:right; margin-right:-15px;}
+    </STYLE>
+  <![endif]-->
+<!--SS_BEGIN_SNIPPET(fragment29,1)--><!--SS_END_SNIPPET(fragment29,1)-->
+
+<!--SS_BEGIN_SNIPPET(fragment32,head_tags)--><title>External_BreadCrumb</title>
+<meta name="Title" content="External_BreadCrumb">
+<meta name="Description" content="">
+<meta name="Keywords" content="">
+<meta name="robots" content="NOINDEX, NOFOLLOW">
+<meta name="country" content="">
+<meta name="Language" content="">
+<meta name="Updated Date" content="{ts '2010-04-02 05:20:00.000'}">
+
+
+
+
+			<!--SS_END_SNIPPET(fragment32,head_tags)-->
+
+<!--SS_BEGIN_SNIPPET(fragment33,1)-->				<link rel="stylesheet" type="text/css" href="/ocom/fragments/externalnavtabstop/receiver.css" type="text/css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/ocom/fragments/externalnavtabstop/subtabs.css" type="text/css" media="screen" />
+
+<script type="text/javascript" charset="utf-8" src="/ocom/fragments/externalnavtabstop/receiver.js"></script>
+			<!--SS_END_SNIPPET(fragment33,1)-->
+
+<!--SS_BEGIN_SNIPPET(fragment35,code)-->
+			<!--SS_END_SNIPPET(fragment35,code)-->
+
+</head>
+<body class="f01 f01v0 f01bg">
+<a name="top"></a>
+	<div class="f01bg"></div>
+	<div class="f01v0w1">
+ 	
+	
+   <!-- SS_BEGIN_SNIPPET(fragment40,mosaic-header-content)-->
+<!-- U01v0 -->
+
+<div class="u01" id="u01" data-menusrc="/us/menucontent-otn-us-en.html">
+	<div class="u01tools" data-trackas="header">
+
+		<div class="u01logo"><a href="http://www.oracle.com" data-lbl="logo">Oracle</a></div>
+
+		<ul class="u01navtools">
+			<li><a href="javascript:void(0);#menu-countryselect" data-lbl="country">Select Country/Region</a></li>
+			<li><a href="/us/community/index.html#menu-communities" data-lbl="communities">Communities</a></li>
+			<li><a href="javascript:void(0);#menu-iam" data-lbl="i-am-a">I am a...</a></li>
+			<li><a href="javascript:void(0);#menu-iwant" data-lbl="i-want-to">I want to...</a></li>            
+		</ul>
+
+		<ul class="u01pfile" data-lbl="welcome">
+			<li id="pfile-wlcm">Welcome</li>
+			<li id="pfile-acct"><a href="https://myprofile.oracle.com/EndUser/faces/profile/sso/updateUser.jspx?tid=complete&showRegions=primaryAddress|shippingAddress|communities|newsletters&amp;nextURL=" data-lbl="account">Account</a></li>
+			<li id="pfile-sout"><a href="javascript:sso_sign_out();" data-lbl="signout">Sign Out</a></li>
+			<li id="pfile-regs"><a href="http://www.oracle.com/webapps/redirect/signon?nexturl=" data-lbl="signin">Sign In/Register for Account</a></li>
+			<li id="pfile-help"><a href="/us/corporate/contact/about-your-account-070507.html" data-lbl="help">Help</a></li>
+		</ul>
+
+		<div class="u01search">
+			<form class="u01searchform" name="searchForm" method="get" action="http://search.oracle.com/search/search" data-errormsg="No Search Term Entered. Please Try Again">
+				<input name="start" value="1" type="hidden">
+				<input type="hidden" value="all" name="search_p_main_operator">
+				<input id="txtSearch" class="textcnt autoclear" name="q" value="Search" />
+				<input class="u01searchbttn" type="submit" value="Submit Search" />
+			</form>
+		</div>
+	</div>
+
+	<ul class="u01nav" data-trackas="hnav">
+		<li><a class="u01nav" data-trackas="hnav" href="http://www.oracle.com/us/products/index.html#menu-products-n-services" data-lbl="productsandservices"><h3>Products and Services</h3></a></li>
+		<li><a class="u01nav" data-trackas="hnav" href="http://www.oracle.com/us/solutions/index.html#menu-solutions" data-lbl="solutions"><h3>Solutions</h3></a></li>
+		<li><a class="u01nav" data-trackas="hnav" href="http://www.oracle.com/technetwork/indexes/downloads/index.html#menu-downloads" data-lbl="downloads"><h3>Downloads</h3></a></li>
+		<li><a class="u01nav" data-trackas="hnav" href="https://shop.oracle.com/#menu-store" data-lbl="store"><h3>Store</h3></a></li>
+		<li><a class="u01nav" data-trackas="hnav" href="http://www.oracle.com/us/support/index.html#menu-support" data-lbl="support"><h3>Support</h3></a></li>
+		<li><a class="u01nav" data-trackas="hnav" href="http://education.oracle.com/#menu-training" data-lbl="training"><h3>Training</h3></a></li>
+		<li><a class="u01nav" data-trackas="hnav" href="http://www.oracle.com/partners/index.html#menu-partners" data-lbl="partners"><h3>Partners</h3></a></li>
+		<li><a class="u01nav" data-trackas="hnav" href="http://www.oracle.com/us/corporate/index.html#menu-about" data-lbl="about"><h3>About</h3></a></li>
+		<li><a class="u01btn" data-trackas="hnav" href="http://www.oracle.com/technetwork/index.html#menu-otn" data-lbl="oracletechnologynetwork"><h3><span>Oracle</span> Technology Network</h3></a></li>
+	</ul>
+</div>
+<!-- /U01v0 -->
+ 
+
+			<!-- SS_END_SNIPPET(fragment40,mosaic-header-content)--> 
+   <!--SS_BEGIN_SNIPPET(fragment29,2)-->
+	
+	<!--**override root for testing purposes:**-->
+	<!--** Header Logo ** -->
+	<!--** Header Search ** -->
+	<!--** Welcome SignIn ** -->
+	 
+	
+	<!--** Footer ** -->
+	
+   
+    
+<!--** Header Logo ** -->
+             
+    
+
+  <!-- MOSAIC -->
+<!-- Communities-->
+
+<!-- User Category -->
+ 
+<!-- User Intrest -->
+<!-- Navigation starts here -->
+     
+          
+                    
+        
+        
+          
+
+        
+      
+      
+     
+    
+     
+        
+            
+            
+       
+        
+      
+     
+     
+        
+<!-- User Community SC code -->
+
+<!-- User Category SC code -->
+
+ 
+<!-- User Interest SC code -->
+
+
+	
+	    <div id="breadCrumb">
+	    <div class="breadCrumb_Left"></div>
+	    <div class="breadCrumb_Center">
+	    <div style="position:relative;">
+	    <span class="breadCrumb_Content">
+			    <a href="/technetwork/index.html" onclick="navTrack('otn','en','breadcrumb','otnen');"><span class=red>Oracle</span> Technology Network</a>
+			    <span class="rightarrow"><img src="http://www.oracleimg.com/us/assets/rightarrow-066625.gif" /></span>
+			    <a href="/technetwork/java/index.html" onclick="navTrack('otn','en','breadcrumb','otnen_java');">Java</a>
+			    <span class="rightarrow"><img src="http://www.oracleimg.com/us/assets/rightarrow-066625.gif" /></span>
+			    <span class="active">JavaFX</span>
+	    </span>
+	    </div>
+	    </div>
+	    <div class="breadCrumb_Right"></div>
+	    </div>
+
+			<!--SS_END_SNIPPET(fragment29,2)-->
+        <!-- F02v0 -->
+      <div class="f02 f02v0">
+      <div class="f02w1">
+      <div id="wrapper_lnav_maincont_rcol_foot">
+        <div id="Wrapper_FixedWidth_Leftnav">
+          
+<!--SS_BEGIN_SNIPPET(fragment25,2)-->
+	
+	<!--**override root for testing purposes:**-->
+	<!--** Header Logo ** -->
+	<!--** Header Search ** -->
+	<!--** Welcome SignIn ** -->
+	 
+	
+	<!--** Footer ** -->
+	
+   
+    
+<!--** Header Logo ** -->
+             
+    
+
+  <!-- MOSAIC -->
+<!-- Communities-->
+
+<!-- User Category -->
+ 
+<!-- User Intrest -->
+<!-- Navigation starts here -->
+     
+          
+                    
+        
+        
+          
+
+        
+      
+      
+     
+    
+     
+        
+            
+            
+       
+        
+      
+     
+     
+        
+<!-- User Community SC code -->
+
+<!-- User Category SC code -->
+
+ 
+<!-- User Interest SC code -->
+
+
+ <!--** retrieve input parameters: **-->
+		
+
+			
+		
+	<!--** retrieve the root node: **-->
+	<!--rootId = ssGetFirstNodeId(siteId)-->
+	<!--nodeId = rootId-->
+
+	<!--** retrieve the nodeLevel and set it to ssNumVertLevels **-->
+	<!--** retrieving the nodeLevel **-->
+		        	            
+		<!--** setting the nodelevel to ssNumVertLevels **-->
+                <!--** Get the section ID in custom section property **-->		
+				                             
+   
+                	
+                 
+                
+                <div class="topLeftNavBorder_li"><!--Spacer--></div> 
+                <div class="XMLLeftNav_li" id="XMLLeftNav">
+
+		
+ 
+		<!--** section link: **-->    
+		     
+		    		   
+ 
+											
+               <ul class="level01">
+				
+
+                          
+ 		            	
+				  <li><a class="level01_top_link_subnav" href = "/technetwork/java/javase/index.html" onclick="navTrack('otn','en','lnav','javase');"   target=_top><div>Java SE</div></a></li>
+                     	 			 							
+				
+
+                          
+ 		            	
+				  <li><a class="level01_top_link_subnav" href = "/technetwork/java/javaee/index.html" onclick="navTrack('otn','en','lnav','javaee');"   target=_top><div>Java EE</div></a></li>
+                     	 			 							
+				
+
+                          
+ 		            	
+				  <li><a class="level01_top_link_subnav" href = "/technetwork/java/javame/index.html" onclick="navTrack('otn','en','lnav','java_jme');"   target=_top><div>Java ME</div></a></li>
+                     	 			 							
+				
+
+                          
+ 		          			 							
+				
+
+                          
+ 		            	
+				  <li><a class="level01_top_link_subnav" href = "/technetwork/java/javasebusiness/index.html" onclick="navTrack('otn','en','lnav','javasebusiness');"   target=_top><div>Java SE Support</div></a></li>
+                     	 			 							
+				
+
+                          
+ 		            	
+				  <li><a class="level01_top_link_subnav" href = "/technetwork/java/javase-advanced-suite/index.html" onclick="navTrack('otn','en','lnav','javaseadvanced');"   target=_top><div>Java SE Advanced & Suite</div></a></li>
+                     	 			 							
+				
+
+                          
+ 		            	
+				  <li><a class="level01_top_link_subnav" href = "/technetwork/java/embedded/index.html" onclick="navTrack('otn','en','lnav','javaseembed');"   target=_top><div>Java Embedded</div></a></li>
+                     	 			 							
+				
+
+                          
+ 		          			 							
+				
+
+                          
+ 		            	
+				  <li><a class="level01_top_link_subnav" href = "/technetwork/java/javafx/index.html" onclick="navTrack('otn','en','lnav','javafx');"   target=_top><div>JavaFX</div></a></li>
+                     	 			 							
+				
+
+                          
+ 		            	
+				  <li><a class="level01_top_link_subnav" href = "/technetwork/java/javadb/index.html" onclick="navTrack('otn','en','lnav','javadb');"   target=_top><div>Java DB</div></a></li>
+                     	 			 							
+				
+
+                          
+ 		            	
+				  <li><a class="level01_top_link_subnav" href = "/technetwork/java/webtier/index.html" onclick="navTrack('otn','en','lnav','webtier');"   target=_top><div>Web Tier</div></a></li>
+                     	 			 							
+				
+
+                          
+ 		            	
+				  <li><a class="level01_top_link_subnav" href = "/technetwork/java/javacard/index.html" onclick="navTrack('otn','en','lnav','javacard');"   target=_top><div>Java Card</div></a></li>
+                     	 			 							
+				
+
+                          
+ 		            	
+				  <li><a class="level01_top_link_subnav" href = "/technetwork/java/javatv/index.html" onclick="navTrack('otn','en','lnav','javatv');"   target=_top><div>Java TV</div></a></li>
+                     	 			 							
+				
+
+                          
+ 		          			 							
+				
+
+                          
+ 		          			 							
+				
+
+                          
+ 		          			 							
+				
+
+                          
+ 		          			 							
+				
+
+                          
+ 		            	
+				  <li><a class="level01_top_link_subnav" href = "/technetwork/java/newtojava/index.html" onclick="navTrack('otn','en','lnav','java_newtojava');"   target=_top><div>New to Java</div></a></li>
+                     	 			 							
+				
+
+                          
+ 		            	
+				  <li><a class="level01_top_link_subnav" href = "/technetwork/java/community/index.html" onclick="navTrack('otn','en','lnav','java_community');"   target=_top><div>Community</div></a></li>
+                     	 			 							
+				
+
+                          
+ 		            	
+				  <li><a class="level01_top_link_subnav" href = "/technetwork/java/javamagazine/index.html" onclick="navTrack('otn','en','lnav','javamag');"   target=_top><div>Java Magazine</div></a></li>
+                     	 			 							
+				
+
+                          
+ 		            	
+				  <li><a class="level01_top_link_subnav" href = "/technetwork/java/javaseproducts/index.html" onclick="navTrack('otn','en','lnav','java_advanced');"   target=_top><div>Java Advanced</div></a></li>
+                     	 			 							
+				
+
+                          
+ 		          			 							
+				
+		 </ul>										
+ 
+     	        </div>
+		<div class="botLeftNavBorder_li"><!--Spacer--></div>
+											
+	<!--** end of ExternalNavMultiV **-->
+
+
+			<!--SS_END_SNIPPET(fragment25,2)-->
+
+        </div>
+        <div id="Wrapper_FixedWidth_Centercontent">
+          <div class="pg0 pg0v0 pg0x1v1 pg0x1">
+            
+<!--SS_BEGIN_SNIPPET(fragment33,2)-->
+	
+				
+			
+			
+							
+							
+							
+							
+							
+							
+						<script language="Javascript">
+							<!--
+							window.location = "/technetwork/java/javafx/overview/index.html";
+							-->
+						</script>
+							<div class="orcl6 orcl6v0">
+					<div class="orcl6w0">
+						<ul id="tabsample0">
+								<li class='ui-tabs-selected'><a href="/technetwork/java/javafx/overview/index.html"target=_top onclick="navTrack('otn','en','tab',':Overview');"><span>Overview</span></a><div></div></li>
+								<li ><a href="/technetwork/java/javafx/downloads/index.html"target=_top onclick="navTrack('otn','en','tab',':Downloads');"><span>Downloads</span></a><div></div></li>
+								<li ><a href="/technetwork/java/javafx/documentation/index.html"target=_top onclick="navTrack('otn','en','tab',':Documentation');"><span>Documentation</span></a><div></div></li>
+								<li ><a href="/technetwork/java/javafx/tools/index.html"target=_top onclick="navTrack('otn','en','tab',':Tools');"><span>Tools</span></a><div></div></li>
+								<li ><a href="/technetwork/java/javafx/community/index.html"target=_top onclick="navTrack('otn','en','tab',':Community');"><span>Community</span></a><div></div></li>
+								<li ><a href="/technetwork/java/javafx/samples/index.html"target=_top onclick="navTrack('otn','en','tab',':Samples');"><span>Samples</span></a><div></div></li>
+						</ul>
+					</div>
+				</div>
+				<div class="orcl6w1">
+					<div class="orcl6x0"></div>
+				</div>
+
+
+
+
+
+
+
+			<!--SS_END_SNIPPET(fragment33,2)-->
+
+          </div>
+        </div>
+  	</div>
+	</div>
+	<!-- /F02v0 -->      
+        <div id="Wrapper_FixedWidth_Footer">
+        <div class="addThisPrintEmail">
+        <!--SS_BEGIN_SNIPPET(fragment39,1)--> &nbsp;&nbsp;&nbsp;
+	<a href="javascript:mailpage()"><img height="16" src="/ocom/groups/systemobject/@mktg_admin/@ocom_admin/documents/digitalasset/email.gif" width="19" border="0" /></a> <span style="MARGIN-BOTTOM: 2px">
+	<a href="javascript:mailpage()">E-mail this page</a></span>&nbsp;&nbsp;&nbsp;
+	<a onclick="printerView()" href="javascript: void 0;"><img height="16" alt="Printer View" src="/ocom/groups/systemobject/@mktg_admin/@ocom_admin/documents/digitalasset/print_icon.gif" width="19" border="0" />&nbsp;Printer View</a>
+			<!--SS_END_SNIPPET(fragment39,1)-->
+         </div> 
+<!--SS_BEGIN_SNIPPET(fragment22,ocom translation)-->				<!--** retrieve cache lifespan parameter: **-->
+
+	
+	<!--**override root for testing purposes:**-->
+	<!--** Header Logo ** -->
+	<!--** Header Search ** -->
+	<!--** Welcome SignIn ** -->
+	 
+	
+	<!--** Footer ** -->
+	
+   
+    
+<!--** Header Logo ** -->
+             
+    
+
+  <!-- MOSAIC -->
+<!-- Communities-->
+
+<!-- User Category -->
+ 
+<!-- User Intrest -->
+<!-- Navigation starts here -->
+     
+          
+                    
+        
+        
+          
+
+        
+      
+      
+     
+    
+     
+        
+            
+            
+       
+        
+      
+     
+     
+        
+<!-- User Community SC code -->
+
+<!-- User Category SC code -->
+
+ 
+<!-- User Interest SC code -->
+
+	<div id='u06'><hr><h3><a href='/us/corporate/index.html'  onclick="navTrack('otn','en','footer','Hardware and Software Engineered to Work Together');">Hardware and Software, Engineered to Work Together</a></h3>
+  <ul class='u06-links'>
+    <li><a href='/us/syndication/subscribe/index.html' onClick="navTrack('otn','en','footer','subscribe');">Subscribe</a></li>
+    <li><a href='/us/corporate/index.html' onClick="navTrack('otn','en','footer','about oracle');">About Oracle</a> </li>
+    <li><a href='/us/corporate/careers/index.html' onClick="navTrack('otn','en','footer','careers');">Careers</a> </li>
+    <li><a href='/us/corporate/contact/index.html' onClick="navTrack('otn','en','footer','contact us');">Contact Us</a> </li>
+    <li><a href='/us/sitemaps/index.html' onClick="navTrack('otn','en','footer','site maps');">Site Maps</a> </li>
+    <li><a href='/us/legal/index.html' onClick="navTrack('otn','en','footer','legal notices');">Legal Notices</a> </li>
+    <li><a href='/us/legal/terms/index.html' onClick="navTrack('otn','en','footer','terms of use');">Terms of Use</a> </li>
+    <li><a href='/us/legal/privacy/index.html' onClick="navTrack('otn','en','footer','privacy rights');">Your Privacy Rights</a></li>
+    <li><div id='teconsent' style='padding-top:3px;'><script type='text/javascript' src='http://consent.truste.com/notice?domain=oracle.com&c=teconsent&language=en'></script></div></li>
+    <li class='u06-mobile'><a href='/us/corporate/mobile-application/index.html' onClick="navTrack('otn','en','footer','oracle mobile');"><span>&nbsp;</span> Oracle Mobile</a></li>
+  </ul>
+  <ul class='scl-icons'>
+    <li class='scl-facebook'><a title='Oracle on Facebook' href='/us/social-media/facebook/index.html' onClick="navTrack('otn','en','footer','facebook');" >Facebook</a></li>
+    <li class='scl-linkedin'><a title='Oracle on LinkedIn' href='/us/social-media/linkedin/index.html' onClick="navTrack('otn','en','footer','linkedin');">LinkedIn</a></li>
+    <li class='scl-twitter'><a title='Follow Oracle on Twitter' href='/us/social-media/twitter/index.html' onClick="navTrack('otn','en','footer','twitter');">Twitter</a></li>
+    <li class='scl-youtube'><a title='Watch Oracle on YouTube' href='http://www.youtube.com/oracle/' onClick="navTrack('otn','en','footer','youtube');">YouTube</a></li>
+    <li class='scl-feed'><a title='Oracle RSS Feeds' href='/us/syndication/feeds/index.html' onClick="navTrack('otn','en','footer','oracle rss feed');">Oracle RSS Feed</a></li>
+  </ul>
+</div>
+
+			<!--SS_END_SNIPPET(fragment22,ocom translation)-->
+
+        </div>
+      </div>
+
+      <div class="sitefinder_content" id="light">
+        <!--spacer-->
+      </div>
+
+      <div class="lightbox_overlay" id="fade">
+        <!--spacer-->
+      </div>
+<!--SS_BEGIN_SNIPPET(fragment38,1)-->
+				<!-- Start SiteCatalyst code -->
+<script language="JavaScript" src="http://www.oracleimg.com/us/assets/metrics/ora_otn.js"></script>
+<!-- End SiteCatalyst code --> 
+
+			<!--SS_END_SNIPPET(fragment38,1)-->
+
+    </div>
+  </div>
+<!--SS_BEGIN_SNIPPET(fragment35,universal-webcache-integration)-->
+				
+				
+			<!--SS_END_SNIPPET(fragment35,universal-webcache-integration)-->
+
+
+
+</body>
+</html>

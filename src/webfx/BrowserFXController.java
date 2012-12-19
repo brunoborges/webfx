@@ -4,6 +4,8 @@
  */
 package webfx;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,6 +17,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ListChangeListener.Change;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -23,6 +27,8 @@ import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -93,6 +99,16 @@ public class BrowserFXController implements TabManager {
             browserMap.remove(indexBrowserTab);
             tabPane.getTabs().remove(selectionTab.getSelectedIndex());
         }
+
+    }
+
+    public void getLocalFXML() {
+        FileChooser chooser = new FileChooser();
+        ExtensionFilter extensionFilter = new ExtensionFilter(" FXML Files (*.fxml)", "*.fxml");
+        chooser.getExtensionFilters().add(extensionFilter);
+        File selectedFile = chooser.showOpenDialog(null);
+        FXMLLoader loader = new FXMLLoader();
+        openFXPage("file://".concat(selectedFile.getPath()));
     }
 
     public void openFXPage() {
@@ -110,6 +126,7 @@ public class BrowserFXController implements TabManager {
             url = new URL(sUrl);
         } catch (MalformedURLException ex) {
             Logger.getLogger(BrowserFXController.class.getName()).log(Level.SEVERE, null, ex);
+
         }
 
         BrowserTab browserTab;
@@ -157,6 +174,8 @@ public class BrowserFXController implements TabManager {
                 }
             }
         });
+
+        selectionTab = tabPane.selectionModelProperty().getValue();
 
         selectionTab = tabPane.selectionModelProperty().getValue();
 
