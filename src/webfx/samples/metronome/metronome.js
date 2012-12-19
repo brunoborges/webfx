@@ -18,34 +18,34 @@ var TranslateTransitionBuilder = javafx.animation.TranslateTransitionBuilder;
 var Duration = javafx.util.Duration;
 
 var anim = TranslateTransitionBuilder.create()
-      .duration(new Duration(1000.0))
-      .node(circle)     
-      .fromX(0)
-      .toX(200)
-      .interpolator(Interpolator.LINEAR)
-      .autoReverse(true)
-      .cycleCount(Timeline.INDEFINITE)
-      .build();
+        .duration(new Duration(1000.0))
+        .node(circle)
+        .fromX(0)
+        .toX(200)
+        .interpolator(Interpolator.LINEAR)
+        .autoReverse(true)
+        .cycleCount(Timeline.INDEFINITE)
+        .build();
 
-  function handleStartButtonAction() {
+function handleStartButtonAction() {
     anim.playFromStart();
-  }
+}
 
-  function handlePauseButtonAction() {
+function handlePauseButtonAction() {
     anim.pause();
-  }
+}
 
-  function handleResumeButtonAction() {
+function handleResumeButtonAction() {
     anim.play();
-  }
+}
 
-  function handleStopButtonAction() {
+function handleStopButtonAction() {
     anim.stop();
-  }    
-  
-  startButton.disableProperty().bind(anim.statusProperty().isNotEqualTo(Animation.Status.STOPPED));
-  pauseButton.disableProperty().bind(anim.statusProperty().isNotEqualTo(Animation.Status.RUNNING));
-  resumeButton.disableProperty().bind(anim.statusProperty().isNotEqualTo(Animation.Status.PAUSED));
-  stopButton.disableProperty().bind(anim.statusProperty().isEqualTo(Animation.Status.STOPPED));
-  
+}
+
+startButton.disableProperty().bind(anim.statusProperty().isNotEqualTo(Animation.Status.STOPPED));
+pauseButton.disableProperty().bind(anim.statusProperty().isNotEqualTo(Animation.Status.RUNNING));
+resumeButton.disableProperty().bind(anim.statusProperty().isNotEqualTo(Animation.Status.PAUSED));
+stopButton.disableProperty().bind(anim.statusProperty().isEqualTo(Animation.Status.STOPPED));
+
  

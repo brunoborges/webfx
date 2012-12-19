@@ -125,15 +125,18 @@ public class FXTab implements BrowserTab {
 
     @Override
     public void stop() {
-        //contentProperty.setValue(null);
-        contentProperty.getValue().setDisable(true);
+        contentProperty.setValue(null);
     }
 
     private String extractTitle(FXMLLoader loader) {
         String title = "Unknow";
+        if (scriptEngine == null) {
+            return title;
+        }
 
         try {
-            title = scriptEngine.eval("webfx.title").toString();
+            Object objTitle = scriptEngine.eval("webfx !== null ? webfx.title : 'Untitled'");
+            title = objTitle.toString();
 
             ResourceBundle rb = loader.getResources();
 

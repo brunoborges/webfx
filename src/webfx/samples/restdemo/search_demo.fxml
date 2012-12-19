@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?language javascript?>
+<!--
+Copyright 2011 Oracle and/or its affiliates. All rights reserved.
+-->
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.media.*?>
+<!--fx:controller="demos.search.SearchDemoController" -->
+
+<BorderPane id="app-border" 
+            style="-fx-padding: 6 6 6 6" 
+            stylesheets="webfx/samples/restdemo/myStyles.css"
+            xmlns:fx="http://javafx.com/fxml">
+    
+    <top>
+        <BorderPane>
+            <left>
+                <HBox spacing="6" style="-fx-padding: 0 0 6 0">
+                    <children>
+                        <TextField fx:id="searchTermTextField" prefColumnCount="18"
+                                   onAction="handleSearchAction(event);"/>
+                        <Button fx:id="searchButton" disable="false" 
+                                onAction="handleSearchAction(event);"/>
+                    </children>
+                </HBox>
+            </left>
+            <right>
+                <Label fx:id="statusLabel" text="%resultCountFormat"/>
+            </right>
+        </BorderPane>
+    </top>
+    <center>
+        <BorderPane>
+            <center>
+                <TableView fx:id="resultsTableView">
+                    <columns>
+                        <TableColumn 
+                            fx:id="itemName"
+                            id="itemName" text="%name" prefWidth="170" />
+                        <TableColumn 
+                            fx:id="itemParentName"
+                            id="itemParentName" text="%album" prefWidth="170" />
+                        <TableColumn 
+                            fx:id="artistName"
+                            id="artistName" text="%artist" prefWidth="170" />
+                    </columns>
+                </TableView>
+            </center>
+            <right>
+                <VBox alignment="topCenter" spacing="6" style="-fx-padding: 0 0 0 6"
+                fx:id="boxRight">
+                    <children>
+                        <StackPane prefWidth="120" prefHeight="120" 
+                                   style="-fx-border-color: #929292; -fx-border-width: 1px">
+                            <children>
+                                <ImageView fx:id="artworkImageView">
+                                    <image>
+                                        <Image url="@javafx-logo.png"/>
+                                    </image>
+                                </ImageView> 
+                            </children>
+                        </StackPane>
+                        <Button fx:id="previewButton" text="%preview" 
+                                onAction="handlePreviewAction(event);"/>
+                        <Pane prefWidth="200" prefHeight="200"  style="-fx-background-color: black;" >
+                            <MediaView fx:id="mediaView" />
+                        </Pane>
+                    </children>
+                </VBox>
+            </right>
+        </BorderPane>
+    </center>
+
+    <fx:script source="resultCellValueFactory.js"/>
+    <fx:script source="controller.js"/>
+
+</BorderPane>
