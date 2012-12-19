@@ -3,10 +3,8 @@
  * and open the template in the editor.
  */
 
-function handleSubmitButtonAction() {
-    actiontarget.setText("Calling the JavaScript...");
-}
+var webfx = {title: "%title", resourceBundle: null};
 
-function pageTitle() {
-    return "Login Example";
+function handleSubmitButtonAction() {
+    actiontarget.setText(webfx.resourceBundle.getString("callingJS"));
 }

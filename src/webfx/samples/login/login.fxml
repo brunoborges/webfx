@@ -6,27 +6,27 @@
 <?import javafx.scene.text.*?>
 
 <GridPane xmlns:fx="http://javafx.com/fxml" 
-          stylesheets="webfx/example.css"
+          stylesheets="webfx/samples/login/login.css"
           fx:id="gridpane" 
           alignment="center" hgap="10" vgap="10">
 
-    <fx:script source="example.js"/>
+    <fx:script source="login.js"/>
 
     <padding>
         <Insets top="25" right="25" bottom="10" left="25"/>
     </padding>
 
-    <Text text="Welcome" id="welcome-text"
+    <Text text="%welcome" id="welcome-text"
           GridPane.columnIndex="0" GridPane.rowIndex="0"
           GridPane.columnSpan="2"/>
  
-    <Label text="User Name:"
+    <Label text="%username"
            GridPane.columnIndex="0" GridPane.rowIndex="1"/>
  
     <TextField 
         GridPane.columnIndex="1" GridPane.rowIndex="1"/>
  
-    <Label text="Password:"
+    <Label text="%password"
            GridPane.columnIndex="0" GridPane.rowIndex="2"/>
  
     <PasswordField fx:id="passwordField" 

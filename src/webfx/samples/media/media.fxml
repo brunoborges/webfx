@@ -1,0 +1,18 @@
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.media.Media?>
+<?import javafx.scene.media.MediaPlayer?>
+<?import javafx.scene.media.MediaView?>
+
+<Pane  minWidth="640" minHeight="480" prefHeight="480" prefWidth="640"  >
+    <MediaView>
+        <mediaPlayer>
+            <MediaPlayer autoPlay="true">
+                <media>
+                    <Media source="http://download.oracle.com/otndocs/products/javafx/oow2010-2.flv" />
+                </media>
+            </MediaPlayer>
+        </mediaPlayer>
+    </MediaView>
+</Pane>
