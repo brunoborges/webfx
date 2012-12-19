@@ -53,7 +53,7 @@ public class BrowserFXController implements Initializable {
                 
     }
     
-    public void getFXML()  {
+    public void getLocalFXML()  {
         try {
             FileChooser chooser = new FileChooser();                  
             ExtensionFilter extensionFilter = new ExtensionFilter(" FXML Files (*.fxml)", "*.fxml");
