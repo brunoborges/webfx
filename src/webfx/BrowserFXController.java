@@ -56,6 +56,7 @@ public class BrowserFXController implements TabManager {
     private SingleSelectionModel<Tab> selectionTab;
     private ConcurrentHashMap<Integer, BrowserTab> browserMap = new ConcurrentHashMap<>();
     private Locale locale;
+    private PageContext pageContext;
 
     public void exit() {
         LOGGER.info("Exiting...");
@@ -63,7 +64,6 @@ public class BrowserFXController implements TabManager {
     }
 
     public void newTab() {
-        LOGGER.info("New tab...");
         Tab tab = new Tab("New tab");
         tab.setClosable(true);
         tabPane.getTabs().add(tab);
@@ -96,24 +96,19 @@ public class BrowserFXController implements TabManager {
     }
 
     public void openFXPage() {
-        String sUrl = urlField.getText();
-        if (sUrl.indexOf("://") == -1) {
-            sUrl = "http://" + sUrl;
+        try {
+            openFXPage(new PageContext(urlField.getText()));
+        } catch (MalformedURLException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
         }
-
-        openFXPage(sUrl);
     }
 
-    public void openFXPage(String sUrl) {
-        URL url = null;
-        try {
-            url = new URL(sUrl);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(BrowserFXController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
+    public void openFXPage(PageContext pageContext) {
+        this.pageContext = pageContext;
+        URL url = pageContext.getLocation();
+        
         BrowserTab browserTab;
-        if (sUrl.endsWith(".fxml")) {
+        if (pageContext.isFxml()) {
             browserTab = new FXTab();
             browserTab.goTo(url, locale);
         } else {
@@ -125,7 +120,7 @@ public class BrowserFXController implements TabManager {
         selectionTab.getSelectedItem().textProperty().bind(browserTab.titleProperty());
         selectionTab.getSelectedItem().contentProperty().bind(browserTab.contentProperty());
         browserMap.put(selectionTab.getSelectedIndex(), browserTab);
-        urlField.setText(sUrl);
+        urlField.textProperty().bind(browserTab.locationProperty());
     }
 
     public void initialize() {
@@ -202,6 +197,6 @@ public class BrowserFXController implements TabManager {
     @Override
     public void openInNewTab(URL url) {
         newTab();
-        openFXPage(url.toString());
+        openFXPage(new PageContext(url));
     }
 }

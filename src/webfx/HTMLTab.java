@@ -4,9 +4,6 @@
  */
 package webfx;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
@@ -19,7 +16,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
-import javafx.event.EventType;
 import javafx.scene.Node;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -36,7 +32,6 @@ import org.w3c.dom.html.HTMLAnchorElement;
  */
 public class HTMLTab implements BrowserTab {
 
-    private static final Logger LOGGER = Logger.getLogger(BrowserFXController.class.getName());
     final WebView browser;
     final WebEngine webEngine;
     private SimpleObjectProperty<Node> contentProperty;
@@ -57,26 +52,21 @@ public class HTMLTab implements BrowserTab {
                         n.addEventListener("click", new EventListener() {
                             @Override
                             public void handleEvent(Event event) {
+                                EventTarget eventTarget = event.getTarget();
+
+                                if (eventTarget instanceof HTMLAnchorElement == false) {
+                                    return;
+                                }
+
                                 HTMLAnchorElement hrefObj = (HTMLAnchorElement) event.getTarget();
                                 String href = hrefObj.getHref();
-                                InputStream is = null;
-                                try {
-                                    URL url = new URL(href);
-                                    is = url.openStream();
-                                    
-                                    File file = new File(url.getFile());
-                                    if (file.getName().contains(".fxml")) {
-                                        getTabManager().openInNewTab(url);
-                                        event.preventDefault();
-                                    }
-                                } catch (IOException ex) {
-                                    Logger.getLogger(HTMLTab.class.getName()).log(Level.SEVERE, null, ex);
-                                } finally {
+                                if (href.endsWith(".fxml")) {
                                     try {
-                                        is.close();
-                                    } catch (IOException ex) {
+                                        getTabManager().openInNewTab(new URL(href));
+                                    } catch (MalformedURLException ex) {
                                         Logger.getLogger(HTMLTab.class.getName()).log(Level.SEVERE, null, ex);
                                     }
+                                    event.preventDefault();
                                 }
                             }
                         }, true);
@@ -139,7 +129,7 @@ public class HTMLTab implements BrowserTab {
     public void setTabManager(TabManager tm) {
         this.tabManager = tm;
     }
-    
+
     public TabManager getTabManager() {
         return tabManager;
     }

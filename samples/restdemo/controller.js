@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-var webfx = {title: "Search REST Demo", resourceBundle: null};
+var webfx = {title: "Search REST Demo"};
 
 var java = Packages.java;
 var javafx = Packages.javafx;
@@ -33,7 +33,7 @@ function handleSearchAction(event) {
             getQuery.getParameters().put("limit", LIMIT);
             getQuery.getParameters().put("output", "json");
 
-            statusLabel.setText(resources.getString("searching"));
+            statusLabel.setText(webfx.i18n.getString("searching"));
             updateActivityState();
 
             getQuery.execute(queryListener);
@@ -42,7 +42,7 @@ function handleSearchAction(event) {
         getQuery.cancel(true);
 
         searchButton.setDisable(true);
-        statusLabel.setText(resources.getString("aborting"));
+        statusLabel.setText(webfx.i18n.getString("aborting"));
     }
 }
 
@@ -109,7 +109,7 @@ var queryListener = new JavaAdapter(QueryListener, {
     queryExecuted: function(task) {
         if (task === getQuery) {
             if (task.isCancelled()) {
-                statusLabel.setText(resources.getString("cancelled"));
+                statusLabel.setText(webfx.i18n.getString("cancelled"));
                 searchTermTextField.requestFocus();
             } else {
                 var exception = task.getException();
@@ -120,7 +120,7 @@ var queryListener = new JavaAdapter(QueryListener, {
                     // Update the table data
                     var items = FXCollections.observableList(results);
                     resultsTableView.setItems(items);
-                    statusLabel.setText(java.lang.String.format(webfx.resourceBundle.getString("resultCountFormat"), new java.lang.Integer(results.size())));
+                    statusLabel.setText(java.lang.String.format(webfx.i18n.getString("resultCountFormat"), new java.lang.Integer(results.size())));
 
                     if (results.size() > 0) {
                         resultsTableView.getSelectionModel().select(0);

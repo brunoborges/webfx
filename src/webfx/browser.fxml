@@ -48,25 +48,5 @@
         <Tab closable="false" content="$null" text="New tab" />
       </tabs>
     </TabPane>
-    <HBox id="HBox" alignment="CENTER_LEFT" prefWidth="600.0" spacing="5.0">
-      <children>
-        <Label maxHeight="1.7976931348623157E308" maxWidth="-1.0" text="Left status" HBox.hgrow="ALWAYS">
-          <font>
-            <Font size="11.0" fx:id="x2" />
-          </font>
-          <textFill>
-            <Color blue="0.625" green="0.625" red="0.625" fx:id="x3" />
-          </textFill>
-        </Label>
-        <Pane prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS">
-          <children>
-            <ProgressIndicator id="progressIndicator" layoutX="799.0" layoutY="0.0" progress="0.0" />
-          </children>
-        </Pane>
-      </children>
-      <padding>
-        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-      </padding>
-    </HBox>
   </children>
 </VBox>

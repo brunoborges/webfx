@@ -26,6 +26,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
+import webfx.context.NavigationContext;
 
 /**
  *
@@ -41,6 +42,7 @@ public class FXTab implements BrowserTab {
     private URL url;
     private SimpleObjectProperty<Node> contentProperty = new SimpleObjectProperty<>();
     private ScriptEngine scriptEngine;
+    private PageContext pageContext;
 
     @Override
     public ObjectProperty<Node> contentProperty() {
@@ -65,41 +67,31 @@ public class FXTab implements BrowserTab {
         this.contentProperty.set(null);
         this.titleProperty.set(null);
         this.locationProperty.set(null);
+        this.pageContext = new PageContext(url);
 
         try {
-            File file = new File(url.getFile());
-            String filename = file.getName();
-            LOGGER.info(filename);
-
-            Iterable<String> bundleNames = constructBundleFileNames(file, locale);
-            ResourceBundle resourceBundle = null;
-
-            for (String bundleName : bundleNames) {
-                URL urlBundle = new URL(url.getProtocol(), url.getHost(), url.getPort(), bundleName);
-
-                try (InputStream bundleIS = urlBundle.openStream()) {
-                    resourceBundle = new PropertyResourceBundle(bundleIS);
-                    break;
-                } catch (FileNotFoundException e) {
-                    LOGGER.log(Level.WARNING, "Bundle not found: {0}", bundleName);
-                }
-            }
+            ResourceBundleLoader rbl = new ResourceBundleLoader(pageContext, locale);
+            ResourceBundle resourceBundle = rbl.findBundle();
 
             loader = new FXMLLoader(url, resourceBundle);
             Node loadedNode = (Node) loader.load();
 
-            loadScriptEngine(loader);
-
-            String title = extractTitle(loader);
-            titleProperty.set(title);
-            
             locationProperty.set(url.toString());
-
             contentProperty.set(loadedNode);
 
+            hackScriptEngine(loader);
             if (scriptEngine != null) {
-                scriptEngine.put("_resourceBundle", resourceBundle);
-                scriptEngine.eval("webfx.resourceBundle = _resourceBundle");
+                // title
+                String title = extractTitle(loader);
+                titleProperty.set(title);
+
+                // i18n
+                scriptEngine.put("__webfx_resourceBundle", resourceBundle);
+                scriptEngine.eval("webfx.i18n = __webfx_resourceBundle;");
+                
+                // navigation
+                scriptEngine.put("__webfx_navigation", getNavigationContext());
+                scriptEngine.eval("webfx.navigation = __webfx_navigation;");
             }
         } catch (ScriptException ex) {
             Logger.getLogger(FXTab.class.getName()).log(Level.SEVERE, null, ex);
@@ -152,7 +144,7 @@ public class FXTab implements BrowserTab {
         return title;
     }
 
-    private void loadScriptEngine(FXMLLoader loader) {
+    private void hackScriptEngine(FXMLLoader loader) {
         try {
             Field fse = loader.getClass().getDeclaredField("scriptEngine");
             fse.setAccessible(true);
@@ -162,21 +154,6 @@ public class FXTab implements BrowserTab {
         }
     }
 
-    private Iterable<String> constructBundleFileNames(File file, Locale locale) {
-        String path = file.getParent();
-        String filename = file.getName();
-        filename = filename.substring(0, filename.indexOf('.'));
-
-        List<String> names = new ArrayList<>();
-        String l0 = new Locale(locale.getLanguage(), locale.getCountry()).toString();
-        String l1 = new Locale(locale.getLanguage()).toString();
-        names.add(new File(path, filename + "_" + l0 + ".properties").toString());
-        names.add(new File(path, filename + "_" + l1 + ".properties").toString());
-        names.add(new File(path, filename + ".properties").toString());
-
-        return Collections.unmodifiableList(names);
-    }
-
     @Override
     public void goTo(URL url) {
         goTo(url, Locale.getDefault());
@@ -184,5 +161,10 @@ public class FXTab implements BrowserTab {
 
     @Override
     public void setTabManager(TabManager tm) {
+    }
+
+    @Override
+    public NavigationContext getNavigationContext() {
+        return new NavigationContextImpl(this, pageContext);
     }
 }

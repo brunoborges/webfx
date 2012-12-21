@@ -3,8 +3,17 @@
  * and open the template in the editor.
  */
 
-var webfx = {title: "%title", resourceBundle: null};
+var String = Packages.java.lang.String;
+var webfx = {title: "%title"};
 
 function handleSubmitButtonAction() {
-    actiontarget.setText(webfx.resourceBundle.getString("callingJS"));
+    var user = usernameField.getText();
+
+    var welcomeMessage = webfx.i18n.getString("welcomeMessage");
+    welcomeMessage = String.format(welcomeMessage, user);
+    actiontarget.setText(welcomeMessage);
+
+    if (user == "metronome") {
+        webfx.navigation.goTo("../metronome/metronome.fxml");
+    }
 }
