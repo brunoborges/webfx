@@ -25,6 +25,7 @@ import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventListener;
 import org.w3c.dom.events.EventTarget;
 import org.w3c.dom.html.HTMLAnchorElement;
+import webfx.context.NavigationContext;
 
 /**
  *
@@ -132,5 +133,10 @@ public class HTMLTab implements BrowserTab {
 
     public TabManager getTabManager() {
         return tabManager;
+    }
+
+    @Override
+    public NavigationContext getNavigationContext() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
