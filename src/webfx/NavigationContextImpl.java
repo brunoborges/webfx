@@ -40,7 +40,12 @@ public class NavigationContextImpl implements NavigationContext {
             @Override
             public void call(Object... args) {
                 try {
-                    tab.goTo(new URL(context.getBasePath() + "/" + args[0].toString()));
+                    String url = args[0].toString();
+                    if (url.startsWith("http://") || url.startsWith("https://")) {
+                        tab.goTo(new URL(url));
+                    } else {
+                        tab.goTo(new URL(context.getBasePath() + "/" + args[0].toString()));
+                    }
                 } catch (MalformedURLException ex) {
                     Logger.getLogger(NavigationContextImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
