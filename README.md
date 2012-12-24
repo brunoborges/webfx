@@ -25,6 +25,13 @@ Supports loading resource bundles from the Web Server hosting the FXML pages. Co
 
 Developer can also offer language/country specifics, i.e. login_pt_BR.properties
 
+Navigation Scheme
+=====
+The developer can setup his application to navigate between FXML pages using Javascript. The WebFX injects a NavigationContext to the script context where user can do things such as: 
+```javascript
+webfx.navigation.goTo("../otherPath/anotherScreen.fxml");
+```
+
 Security Layer (planned)
 =====
 The security layer must provide a sandbox on each tab, to run JavaFX pages. The sandbox must ensure that:
@@ -32,10 +39,6 @@ The security layer must provide a sandbox on each tab, to run JavaFX pages. The 
 - dialogs/windows can't be created, unless the user gives permition
 - access to parent objects (the Tab object, for example)
 - provide management and control for long running process, memory consumption, etc.
-
-Navigation Scheme (planned)
-=====
-The navigation scheme must allow the developer to define links between FXMLs, similar to HTML. The new page must replace the previous.
 
 FX Protocol (optional)
 =====
