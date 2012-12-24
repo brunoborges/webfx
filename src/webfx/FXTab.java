@@ -4,17 +4,12 @@
  */
 package webfx;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,8 +17,10 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import webfx.context.NavigationContext;
@@ -76,6 +73,8 @@ public class FXTab implements BrowserTab {
             loader = new FXMLLoader(url, resourceBundle);
             Node loadedNode = (Node) loader.load();
 
+            hackCSS(loadedNode);
+
             locationProperty.set(url.toString());
             contentProperty.set(loadedNode);
 
@@ -88,7 +87,7 @@ public class FXTab implements BrowserTab {
                 // i18n
                 scriptEngine.put("__webfx_resourceBundle", resourceBundle);
                 scriptEngine.eval("webfx.i18n = __webfx_resourceBundle;");
-                
+
                 // navigation
                 scriptEngine.put("__webfx_navigation", getNavigationContext());
                 scriptEngine.eval("webfx.navigation = __webfx_navigation;");
@@ -166,5 +165,20 @@ public class FXTab implements BrowserTab {
     @Override
     public NavigationContext getNavigationContext() {
         return new NavigationContextImpl(this, pageContext);
+    }
+
+    private void hackCSS(Node loadedNode) {
+        if (loadedNode instanceof Parent == false) {
+            return;
+        }
+
+        Parent parent = (Parent) loadedNode;
+        ObservableList<String> styles = parent.getStylesheets();
+        List<String> fixedStyles = new ArrayList<String>(styles.size());
+        for(String stylesheet : styles) {
+            fixedStyles.add(pageContext.getBasePath().toString() + "/" + stylesheet);
+        }
+        styles.clear();
+        styles.addAll(fixedStyles);
     }
 }

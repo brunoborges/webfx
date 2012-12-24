@@ -13,7 +13,7 @@ Copyright 2011 Oracle and/or its affiliates. All rights reserved.
 
 <BorderPane id="app-border" 
             style="-fx-padding: 6 6 6 6" 
-            stylesheets="webfx/samples/restdemo/myStyles.css"
+            stylesheets="myStyles.css"
             xmlns:fx="http://javafx.com/fxml">
     
     <top>

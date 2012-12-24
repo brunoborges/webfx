@@ -48,7 +48,7 @@ class ResourceBundleLoader {
                     found = new PropertyResourceBundle(bundleIS);
                     break;
                 } catch (IOException ex) {
-                    LOGGER.log(Level.WARNING, "Bundle not found: " + bundleName, ex);
+                    LOGGER.log(Level.WARNING, "Bundle not found: " + bundleName);
                 }
             } catch (MalformedURLException ex) {
                 LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
