@@ -12,7 +12,7 @@
   <children>
     <MenuBar prefWidth="600.0">
       <menus>
-        <Menu mnemonicParsing="false" text="File">
+        <Menu mnemonicParsing="true" text="File">
           <items>
             <MenuItem mnemonicParsing="true" onAction="#newTab" text="New Tab" />
             <MenuItem disable="true" mnemonicParsing="true" onAction="#closeTab" text="Close" fx:id="closeTab" />
