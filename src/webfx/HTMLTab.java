@@ -15,6 +15,8 @@ import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Worker.State;
 import javafx.scene.Node;
 import javafx.scene.web.WebEngine;
@@ -37,6 +39,8 @@ public class HTMLTab implements BrowserTab {
     final WebEngine webEngine;
     private SimpleObjectProperty<Node> contentProperty;
     private TabManager tabManager;
+    private ObservableList<HistoryEntry> history = FXCollections.observableArrayList();
+    private URL lastLocation;
 
     public HTMLTab() {
         browser = new WebView();
@@ -46,6 +50,9 @@ public class HTMLTab implements BrowserTab {
             @Override
             public void changed(ObservableValue<? extends State> ov, State oldv, State newv) {
                 if (newv == State.SUCCEEDED) {
+                    saveHistoryEntry();
+                    
+                    
                     Document document = (Document) webEngine.executeScript("document");
                     NodeList nodeList = document.getElementsByTagName("a");
                     for (int i = 0; i < nodeList.getLength(); i++) {
@@ -74,6 +81,11 @@ public class HTMLTab implements BrowserTab {
                     }
                 }
             }
+
+            private void saveHistoryEntry() {
+                HistoryEntry he = new HistoryEntry(titleProperty().getValue(), HTMLTab.this.lastLocation);
+                
+            }
         });
     }
 
@@ -89,6 +101,7 @@ public class HTMLTab implements BrowserTab {
 
     @Override
     public void goTo(URL url) {
+        this.lastLocation = url;
         webEngine.load(url.toString());
     }
 
@@ -138,5 +151,10 @@ public class HTMLTab implements BrowserTab {
     @Override
     public NavigationContext getNavigationContext() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ObservableList<HistoryEntry> getHistory() {
+        return history;
     }
 }

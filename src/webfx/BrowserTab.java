@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.Locale;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import webfx.context.NavigationContext;
 
@@ -38,4 +39,6 @@ public interface BrowserTab {
     public void goTo(URL url);
 
     public void goTo(URL url, Locale locale);
+
+    public ObservableList<HistoryEntry> getHistory();
 }

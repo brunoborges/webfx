@@ -176,6 +176,8 @@ public class BrowserFXController implements TabManager {
         setButtonIcon(backButton, "left", size);
         setButtonIcon(forwardButton, "right", size);
         setButtonIcon(reloadButton, "clock", size);
+
+        urlField.requestFocus();
     }
 
     private void setButtonIcon(Button button, String icon, int size) {
