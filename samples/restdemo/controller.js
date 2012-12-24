@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-var webfx = {title: "Search REST Demo"};
+var webfx = {title: "Search REST Demo", i18n: null};
 
 var java = Packages.java;
 var javafx = Packages.javafx;
@@ -20,6 +20,7 @@ var FXCollections = javafx.collections.FXCollections;
 var Media = javafx.scene.media.Media;
 var MediaPlayer = javafx.scene.media.MediaPlayer;
 
+var mediaPlayer = null;
 var getQuery = null;
 
 function handleSearchAction(event) {
@@ -50,13 +51,13 @@ function handlePreviewAction(event) {
     var selectedResult = resultsTableView.getSelectionModel().getSelectedItem();
     var sUrl = selectedResult.get("previewUrl");
     
-    if (mediaPlayer !== null) {
+    if (mediaPlayer != null) {
         mediaPlayer.stop();
     }
 
     var media = new Media(sUrl);
 
-    var mediaPlayer = new MediaPlayer(media);
+    mediaPlayer = new MediaPlayer(media);
     mediaPlayer.setAutoPlay(true);
     mediaView.setMediaPlayer(mediaPlayer);
     //Desktop.getDesktop().browse(url.toURI());
@@ -70,7 +71,6 @@ function updateArtwork(index) {
         previewButton.setDisable(true);
     } else {
         artworkURL = result.get("artworkUrl100");
-        Packages.java.lang.System.out.println(result.get("itemName"));
         previewButton.setDisable(false);
     }
     artworkImageView.setImage(artworkURL === null ? null : new Image(artworkURL));
@@ -147,4 +147,7 @@ resultsTableView.getSelectionModel().getSelectedCells().addListener(listChangeLi
 
 // Do an example initial search so that the table is populated on startup
 searchTermTextField.setText("Cheap Trick");
-handleSearchAction(null);
+
+function initialize() {
+    handleSearchAction(null);
+}
