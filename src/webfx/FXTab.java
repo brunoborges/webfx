@@ -92,7 +92,7 @@ public class FXTab implements BrowserTab {
                 scriptEngine.put("__webfx_navigation", getNavigationContext());
                 scriptEngine.eval("webfx.navigation = __webfx_navigation;");
                 
-                scriptEngine.eval("initialize()");
+                scriptEngine.eval("if (typeof initialize == 'function') initialize();");
             }
         } catch (ScriptException ex) {
             Logger.getLogger(FXTab.class.getName()).log(Level.SEVERE, null, ex);
