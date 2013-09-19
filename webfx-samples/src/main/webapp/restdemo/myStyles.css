@@ -1,0 +1,35 @@
+/*
+ * myStyles.css - style sheet for updated SearchDemo.java JavaFX FXML example
+ */
+
+#app-border {
+    -fx-border-color: grey;
+    -fx-border-width: 3;
+}
+
+#footer {
+    -fx-border-color: grey;
+    -fx-border-width: 1;
+    -fx-padding: 5;
+}
+
+#app-title {
+    -fx-font-size: 20pt;
+    -fx-font-weight: normal;
+    -fx-text-fill: grey;
+    -fx-padding: 15 0 0 0;
+}
+/*
+#searchButton {
+    -fx-background-image: url('magnifier.png'); 
+    -fx-background-repeat: no-repeat; 
+    -fx-background-position: center;
+}*/
+
+.button {
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#61a2b1, #2A5058);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
