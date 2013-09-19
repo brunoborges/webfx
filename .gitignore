@@ -1,2 +1,7 @@
 /build/
 /dist/
+/webfx-samples/nbproject/private/
+/webfx-samples/target/
+/webfx-browser/nbproject/private/
+/webfx-browser/dist/
+/webfx-browser/build/
