@@ -18,7 +18,7 @@ You may also want to go to a HTML5 website, such as this one from Mozilla HTML5 
 
 Resource Bundles
 =====
-Supports loading resource bundles from the Web Server hosting the FXML pages. Convetion is having the .properties with the same name as the FXML page.
+Supports loading resource bundles from the Web Server hosting the FXML pages. Convention is having the .properties with the same name as the FXML page.
 *Example*
 - http://www.mysite.com/login.fxml
 - http://www.mysite.com/login.properties
