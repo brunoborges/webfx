@@ -1,48 +1,33 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package webfx;
 
 import com.webfx.NavigationContext;
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.webfx.WebFXRegion;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javax.script.ScriptEngine;
-import javax.script.ScriptException;
 
 /**
  *
- * @author bruno
+ * @author Bruno Borges <bruno.borges at oracle.com>
  */
 public class FXTab implements BrowserTab {
 
-    private static final Logger LOGGER = Logger.getLogger(BrowserFXController.class.getName());
-
-    private final ReadOnlyStringWrapper titleProperty = new ReadOnlyStringWrapper();
     private final ReadOnlyStringWrapper locationProperty = new ReadOnlyStringWrapper();
     private final SimpleObjectProperty<Node> contentProperty = new SimpleObjectProperty<>();
+    private final WebFXRegion webfx;
+    private TabManager tabManager;
 
-    private FXMLLoader loader;
-    private Locale locale;
-    private URL url;
-    private ScriptEngine scriptEngine;
-    private PageContext pageContext;
+    public FXTab() {
+        webfx = new WebFXRegion();
+        contentProperty.set(webfx);
+    }
 
     @Override
     public ObjectProperty<Node> contentProperty() {
@@ -51,7 +36,7 @@ public class FXTab implements BrowserTab {
 
     @Override
     public ReadOnlyStringProperty titleProperty() {
-        return titleProperty;
+        return webfx.getCurrentViewTitleProperty();
     }
 
     @Override
@@ -61,138 +46,22 @@ public class FXTab implements BrowserTab {
 
     @Override
     public void stop() {
-        contentProperty.setValue(null);
-    }
-
-    private String extractTitle(FXMLLoader loader) {
-        String title = "Untitled";
-        if (scriptEngine == null) {
-            return title;
-        }
-
-        try {
-            Object objTitle = scriptEngine.eval("$webfx !== null ? $webfx.title : 'Untitled'");
-            title = objTitle.toString();
-
-            ResourceBundle rb = loader.getResources();
-
-            if (title.startsWith("%") && rb.containsKey(title.substring(1))) {
-                title = rb.getString(title.substring(1));
-            }
-
-            return title;
-        } catch (ScriptException ex) {
-            Logger.getLogger(BrowserFXController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return title;
-    }
-
-    private void hackScriptEngine(FXMLLoader loader) {
-        try {
-            Field fse = loader.getClass().getDeclaredField("scriptEngine");
-            fse.setAccessible(true);
-            scriptEngine = (ScriptEngine) fse.get(loader);
-        } catch (IllegalAccessException | NoSuchFieldException | SecurityException ex) {
-            Logger.getLogger(BrowserFXController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        contentProperty.set(null);
     }
 
     @Override
     public void setTabManager(TabManager tm) {
+        this.tabManager = tm;
     }
 
     @Override
     public NavigationContext getNavigationContext() {
-        return new NavigationContext() {
-
-            @Override
-            public void forward() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public void back() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public void goTo(URL url) {
-                FXTab.this.url = url;
-                FXTab.this.locale = locale;
-                FXTab.this.scriptEngine = null;
-                FXTab.this.contentProperty.set(null);
-                FXTab.this.titleProperty.set(null);
-                FXTab.this.locationProperty.set(null);
-                FXTab.this.pageContext = new PageContext(url);
-
-                try {
-                    ResourceBundleLoader rbl = new ResourceBundleLoader(pageContext, locale);
-                    ResourceBundle resourceBundle = rbl.findBundle();
-
-                    loader = new FXMLLoader(url, resourceBundle);
-                    Node loadedNode = (Node) loader.load();
-
-                    //hackCSS(loadedNode);
-                    locationProperty.set(url.toString());
-                    contentProperty.set(loadedNode);
-
-                    hackScriptEngine(loader);
-                    if (scriptEngine != null) {
-                        // title
-                        String title = extractTitle(loader);
-                        titleProperty.set(title);
-
-                        // i18n
-                        scriptEngine.put("__webfx_resourceBundle", resourceBundle);
-                        scriptEngine.eval("webfx.i18n = __webfx_resourceBundle;");
-
-                        // navigation
-                        scriptEngine.put("__webfx_navigation", getNavigationContext());
-                        scriptEngine.eval("webfx.navigation = __webfx_navigation;");
-
-                        scriptEngine.eval("if (typeof initialize == 'function') initialize();");
-                    }
-                } catch (ScriptException ex) {
-                    Logger.getLogger(FXTab.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    LOGGER.log(Level.SEVERE, null, ex);
-                }
-            }
-
-            @Override
-            public void goTo(String string) {
-                try {
-                    goTo(new URL(string));
-                } catch (MalformedURLException ex) {
-                    LOGGER.log(Level.SEVERE, null, ex);
-                }
-            }
-
-            @Override
-            public void reload() {
-                goTo(FXTab.this.url);
-            }
-        };
-    }
-
-    private void hackCSS(Node loadedNode) {
-        if (loadedNode instanceof Parent == false) {
-            return;
-        }
-
-        Parent parent = (Parent) loadedNode;
-        ObservableList<String> styles = parent.getStylesheets();
-        List<String> fixedStyles = new ArrayList<>(styles.size());
-        styles.stream().forEach((stylesheet) -> {
-            fixedStyles.add(pageContext.getBasePath().toString() + "/" + stylesheet);
-        });
-        styles.clear();
-        styles.addAll(fixedStyles);
+        return webfx.getNavigationContext();
     }
 
     @Override
     public boolean isStoppable() {
         return false;
     }
+
 }

@@ -111,7 +111,7 @@ public class BrowserFXController implements TabManager {
 
             BrowserTab browserTab;
             if (pageContext.isFxml()) {
-                browserTab = new FX2Tab();
+                browserTab = new FXTab();
                 browserTab.getNavigationContext().goTo(url/*, locale*/);
             } else {
                 browserTab = new HTMLTab();
