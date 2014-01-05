@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?language javascript?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+    <children>
+        <Button layoutX="263.0" layoutY="186.0" mnemonicParsing="false" text="Go to Page A" onAction="goToPageA(event);"/>
+    </children>
+    
+    <fx:script source="page-b.js" />
+</AnchorPane>

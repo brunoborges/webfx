@@ -10,7 +10,6 @@
 <?import javafx.scene.shape.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="370.0" prefWidth="320.0" xmlns:fx="http://javafx.com/fxml">
-    
     <children>
         <HBox id="HBox" alignment="CENTER" layoutX="36.0" layoutY="328.0" spacing="5.0">
             <children>
@@ -22,8 +21,6 @@
         </HBox>
         <Circle fx:id="circle" fill="RED" layoutX="64.0" layoutY="58.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
     </children>
-    
+
     <fx:script source="metronome.js" />
-
 </AnchorPane>
-

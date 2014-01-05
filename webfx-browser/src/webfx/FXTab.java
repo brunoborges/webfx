@@ -4,8 +4,10 @@
  */
 package webfx;
 
+import com.webfx.NavigationContext;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +25,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
-import webfx.context.NavigationContext;
 
 /**
  *
@@ -32,73 +33,20 @@ import webfx.context.NavigationContext;
 public class FXTab implements BrowserTab {
 
     private static final Logger LOGGER = Logger.getLogger(BrowserFXController.class.getName());
-    private ReadOnlyStringWrapper titleProperty = new ReadOnlyStringWrapper();
-    private ReadOnlyStringWrapper locationProperty = new ReadOnlyStringWrapper();
+
+    private final ReadOnlyStringWrapper titleProperty = new ReadOnlyStringWrapper();
+    private final ReadOnlyStringWrapper locationProperty = new ReadOnlyStringWrapper();
+    private final SimpleObjectProperty<Node> contentProperty = new SimpleObjectProperty<>();
+
     private FXMLLoader loader;
     private Locale locale;
     private URL url;
-    private SimpleObjectProperty<Node> contentProperty = new SimpleObjectProperty<>();
     private ScriptEngine scriptEngine;
     private PageContext pageContext;
 
     @Override
     public ObjectProperty<Node> contentProperty() {
         return contentProperty;
-    }
-
-    @Override
-    public void forward() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void back() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void goTo(URL url, Locale locale) {
-        this.url = url;
-        this.locale = locale;
-        this.scriptEngine = null;
-        this.contentProperty.set(null);
-        this.titleProperty.set(null);
-        this.locationProperty.set(null);
-        this.pageContext = new PageContext(url);
-
-        try {
-            ResourceBundleLoader rbl = new ResourceBundleLoader(pageContext, locale);
-            ResourceBundle resourceBundle = rbl.findBundle();
-
-            loader = new FXMLLoader(url, resourceBundle);
-            Node loadedNode = (Node) loader.load();
-
-            //hackCSS(loadedNode);
-
-            locationProperty.set(url.toString());
-            contentProperty.set(loadedNode);
-
-            hackScriptEngine(loader);
-            if (scriptEngine != null) {
-                // title
-                String title = extractTitle(loader);
-                titleProperty.set(title);
-
-                // i18n
-                scriptEngine.put("__webfx_resourceBundle", resourceBundle);
-                scriptEngine.eval("webfx.i18n = __webfx_resourceBundle;");
-
-                // navigation
-                scriptEngine.put("__webfx_navigation", getNavigationContext());
-                scriptEngine.eval("webfx.navigation = __webfx_navigation;");
-                
-                scriptEngine.eval("if (typeof initialize == 'function') initialize();");
-            }
-        } catch (ScriptException ex) {
-            Logger.getLogger(FXTab.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        }
     }
 
     @Override
@@ -112,23 +60,18 @@ public class FXTab implements BrowserTab {
     }
 
     @Override
-    public void reload() {
-        goTo(url, locale);
-    }
-
-    @Override
     public void stop() {
         contentProperty.setValue(null);
     }
 
     private String extractTitle(FXMLLoader loader) {
-        String title = "Unknow";
+        String title = "Untitled";
         if (scriptEngine == null) {
             return title;
         }
 
         try {
-            Object objTitle = scriptEngine.eval("webfx !== null ? webfx.title : 'Untitled'");
+            Object objTitle = scriptEngine.eval("$webfx !== null ? $webfx.title : 'Untitled'");
             title = objTitle.toString();
 
             ResourceBundle rb = loader.getResources();
@@ -156,17 +99,81 @@ public class FXTab implements BrowserTab {
     }
 
     @Override
-    public void goTo(URL url) {
-        goTo(url, Locale.getDefault());
-    }
-
-    @Override
     public void setTabManager(TabManager tm) {
     }
 
     @Override
     public NavigationContext getNavigationContext() {
-        return new NavigationContextImpl(this, pageContext);
+        return new NavigationContext() {
+
+            @Override
+            public void forward() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void back() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void goTo(URL url) {
+                FXTab.this.url = url;
+                FXTab.this.locale = locale;
+                FXTab.this.scriptEngine = null;
+                FXTab.this.contentProperty.set(null);
+                FXTab.this.titleProperty.set(null);
+                FXTab.this.locationProperty.set(null);
+                FXTab.this.pageContext = new PageContext(url);
+
+                try {
+                    ResourceBundleLoader rbl = new ResourceBundleLoader(pageContext, locale);
+                    ResourceBundle resourceBundle = rbl.findBundle();
+
+                    loader = new FXMLLoader(url, resourceBundle);
+                    Node loadedNode = (Node) loader.load();
+
+                    //hackCSS(loadedNode);
+                    locationProperty.set(url.toString());
+                    contentProperty.set(loadedNode);
+
+                    hackScriptEngine(loader);
+                    if (scriptEngine != null) {
+                        // title
+                        String title = extractTitle(loader);
+                        titleProperty.set(title);
+
+                        // i18n
+                        scriptEngine.put("__webfx_resourceBundle", resourceBundle);
+                        scriptEngine.eval("webfx.i18n = __webfx_resourceBundle;");
+
+                        // navigation
+                        scriptEngine.put("__webfx_navigation", getNavigationContext());
+                        scriptEngine.eval("webfx.navigation = __webfx_navigation;");
+
+                        scriptEngine.eval("if (typeof initialize == 'function') initialize();");
+                    }
+                } catch (ScriptException ex) {
+                    Logger.getLogger(FXTab.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    LOGGER.log(Level.SEVERE, null, ex);
+                }
+            }
+
+            @Override
+            public void goTo(String string) {
+                try {
+                    goTo(new URL(string));
+                } catch (MalformedURLException ex) {
+                    LOGGER.log(Level.SEVERE, null, ex);
+                }
+            }
+
+            @Override
+            public void reload() {
+                goTo(FXTab.this.url);
+            }
+        };
     }
 
     private void hackCSS(Node loadedNode) {
@@ -176,11 +183,16 @@ public class FXTab implements BrowserTab {
 
         Parent parent = (Parent) loadedNode;
         ObservableList<String> styles = parent.getStylesheets();
-        List<String> fixedStyles = new ArrayList<String>(styles.size());
-        for(String stylesheet : styles) {
+        List<String> fixedStyles = new ArrayList<>(styles.size());
+        styles.stream().forEach((stylesheet) -> {
             fixedStyles.add(pageContext.getBasePath().toString() + "/" + stylesheet);
-        }
+        });
         styles.clear();
         styles.addAll(fixedStyles);
+    }
+
+    @Override
+    public boolean isStoppable() {
+        return false;
     }
 }

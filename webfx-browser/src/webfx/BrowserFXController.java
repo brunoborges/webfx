@@ -11,6 +11,7 @@ import java.util.Locale;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
@@ -75,15 +76,15 @@ public class BrowserFXController implements TabManager {
     }
 
     public void reload() {
-        selectedBrowser().reload();
+        selectedBrowser().getNavigationContext().reload();
     }
 
     public void back() {
-        selectedBrowser().back();
+        selectedBrowser().getNavigationContext().back();
     }
 
     public void forward() {
-        selectedBrowser().forward();
+        selectedBrowser().getNavigationContext().forward();
     }
 
     public void closeTab() {
@@ -104,23 +105,27 @@ public class BrowserFXController implements TabManager {
     }
 
     public void openFXPage(PageContext pageContext) {
-        this.pageContext = pageContext;
-        URL url = pageContext.getLocation();
-        
-        BrowserTab browserTab;
-        if (pageContext.isFxml()) {
-            browserTab = new FXTab();
-            browserTab.goTo(url, locale);
-        } else {
-            browserTab = new HTMLTab();
-            browserTab.goTo(url);
-        }
+        Platform.runLater(() -> {
+            this.pageContext = pageContext;
+            URL url = pageContext.getLocation();
 
-        browserTab.setTabManager(this);
-        selectionTab.getSelectedItem().textProperty().bind(browserTab.titleProperty());
-        selectionTab.getSelectedItem().contentProperty().bind(browserTab.contentProperty());
-        browserMap.put(selectionTab.getSelectedIndex(), browserTab);
-        urlField.textProperty().bind(browserTab.locationProperty());
+            BrowserTab browserTab;
+            if (pageContext.isFxml()) {
+                browserTab = new FX2Tab();
+                browserTab.getNavigationContext().goTo(url/*, locale*/);
+            } else {
+                browserTab = new HTMLTab();
+                browserTab.getNavigationContext().goTo(url);
+            }
+
+            browserTab.setTabManager(this);
+            selectionTab.getSelectedItem().contentProperty().bind(browserTab.contentProperty());
+            browserMap.put(selectionTab.getSelectedIndex(), browserTab);
+            urlField.textProperty().bind(browserTab.locationProperty());
+            stopButton.disableProperty().set(!browserTab.isStoppable());
+            selectionTab.getSelectedItem().textProperty().bind(browserTab.titleProperty());
+            LOGGER.log(Level.INFO, "Title used for new tab: {0}", browserTab.titleProperty().get());
+        });
     }
 
     public void initialize() {

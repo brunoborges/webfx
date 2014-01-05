@@ -4,6 +4,7 @@
  */
 package webfx;
 
+import com.webfx.NavigationContext;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
@@ -25,7 +26,6 @@ import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventListener;
 import org.w3c.dom.events.EventTarget;
 import org.w3c.dom.html.HTMLAnchorElement;
-import webfx.context.NavigationContext;
 
 /**
  *
@@ -78,21 +78,6 @@ public class HTMLTab implements BrowserTab {
     }
 
     @Override
-    public void back() {
-        webEngine.executeScript("history.back()");
-    }
-
-    @Override
-    public void forward() {
-        webEngine.executeScript("history.forward()");
-    }
-
-    @Override
-    public void goTo(URL url) {
-        webEngine.load(url.toString());
-    }
-
-    @Override
     public ReadOnlyStringProperty titleProperty() {
         return webEngine.titleProperty();
     }
@@ -107,18 +92,8 @@ public class HTMLTab implements BrowserTab {
     }
 
     @Override
-    public void reload() {
-        webEngine.reload();
-    }
-
-    @Override
     public void stop() {
         webEngine.getLoadWorker().cancel();
-    }
-
-    @Override
-    public void goTo(URL url, Locale locale) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -137,6 +112,38 @@ public class HTMLTab implements BrowserTab {
 
     @Override
     public NavigationContext getNavigationContext() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new NavigationContext() {
+
+            @Override
+            public void reload() {
+                webEngine.reload();
+            }
+
+            @Override
+            public void back() {
+                webEngine.executeScript("history.back()");
+            }
+
+            @Override
+            public void forward() {
+                webEngine.executeScript("history.forward()");
+            }
+
+            @Override
+            public void goTo(URL url) {
+                goTo(url.toString());
+            }
+
+            @Override
+            public void goTo(String location) {
+                webEngine.load(location);
+            }
+
+        };
+    }
+
+    @Override
+    public boolean isStoppable() {
+        return true;
     }
 }

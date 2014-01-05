@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-var webfx = {title: "Search REST Demo", i18n: null};
+var $webfx = {title: "Search REST Demo", i18n: null};
 
 var java = Packages.java;
 var javafx = Packages.javafx;
@@ -34,7 +34,7 @@ function handleSearchAction(event) {
             getQuery.getParameters().put("limit", LIMIT);
             getQuery.getParameters().put("output", "json");
 
-            statusLabel.setText(webfx.i18n.getString("searching"));
+            statusLabel.setText($webfx.i18n.getString("searching"));
             updateActivityState();
 
             getQuery.execute(queryListener);
@@ -43,7 +43,7 @@ function handleSearchAction(event) {
         getQuery.cancel(true);
 
         searchButton.setDisable(true);
-        statusLabel.setText(webfx.i18n.getString("aborting"));
+        statusLabel.setText($webfx.i18n.getString("aborting"));
     }
 }
 
@@ -51,7 +51,7 @@ function handlePreviewAction(event) {
     var selectedResult = resultsTableView.getSelectionModel().getSelectedItem();
     var sUrl = selectedResult.get("previewUrl");
     
-    if (mediaPlayer != null) {
+    if (mediaPlayer !== null) {
         mediaPlayer.stop();
     }
 
@@ -88,7 +88,7 @@ function updateActivityState() {
 var QUERY_HOSTNAME = "ax.phobos.apple.com.edgesuite.net";
 var BASE_QUERY_PATH = "/WebObjects/MZStoreServices.woa/wa/itmsSearch";
 var MEDIA = "music";
-var LIMIT = 100;
+var LIMIT = "100";
 var getQuery;
 var mediaPlayer;
 
@@ -97,19 +97,21 @@ searchButton.setStyle("-fx-background-image: url('bullet_cross.png')");
 // we can't access the ResourceBundle object from fx:script, so this is a workaround
 var originalStatusLabel = statusLabel.getText();
 
-var listChangeListener = new JavaAdapter(javafx.collections.ListChangeListener, {
+var MyListChangeListener = Java.extend(Java.type("javafx.collections.ListChangeListener"));
+var listChangeListener = new MyListChangeListener() {
     onChanged: function(change) {
         while (change.next())
             if (change.wasAdded())
                 updateArtwork(change.getAddedSubList().get(0).getRow());
     }
-});
+};
 
-var queryListener = new JavaAdapter(QueryListener, {
+var MyQueryListener = Java.extend(Java.type("restfx.web.QueryListener"));
+var queryListener = new MyQueryListener() {
     queryExecuted: function(task) {
         if (task === getQuery) {
             if (task.isCancelled()) {
-                statusLabel.setText(webfx.i18n.getString("cancelled"));
+                statusLabel.setText($webfx.i18n.getString("cancelled"));
                 searchTermTextField.requestFocus();
             } else {
                 var exception = task.getException();
@@ -120,7 +122,7 @@ var queryListener = new JavaAdapter(QueryListener, {
                     // Update the table data
                     var items = FXCollections.observableList(results);
                     resultsTableView.setItems(items);
-                    statusLabel.setText(java.lang.String.format(webfx.i18n.getString("resultCountFormat"), new java.lang.Integer(results.size())));
+                    statusLabel.setText(java.lang.String.format($webfx.i18n.getString("resultCountFormat"), new java.lang.Integer(results.size())));
 
                     if (results.size() > 0) {
                         resultsTableView.getSelectionModel().select(0);
@@ -140,7 +142,7 @@ var queryListener = new JavaAdapter(QueryListener, {
             updateActivityState();
         }
     }
-});
+};
 
 // Add a selection change listener to the table view
 resultsTableView.getSelectionModel().getSelectedCells().addListener(listChangeListener);
