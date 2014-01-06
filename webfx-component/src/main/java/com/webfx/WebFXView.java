@@ -89,10 +89,6 @@ public class WebFXView extends AnchorPane {
         this.locale = locale;
     }
 
-    public Locale getLocale() {
-        return locale;
-    }
-
     public void setURL(URL url) {
         this.urlProperty.set(url);
     }
@@ -109,7 +105,6 @@ public class WebFXView extends AnchorPane {
         try {
             fxmlLoader = new FXMLLoader(pageContext.getLocation(), resourceBundle);
             Node loadedNode = (Node) fxmlLoader.load();
-            // hackCSS(loadedNode);
 
             setTopAnchor(loadedNode, 0.0);
             setBottomAnchor(loadedNode, 0.0);
@@ -192,23 +187,9 @@ public class WebFXView extends AnchorPane {
         }
     }
 
-    private void hackCSS(Node loadedNode) {
-        if (loadedNode instanceof Parent == false) {
-            return;
-        }
-
-        Parent parent = (Parent) loadedNode;
-        ObservableList<String> styles = parent.getStylesheets();
-        List<String> fixedStyles = new ArrayList<>(styles.size());
-        styles.stream().forEach((stylesheet) -> {
-            fixedStyles.add(pageContext.getBasePath().toString() + "/" + stylesheet);
-        });
-        styles.clear();
-        styles.addAll(fixedStyles);
-    }
-
     private void initLocalization() {
-        ResourceBundleLoader rbl = new ResourceBundleLoader(pageContext, locale);
+        Locale _locale = locale == null ? Locale.getDefault() : locale;
+        ResourceBundleLoader rbl = new ResourceBundleLoader(pageContext, _locale);
         resourceBundle = rbl.findBundle();
     }
 

@@ -7,6 +7,7 @@ package com.webfx;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.ReadOnlyStringProperty;
@@ -23,6 +24,7 @@ public final class WebFXRegion extends AnchorPane {
     private WebFXView defaultView;
     private final NavigationContext navigationContext;
     private final ReadOnlyStringProperty currentTitle = new SimpleStringProperty();
+    private Locale locale;
 
     public WebFXRegion() {
         navigationContext = new NavigationContextImpl();
@@ -49,6 +51,7 @@ public final class WebFXRegion extends AnchorPane {
     public void load() {
         defaultView = new WebFXView(navigationContext);
         defaultView.setURL(url);
+        defaultView.setLocale(locale);
         defaultView.load();
         getChildren().clear();
         getChildren().add(defaultView);
@@ -63,6 +66,10 @@ public final class WebFXRegion extends AnchorPane {
 
     public NavigationContext getNavigationContext() {
         return navigationContext;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 
     private class NavigationContextImpl implements NavigationContext {
@@ -85,7 +92,7 @@ public final class WebFXRegion extends AnchorPane {
         @Override
         public void goTo(String url) {
             URL destination = null;
-            if (url.startsWith("jar://") || url.startsWith("wfx://") || url.startsWith("http://") || url.startsWith("https://")) {
+            if (url.startsWith("file:/") || url.startsWith("jar:/") || url.startsWith("wfx:/") || url.startsWith("http:/") || url.startsWith("https:/")) {
                 try {
                     destination = new URL(url);
                 } catch (MalformedURLException ex) {
