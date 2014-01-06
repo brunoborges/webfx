@@ -9,11 +9,10 @@ Copyright 2011 Oracle and/or its affiliates. All rights reserved.
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.media.*?>
-<!--fx:controller="demos.search.SearchDemoController" -->
+<?import java.net.URL?>
 
 <BorderPane id="app-border" 
-            style="-fx-padding: 6 6 6 6" 
-            stylesheets="myStyles.css"
+            style="-fx-padding: 6 6 6 6"
             xmlns:fx="http://javafx.com/fxml">
     
     <top>
@@ -23,7 +22,7 @@ Copyright 2011 Oracle and/or its affiliates. All rights reserved.
                     <children>
                         <TextField fx:id="searchTermTextField" prefColumnCount="18"
                                    onAction="handleSearchAction(event);"/>
-                        <Button fx:id="searchButton" disable="false" 
+                        <Button fx:id="searchButton" disable="false"
                                 onAction="handleSearchAction(event);"/>
                     </children>
                 </HBox>
@@ -77,5 +76,9 @@ Copyright 2011 Oracle and/or its affiliates. All rights reserved.
 
     <fx:script source="resultCellValueFactory.js"/>
     <fx:script source="controller.js"/>
+
+    <stylesheets>
+        <URL value="@style.css"/>
+    </stylesheets>
 
 </BorderPane>

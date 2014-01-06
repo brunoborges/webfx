@@ -1,13 +1,14 @@
 root { 
-    display: block;
+  display: block;
 }
 
 .root {
--fx-background-image: url("background.jpg");
+  display: block;
+  -fx-background-image: url("background.jpg");
 }
 
 #gridpane {
--fx-background-image: url("background.jpg");
+  -fx-background-image: url("background.jpg");
 }
 
 .label {
