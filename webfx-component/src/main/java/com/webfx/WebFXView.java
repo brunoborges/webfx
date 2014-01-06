@@ -59,6 +59,7 @@ import javafx.scene.layout.AnchorPane;
 import javax.script.Bindings;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
+import javax.script.ScriptEngineFactory;
 import javax.script.ScriptException;
 
 /**
@@ -148,15 +149,14 @@ public class WebFXView extends AnchorPane {
 
             if (scriptEngine != null) {
                 // dirty javascript initializer
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.log(Level.FINE, "ScriptEngine.LANGUAGE: {0}", scriptEngine.get(ScriptEngine.LANGUAGE));
-                    LOGGER.log(Level.FINE, "ScriptEngine.LANGUAGE_VERSION: {0}", scriptEngine.get(ScriptEngine.LANGUAGE_VERSION));
-                    LOGGER.log(Level.FINE, "ScriptEngine.NAME: {0}", scriptEngine.get(ScriptEngine.NAME));
-                    LOGGER.log(Level.FINE, "ScriptEngine.ENGINE: {0}", scriptEngine.get(ScriptEngine.ENGINE));
-                    LOGGER.log(Level.FINE, "ScriptEngine.ENGINE_VERSION: {0}", scriptEngine.get(ScriptEngine.ENGINE_VERSION));
-                    LOGGER.log(Level.FINE, "ScriptEngine.FILENAME: {0}", scriptEngine.get(ScriptEngine.FILENAME));
-                    LOGGER.log(Level.FINE, "ScriptEngine.toString: {0}", scriptEngine.toString());
-                }
+                ScriptEngineFactory seFactory = scriptEngine.getFactory();
+                LOGGER.log(Level.INFO, "ScriptEngine.LANGUAGE: {0}", seFactory.getLanguageName());
+                LOGGER.log(Level.INFO, "ScriptEngine.LANGUAGE_VERSION: {0}", seFactory.getLanguageVersion());
+                LOGGER.log(Level.INFO, "ScriptEngine.NAMES: {0}", seFactory.getNames());
+                LOGGER.log(Level.INFO, "ScriptEngine.ENGINE: {0}", seFactory.getEngineName());
+                LOGGER.log(Level.INFO, "ScriptEngine.ENGINE_VERSION: {0}", seFactory.getEngineVersion());
+                LOGGER.log(Level.INFO, "ScriptEngine.FILENAMES: {0}", seFactory.getExtensions());
+                LOGGER.log(Level.INFO, "ScriptEngine.toString: {0}", seFactory.toString());
 
                 Bindings wfxb = scriptEngine.getBindings(ScriptContext.GLOBAL_SCOPE);
                 wfxb.put("__webfx_i18n", resourceBundle);
