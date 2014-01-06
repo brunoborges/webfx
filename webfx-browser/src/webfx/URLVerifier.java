@@ -13,14 +13,14 @@ import java.util.logging.Logger;
  *
  * @author bruno
  */
-public class PageContext {
+public class URLVerifier {
 
     private URL location;
     private URL basePath;
     private String pageName;
     private boolean fxml;
 
-    public PageContext(String location) throws MalformedURLException {
+    public URLVerifier(String location) throws MalformedURLException {
         if (!location.startsWith("http://") && !location.startsWith("https://")) {
             location = "http://" + location;
         }
@@ -29,7 +29,7 @@ public class PageContext {
         this.basePath = extractBasePath();
     }
 
-    public PageContext(URL location) {
+    public URLVerifier(URL location) {
         this.location = location;
         this.basePath = extractBasePath();
     }
@@ -49,7 +49,7 @@ public class PageContext {
         try {
             base = new URL(location.getProtocol(), location.getHost(), location.getPort(), path);
         } catch (MalformedURLException ex) {
-            Logger.getLogger(PageContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(URLVerifier.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         pageName = file.substring(lastSlash + 1);

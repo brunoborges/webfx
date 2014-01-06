@@ -21,7 +21,7 @@ import javafx.stage.Stage;
  */
 public class WebFX extends Application {
 
-    private Logger LOGGER = Logger.getLogger(WebFX.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(WebFX.class.getName());
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -34,11 +34,11 @@ public class WebFX extends Application {
         controller.setLocale(locale);
 
         Scene scene = new Scene(root);
-        
+
         BrowserShortcuts shortcuts = new BrowserShortcuts(scene);
         shortcuts.setup(controller);
 
-        stage.setTitle("WebFX");
+        stage.setTitle("WebFX Browser");
         stage.setScene(scene);
         stage.show();
     }

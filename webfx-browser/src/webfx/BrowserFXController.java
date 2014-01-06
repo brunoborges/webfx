@@ -12,10 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ListChangeListener.Change;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -29,7 +25,7 @@ import javafx.scene.image.ImageView;
 
 /**
  *
- * @author bruno
+ * @author Bruno Borges at oracle.com
  */
 public class BrowserFXController implements TabManager {
 
@@ -55,9 +51,8 @@ public class BrowserFXController implements TabManager {
      * Internal
      */
     private SingleSelectionModel<Tab> selectionTab;
-    private ConcurrentHashMap<Integer, BrowserTab> browserMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Integer, BrowserTab> browserMap = new ConcurrentHashMap<>();
     private Locale locale;
-    private PageContext pageContext;
 
     public void exit() {
         LOGGER.info("Exiting...");
@@ -72,23 +67,23 @@ public class BrowserFXController implements TabManager {
     }
 
     public void stop() {
-        selectedBrowser().stop();
+        selectedBrowserTab().stop();
     }
 
     public void reload() {
-        selectedBrowser().getNavigationContext().reload();
+        selectedBrowserTab().getNavigationContext().reload();
     }
 
     public void back() {
-        selectedBrowser().getNavigationContext().back();
+        selectedBrowserTab().getNavigationContext().back();
     }
 
     public void forward() {
-        selectedBrowser().getNavigationContext().forward();
+        selectedBrowserTab().getNavigationContext().forward();
     }
 
     public void closeTab() {
-        LOGGER.info("Close Tab...");
+        LOGGER.info("Closing Tab...");
         if (tabPane.getTabs().size() > 1) {
             int indexBrowserTab = selectionTab.getSelectedIndex();
             browserMap.remove(indexBrowserTab);
@@ -97,22 +92,30 @@ public class BrowserFXController implements TabManager {
     }
 
     public void openFXPage() {
-        try {
-            openFXPage(new PageContext(urlField.getText()));
-        } catch (MalformedURLException ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
-        }
+        openPage(urlField.getText());
     }
 
-    public void openFXPage(PageContext pageContext) {
-        Platform.runLater(() -> {
-            this.pageContext = pageContext;
-            URL url = pageContext.getLocation();
+    public void openPage(String location) {
+        URLVerifier urlVerifier = null;
 
+        try {
+            urlVerifier = new URLVerifier(location);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(BrowserFXController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        if (urlVerifier == null) {
+            return;
+        }
+
+        final URL url = urlVerifier.getLocation();
+        final boolean isFxml = urlVerifier.isFxml();
+
+        Platform.runLater(() -> {
             BrowserTab browserTab;
-            if (pageContext.isFxml()) {
-                browserTab = new FXTab();
-                browserTab.getNavigationContext().goTo(url/*, locale*/);
+            if (isFxml) {
+                browserTab = new FXTab(locale);
+                browserTab.getNavigationContext().goTo(url);
             } else {
                 browserTab = new HTMLTab();
                 browserTab.getNavigationContext().goTo(url);
@@ -129,54 +132,45 @@ public class BrowserFXController implements TabManager {
     }
 
     public void initialize() {
-        urlField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> ov, Boolean oldValue, Boolean newValue) {
-                if (newValue.booleanValue()) {
-                    urlField.textProperty().unbind();
-                } else if (selectedBrowser() != null) {
-                    urlField.textProperty().bind(selectedBrowser().locationProperty());
-                }
+        urlField.focusedProperty().addListener((ov, oldValue, newValue) -> {
+            if (newValue.booleanValue()) {
+                urlField.textProperty().unbind();
+            } else if (selectedBrowserTab() != null) {
+                urlField.textProperty().bind(selectedBrowserTab().locationProperty());
             }
         });
 
-        tabPane.getTabs().addListener(new ListChangeListener<Tab>() {
-            @Override
-            public void onChanged(Change<? extends Tab> change) {
-                ObservableList<? extends Tab> tabs = change.getList();
+        tabPane.getTabs().addListener((change) -> {
+            ObservableList<? extends Tab> tabs = change.getList();
 
-                // disabled the close tab menu item if selected tab is not cloeable
-                closeTab.disableProperty().bind(selectionTab.getSelectedItem().closableProperty().not());
+            // disabled the close tab menu item if selected tab is not cloeable
+            closeTab.disableProperty().bind(selectionTab.getSelectedItem().closableProperty().not());
 
-                // set the first tab closeable if more than one tab
-                tabs.get(0).setClosable(tabs.size() > 1);
+            // set the first tab closeable if more than one tab
+            tabs.get(0).setClosable(tabs.size() > 1);
 
-                // set others tab closeable, if they exist
-                for (int i = 1; i < tabs.size(); i++) {
-                    tabs.get(i).setClosable(true);
-                }
+            // set others tab closeable, if they exist
+            for (int i = 1; i < tabs.size(); i++) {
+                tabs.get(i).setClosable(true);
             }
         });
 
         selectionTab = tabPane.selectionModelProperty().getValue();
 
-        tabPane.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
-            @Override
-            public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
-                LOGGER.info("selecao da tab mudou");
-                if (selectedBrowser() == null) {
-                    LOGGER.info("nao tem browser selecionado");
-                    urlField.textProperty().unbind();
-                    urlField.textProperty().setValue("");
-                    urlField.setText("");
-                } else {
-                    LOGGER.info("existe um browser selecionado");
-                    urlField.textProperty().bind(selectedBrowser().locationProperty());
-                }
+        tabPane.getSelectionModel().selectedItemProperty().addListener((ov, t, t1) -> {
+            LOGGER.info("Tab selection changed");
+            if (selectedBrowserTab() == null) {
+                LOGGER.info("No tab selected");
+                urlField.textProperty().unbind();
+                urlField.textProperty().setValue("");
+                urlField.setText("");
+            } else {
+                LOGGER.info("There's a tab selected");
+                urlField.textProperty().bind(selectedBrowserTab().locationProperty());
             }
         });
 
-        int size = 16;
+        final int size = 16;
         setButtonIcon(stopButton, "stop", size);
         setButtonIcon(backButton, "left", size);
         setButtonIcon(forwardButton, "right", size);
@@ -187,21 +181,21 @@ public class BrowserFXController implements TabManager {
         InputStream is = getClass().getResourceAsStream("icons/" + icon + "_" + size + ".png");
         Image block = new Image(is);
         ImageView iv = new ImageView(block);
-        // add images to toolbar
         button.setGraphic(iv);
     }
 
-    private BrowserTab selectedBrowser() {
+    private BrowserTab selectedBrowserTab() {
         return browserMap.get(selectionTab.getSelectedIndex());
+    }
+
+    @Override
+    public void openInNewTab(URL url) {
+        newTab();
+        openPage(url.toString());
     }
 
     void setLocale(Locale locale) {
         this.locale = locale;
     }
 
-    @Override
-    public void openInNewTab(URL url) {
-        newTab();
-        openFXPage(new PageContext(url));
-    }
 }
