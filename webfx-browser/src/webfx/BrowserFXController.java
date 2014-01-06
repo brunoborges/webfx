@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -140,7 +141,7 @@ public class BrowserFXController implements TabManager {
             }
         });
 
-        tabPane.getTabs().addListener((change) -> {
+        tabPane.getTabs().addListener((ListChangeListener.Change<? extends Tab> change) -> {
             ObservableList<? extends Tab> tabs = change.getList();
 
             // disabled the close tab menu item if selected tab is not cloeable
