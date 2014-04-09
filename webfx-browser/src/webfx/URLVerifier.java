@@ -39,6 +39,7 @@
  */
 package webfx;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
@@ -56,11 +57,16 @@ public class URLVerifier {
     private boolean fxml;
 
     public URLVerifier(String location) throws MalformedURLException {
-        if (!location.startsWith("http://") && !location.startsWith("https://")) {
-            location = "http://" + location;
+        try {
+            this.location = new URL(location);
+        } catch (MalformedURLException e) {
+            File f = new File(location.trim());
+            if (f.isAbsolute() && f.exists()) {
+                this.location = f.toURI().toURL();
+            } else {
+                this.location = new URL("http://" + location);
+            }
         }
-
-        this.location = new URL(location);
         this.basePath = extractBasePath();
     }
 
