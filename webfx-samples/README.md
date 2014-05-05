@@ -1,6 +1,7 @@
-WebFX samples
+WebFX Samples
 =====
-Run this project with Maven Jetty:
+This is a Web project with samples to experiment the WebFX concept. You will find a few demos purely written in FXML+Javascript+CSS. Run this project with Maven Jetty:
+
 ```bash
 $ mvn jetty:run
 ```
