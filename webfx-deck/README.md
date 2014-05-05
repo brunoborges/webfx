@@ -5,4 +5,4 @@ This project is designed to provide you a simple JavaFX deck to your WebFX appli
 $ java -jar webfx-deck.jar -Dwebfx.url=http://localhost:8080/webfx-samples/login/login.fxml
 ```
 
-To reload the page, press F5 or Ctrl+R
+To reload the page, press F5 or Ctrl+R. You can also connect with jconsole and manipulate the WebFX Deck through the DeckServerMBean object.
