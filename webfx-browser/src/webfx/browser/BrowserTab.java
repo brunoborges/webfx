@@ -37,12 +37,12 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package webfx;
+package webfx.browser;
 
-import com.webfx.NavigationContext;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.scene.Node;
+import webfx.NavigationContext;
 
 /**
  *

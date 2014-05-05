@@ -37,12 +37,10 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package webfx;
+package webfx.browser;
 
-import com.webfx.NavigationContext;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.ObjectProperty;
@@ -61,6 +59,7 @@ import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventListener;
 import org.w3c.dom.events.EventTarget;
 import org.w3c.dom.html.HTMLAnchorElement;
+import webfx.NavigationContext;
 
 /**
  *

@@ -37,7 +37,7 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package webfx;
+package webfx.browser;
 
 import java.util.Locale;
 import java.util.Map;
@@ -60,14 +60,11 @@ public class WebFX extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Locale locale = getCurrentLocale();
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("browser.fxml"), ResourceBundle.getBundle("webfx/browser", locale));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("browser.fxml"));
         Parent root = (Parent) fxmlLoader.load();
 
         BrowserFXController controller = fxmlLoader.getController();
-        controller.setLocale(locale);
-
+        controller.setLocale(getCurrentLocale());
         Scene scene = new Scene(root);
 
         BrowserShortcuts shortcuts = new BrowserShortcuts(scene);

@@ -37,7 +37,7 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package webfx;
+package webfx.browser;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -169,7 +169,7 @@ public class BrowserFXController implements TabManager {
 
     public void initialize() {
         urlField.focusedProperty().addListener((ov, oldValue, newValue) -> {
-            if (newValue.booleanValue()) {
+            if (newValue) {
                 urlField.textProperty().unbind();
             } else if (selectedBrowserTab() != null) {
                 urlField.textProperty().bind(selectedBrowserTab().locationProperty());

@@ -37,52 +37,71 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package webfx;
+package webfx.browser;
 
-import javafx.collections.ObservableMap;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
+import java.util.Locale;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyStringProperty;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.Node;
+import webfx.NavigationContext;
+import webfx.WebFXRegion;
 
 /**
  *
- * @author bruno
+ * @author Bruno Borges <bruno.borges at oracle.com>
  */
-public class BrowserShortcuts {
+public class FXTab implements BrowserTab {
 
-    private final Scene scene;
+    private final ReadOnlyStringWrapper locationProperty = new ReadOnlyStringWrapper();
+    private final SimpleObjectProperty<Node> contentProperty = new SimpleObjectProperty<>();
+    private final WebFXRegion webfx;
+    private TabManager tabManager;
 
-    public BrowserShortcuts(Scene scene) {
-        this.scene = scene;
+    public FXTab() {
+        webfx = new WebFXRegion();
+        contentProperty.set(webfx);
     }
 
-    public void setup(final BrowserFXController controller) {
-        final ObservableMap<KeyCombination, Runnable> accelerators = scene.getAccelerators();
-
-        accelerators.put(
-                new KeyCodeCombination(KeyCode.T, KeyCombination.SHORTCUT_DOWN),
-                new Runnable() {
-            @Override
-            public void run() {
-                controller.newTab();
-            }
-        });
-        accelerators.put(
-                new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN),
-                new Runnable() {
-            @Override
-            public void run() {
-                controller.closeTab();
-            }
-        });
-        accelerators.put(
-                new KeyCodeCombination(KeyCode.Q, KeyCombination.SHORTCUT_DOWN),
-                new Runnable() {
-            @Override
-            public void run() {
-                System.exit(0);
-            }
-        });
+    FXTab(Locale locale) {
+        this();
+        webfx.setLocale(locale);
     }
+
+    @Override
+    public ObjectProperty<Node> contentProperty() {
+        return contentProperty;
+    }
+
+    @Override
+    public ReadOnlyStringProperty titleProperty() {
+        return webfx.getCurrentViewTitleProperty();
+    }
+
+    @Override
+    public ReadOnlyStringProperty locationProperty() {
+        return locationProperty;
+    }
+
+    @Override
+    public void stop() {
+        contentProperty.set(null);
+    }
+
+    @Override
+    public void setTabManager(TabManager tm) {
+        this.tabManager = tm;
+    }
+
+    @Override
+    public NavigationContext getNavigationContext() {
+        return webfx.getNavigationContext();
+    }
+
+    @Override
+    public boolean isStoppable() {
+        return false;
+    }
+
 }
