@@ -1,5 +1,4 @@
 var $webfx = {title: 'Metronome'};
-var webfx = {title: 'Metronome'};
 
 var java = Packages.java;
 var javafx = Packages.javafx;

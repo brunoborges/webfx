@@ -20,7 +20,7 @@
                 <Button fx:id="stopButton" mnemonicParsing="false" onAction="handleStopButtonAction(event);" text="%stop" />
             </children>
         </HBox>
-        <Circle fx:id="circle" fill="RED" layoutX="64.0" layoutY="58.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+        <Circle fx:id="circle" fill="BLUE" layoutX="64.0" layoutY="58.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
     </children>
     
     <fx:script source="metronome.js" />
