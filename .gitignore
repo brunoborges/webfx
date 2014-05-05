@@ -1,3 +1,5 @@
+nb-configuration.xml
+nbactions.xml
 /build/
 /dist/
 /webfx-samples/nbproject/private/
@@ -7,18 +9,7 @@
 /webfx-browser/build/
 /JavaFXApplication5/nbproject/private/
 /webfx-component/target/
-/JavaFXApplication6/nbproject/private/
-/JavaFXApplication6/build/
-/JavaFXApplication6/dist/
-/JavaFXApplication7/nbproject/private/
-/JavaFXApplication7/dist/
-/JavaFXApplication7/build/
-/JavaFXApplication8/nbproject/private/
 /webfx-browser/nbproject/
 /webfx-deck/target/
 /webfx-deck-mbean/target/
 /webfx-mbean/target/
-/JavaFXApplication2/nbproject/private/
-/JavaFXApplication3/nbproject/private/
-/JavaFXApplication4/nbproject/private/
-/mavenproject1/target/
