@@ -81,32 +81,6 @@
                     </webApp>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.glassfish.embedded</groupId>
-                <artifactId>maven-embedded-glassfish-plugin</artifactId>
-                <version>4.0</version>
-                <configuration>
-                    <goalPrefix>embedded-glassfish</goalPrefix>
-                    <app>target/${project.build.finalName}</app>
-                    <ports>
-                        <http-listener>8080</http-listener>
-                        <https-listener>8181</https-listener>
-                    </ports>
-                    <contextRoot>${project.artifactId}</contextRoot>
-                    <name>${project.artifactId}</name>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>start</goal>
-                            <goal>deploy</goal>
-                            <goal>undeploy</goal>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
