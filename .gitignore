@@ -13,3 +13,5 @@ nbactions.xml
 /webfx-deck/target/
 /webfx-deck-mbean/target/
 /webfx-mbean/target/
+/webfx-browser-mvn/target/
+/webfx-browser/target/
