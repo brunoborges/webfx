@@ -51,6 +51,11 @@ public class DeckMain extends Application {
                 primaryStage.setTitle(c);
             });
             primaryStage.setScene(scene);
+            if (System.getProperty("os.arch").toUpperCase().contains("ARM")) {
+                primaryStage.setFullScreen(true);
+                primaryStage.setFullScreenExitHint("");
+            }
+
             primaryStage.show();
         } catch (MalformedURLException ex) {
             Logger.getLogger(DeckMain.class.getName()).log(Level.SEVERE, null, ex);
