@@ -2,12 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>webfx</groupId>
+    <parent>
+        <groupId>webfx</groupId>
+        <artifactId>webfx-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
     <artifactId>webfx-deck</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>webfx-deck</name>
+    <name>WebFX Deck</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,12 +27,6 @@
         <dependency>
             <groupId>webfx</groupId>
             <artifactId>webfx-component</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>webfx</groupId>
-            <artifactId>webfx-mbean</artifactId>
-            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.tyrus.bundles</groupId>
@@ -40,7 +38,6 @@
             <artifactId>jersey-client</artifactId>
             <version>2.7</version>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -107,24 +104,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <compilerArguments>
-                        <bootclasspath>${sun.boot.class.path}${path.separator}${java.home}/lib/jfxrt.jar</bootclasspath>
-                    </compilerArguments>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.16</version>
-                <configuration>
-                    <additionalClasspathElements>
-                        <additionalClasspathElement>${java.home}/lib/jfxrt.jar</additionalClasspathElement>
-                    </additionalClasspathElements>
-                </configuration>
             </plugin>
         </plugins>
     </build>
