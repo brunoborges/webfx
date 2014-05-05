@@ -1,8 +1,8 @@
-WebFX samples
+WebFX Deck
 =====
-Run this project with Maven Jetty:
+This project is designed to provide you a simple JavaFX deck to your WebFX applications. Run this on your laptop or on an embedded device like RaspberryPi with the -Dwebfx.url parameter pointing to a remote URL with a valid FXML file:
 ```bash
-$ mvn jetty:run
+$ java -jar webfx-deck.jar -Dwebfx.url=http://localhost:8080/webfx-samples/login/login.fxml
 ```
 
-Now you can point your WebFX Browser to http://localhost:8080/webfx-samples or point your WebFX Deck to -Dwebfx.url=http://localhost:8080/webfx-samples/login/login.fxml
+To reload the page, press F5 or Ctrl+R
