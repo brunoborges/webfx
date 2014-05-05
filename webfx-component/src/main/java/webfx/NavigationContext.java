@@ -37,40 +37,24 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package com.webfx.tests;
+package webfx;
 
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import com.webfx.WebFXView;
+import java.net.URL;
 
 /**
  *
  * @author Bruno Borges <bruno.borges at oracle.com>
  */
-public class MetronomeTest extends Application {
+public interface NavigationContext {
 
-    @Override
-    public void start(Stage stage) {
-        WebFXView webfx = new WebFXView(getClass().getResource("metronome.fxml"));
+    public void forward();
 
-        Scene scene = new Scene(webfx, 320, 370);
+    public void back();
 
-        stage.setTitle("Hello World!");
-        stage.setScene(scene);
-        stage.show();
-    }
+    public void goTo(URL url);
 
-    /**
-     * The main() method is ignored in correctly deployed JavaFX application.
-     * main() serves only as fallback in case the application can not be
-     * launched through deployment artifacts, e.g., in IDEs with limited FX
-     * support. NetBeans ignores main().
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public void goTo(String url);
+    
+    public void reload();
 
 }

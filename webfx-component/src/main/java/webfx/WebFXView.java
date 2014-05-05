@@ -37,7 +37,7 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package com.webfx;
+package webfx;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -108,6 +108,8 @@ public class WebFXView extends AnchorPane {
 
     /**
      * Returns the {@code PageContext} object.
+     *
+     * @return pageContext
      */
     public final PageContext getPageContext() {
         return pageContext;
@@ -162,9 +164,10 @@ public class WebFXView extends AnchorPane {
                 wfxb.put("__webfx_i18n", resourceBundle);
                 wfxb.put("__webfx_navigation", navigationContext);
 
-                scriptEngine.eval("if (typeof $webfx == 'undefined') $webfx = {title:'Untitled'};");
-                scriptEngine.eval("if (typeof $webfx.initWebFX == 'function') $webfx.initWebFX();");
-                scriptEngine.eval("$webfx.i18n = __webfx_i18n; $webfx.navigation = __webfx_navigation");
+                scriptEngine.eval("if (typeof $webfx === 'undefined') $webfx = {title:'Untitled'};");
+                scriptEngine.eval("if (typeof $webfx.initWebFX === 'function') $webfx.initWebFX();");
+                scriptEngine.eval("$webfx.i18n = __webfx_i18n;");
+                scriptEngine.eval("$webfx.navigation = __webfx_navigation;");
 
                 loadTitle();
             }

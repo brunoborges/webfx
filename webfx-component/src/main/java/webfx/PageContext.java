@@ -37,24 +37,79 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package com.webfx;
+package webfx;
 
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Bruno Borges <bruno.borges at oracle.com>
  */
-public interface NavigationContext {
+public class PageContext {
 
-    public void forward();
+    private final URL location;
+    private URL basePath;
+    private String pageName;
 
-    public void back();
+    public PageContext(URL location) {
+        this.location = location;
+        extractBasePath();
+    }
 
-    public void goTo(URL url);
+    private void extractBasePath() {
+        if (location.getPath() == null) {
+            return;
+        }
 
-    public void goTo(String url);
-    
-    public void reload();
+        int lastSlash = location.getPath().lastIndexOf('/');
+
+        if (lastSlash == -1) {
+            pageName = "index";
+            basePath = location;
+        }
+
+        String file = location.getPath();
+        String path = (lastSlash == -1) ? "" : file.substring(0, lastSlash);
+
+        URL base = null;
+
+        try {
+            base = new URL(location.getProtocol(), location.getHost(), location.getPort(), path);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(PageContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        pageName = file.substring(lastSlash + 1);
+        int indexOfExtension = pageName.indexOf('.');
+        if (indexOfExtension != 1) {
+            String extension = file.substring(file.lastIndexOf('.') + 1);
+
+            if (!"fxml".equals(extension)) {
+                throw new IllegalArgumentException("This component only loads FXML pages. Point the URL property to an FXML file");
+            }
+
+            pageName = pageName.substring(0, indexOfExtension);
+        }
+
+        this.basePath = base;
+    }
+
+    public URL getBasePath() {
+        return basePath;
+    }
+
+    public URL getLocation() {
+        return location;
+    }
+
+    /**
+     * @return the pageName
+     */
+    public String getPageName() {
+        return pageName;
+    }
 
 }

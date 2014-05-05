@@ -37,7 +37,7 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package com.webfx;
+package webfx;
 
 import java.net.MalformedURLException;
 import java.net.URL;
