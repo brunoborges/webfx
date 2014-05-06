@@ -25,25 +25,40 @@ import javax.management.ObjectName;
  */
 public class DeckMain extends Application {
 
+    private WebFXRegion fxView;
+
     @Override
     public void start(Stage primaryStage) {
         try {
             String url = System.getProperty("webfx.url");
+            // url = "http://10.42.0.1:8080/webfx-samples/login/login.fxml";
             if (url == null) {
                 throw new IllegalArgumentException("-Dwebfx.url must be provided!");
             }
-            final WebFXRegion fxView = new WebFXRegion(new URL(url));
+            fxView = new WebFXRegion(new URL(url));
 
             startMBeanServer(fxView);
 
             StackPane root = new StackPane();
             root.getChildren().add(fxView);
 
-            Scene scene = new Scene(root, 300, 250);
+            Scene scene = new Scene(root, 1280, 800);
             fxView.setOnKeyPressed(e -> {
                 KeyCode keyCode = e.getCode();
                 if (keyCode.equals(KeyCode.F5) || (keyCode.equals(KeyCode.R) && e.isControlDown())) {
-                    fxView.load();
+                    reload();
+                }
+
+                if (keyCode.equals(KeyCode.LEFT) && e.isControlDown()) {
+                    goBack();
+                }
+
+                if (keyCode.equals(keyCode.RIGHT) && e.isControlDown()) {
+                    goForward();
+                }
+
+                if (keyCode.equals(keyCode.Q) && e.isControlDown()) {
+                    System.exit(0);
                 }
             });
 
@@ -52,6 +67,10 @@ public class DeckMain extends Application {
             });
             primaryStage.setScene(scene);
             if (System.getProperty("os.arch").toUpperCase().contains("ARM")) {
+                root.setPrefSize(1280, 800);
+                //root.setScaleY(0.9);
+                //root.setTranslateY();
+
                 primaryStage.setFullScreen(true);
                 primaryStage.setFullScreenExitHint("");
             }
@@ -79,6 +98,18 @@ public class DeckMain extends Application {
             Logger.getLogger(DeckMain.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    private void reload() {
+        fxView.load();
+    }
+
+    private void goBack() {
+        fxView.getNavigationContext().back();
+    }
+
+    private void goForward() {
+        fxView.getNavigationContext().forward();
     }
 
 }

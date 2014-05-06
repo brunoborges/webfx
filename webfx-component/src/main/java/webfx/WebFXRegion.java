@@ -41,9 +41,12 @@ package webfx;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.layout.AnchorPane;
@@ -66,28 +69,26 @@ public final class WebFXRegion extends AnchorPane {
 
     public WebFXRegion(URL url) {
         this();
-        loadUrl(url);
+        navigationContext.goTo(url);
     }
 
     public ReadOnlyStringProperty getCurrentViewTitleProperty() {
         return currentTitle;
     }
 
-    public final void setUrl(URL url) {
+    private void loadUrl(URL url) {
         this.url = url;
-    }
-
-    public void loadUrl(URL url) {
-        setUrl(url);
         load();
     }
 
     public void load() {
+        getChildren().clear();
+
         defaultView = new WebFXView(navigationContext);
         defaultView.setURL(url);
         defaultView.setLocale(locale);
         defaultView.load();
-        getChildren().clear();
+
         getChildren().add(defaultView);
 
         setTopAnchor(defaultView, 0.0);
@@ -108,19 +109,43 @@ public final class WebFXRegion extends AnchorPane {
 
     private class NavigationContextImpl implements NavigationContext {
 
+        private int currentURLHistoryIndex = -1;
+        private List<URL> urlHistory = new ArrayList<>();
+
         @Override
         public void forward() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            int nextIndex = currentURLHistoryIndex + 1;
+            if (nextIndex < urlHistory.size()) {
+                URL nextURL = urlHistory.get(nextIndex);
+                currentURLHistoryIndex++;
+                loadUrl(nextURL, false);
+            }
+
         }
 
         @Override
         public void back() {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            if (currentURLHistoryIndex <= 0) {
+                return; // can't go anywhere back
+            }
+
+            currentURLHistoryIndex--;
+            URL previousURL = urlHistory.get(currentURLHistoryIndex);
+            loadUrl(previousURL, false);
+        }
+
+        private void loadUrl(URL url, boolean incrementHistory) {
+            WebFXRegion.this.loadUrl(url);
+
+            if (incrementHistory) {
+                urlHistory.add(url);
+                currentURLHistoryIndex = urlHistory.size() - 1;
+            }
         }
 
         @Override
         public void goTo(URL url) {
-            WebFXRegion.this.loadUrl(url);
+            loadUrl(url, true);
         }
 
         @Override
