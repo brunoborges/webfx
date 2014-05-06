@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import webfx.WebFXRegion;
 
 /**
@@ -20,16 +21,18 @@ public class DeckServer implements DeckServerMBean {
 
     @Override
     public void reload() {
-        webfx.load();
+        Platform.runLater(webfx::load);
     }
 
     @Override
     public void load(String url) {
-        try {
-            webfx.loadUrl(new URL(url));
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(DeckServer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Platform.runLater(() -> {
+            try {
+                webfx.getNavigationContext().goTo(new URL(url));
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(DeckServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
 
 }
