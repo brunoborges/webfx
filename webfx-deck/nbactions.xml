@@ -3,7 +3,6 @@
         <action>
             <actionName>run</actionName>
             <goals>
-                <goal>clean</goal>
                 <goal>package</goal>
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
