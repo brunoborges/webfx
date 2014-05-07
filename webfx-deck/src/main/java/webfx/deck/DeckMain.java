@@ -25,24 +25,33 @@ import javax.management.ObjectName;
  */
 public class DeckMain extends Application {
 
+    private static final Logger LOGGER = Logger.getLogger(DeckMain.class.getName());
+
     private WebFXRegion fxView;
+    private static final int DEFAULT_WIDTH = 1280;
+    private static final int DEFAULT_HEIGHT = 800;
 
     @Override
     public void start(Stage primaryStage) {
         try {
             String url = System.getProperty("webfx.url");
-            // url = "http://10.42.0.1:8080/webfx-samples/login/login.fxml";
             if (url == null) {
-                throw new IllegalArgumentException("-Dwebfx.url must be provided!");
+                fxView = new WebFXRegion();
+                LOGGER.warning("No URL specified in CLI with -Dwebfx.url. You must connect through the MBean and invoke a URL.");
+            } else {
+                fxView = new WebFXRegion(new URL(url));
             }
-            fxView = new WebFXRegion(new URL(url));
+
+            int screenWidth = Integer.parseInt(System.getProperty("webfx.width", String.valueOf(DEFAULT_WIDTH)));
+            int screenHeight = Integer.parseInt(System.getProperty("webfx.height", String.valueOf(DEFAULT_HEIGHT)));
 
             startMBeanServer(fxView);
 
             StackPane root = new StackPane();
             root.getChildren().add(fxView);
+            root.setPrefSize(screenWidth, screenHeight);
 
-            Scene scene = new Scene(root, 1280, 800);
+            Scene scene = new Scene(root, screenWidth, screenHeight);
             fxView.setOnKeyPressed(e -> {
                 KeyCode keyCode = e.getCode();
                 if (keyCode.equals(KeyCode.F5) || (keyCode.equals(KeyCode.R) && e.isControlDown())) {
@@ -53,11 +62,11 @@ public class DeckMain extends Application {
                     goBack();
                 }
 
-                if (keyCode.equals(keyCode.RIGHT) && e.isControlDown()) {
+                if (keyCode.equals(KeyCode.RIGHT) && e.isControlDown()) {
                     goForward();
                 }
 
-                if (keyCode.equals(keyCode.Q) && e.isControlDown()) {
+                if (keyCode.equals(KeyCode.Q) && e.isControlDown()) {
                     System.exit(0);
                 }
             });
@@ -67,17 +76,13 @@ public class DeckMain extends Application {
             });
             primaryStage.setScene(scene);
             if (System.getProperty("os.arch").toUpperCase().contains("ARM")) {
-                root.setPrefSize(1280, 800);
-                //root.setScaleY(0.9);
-                //root.setTranslateY();
-
                 primaryStage.setFullScreen(true);
                 primaryStage.setFullScreenExitHint("");
             }
 
             primaryStage.show();
         } catch (MalformedURLException ex) {
-            Logger.getLogger(DeckMain.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -95,7 +100,7 @@ public class DeckMain extends Application {
             DeckServer server = new DeckServer(fxView);
             mbs.registerMBean(server, name);
         } catch (MalformedObjectNameException | InstanceAlreadyExistsException | MBeanRegistrationException | NotCompliantMBeanException ex) {
-            Logger.getLogger(DeckMain.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
 
     }
