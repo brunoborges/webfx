@@ -82,6 +82,10 @@ public final class WebFXRegion extends AnchorPane {
     }
 
     public void load() {
+        if (getScene() != null && getScene().getStylesheets() != null) {
+            getScene().getStylesheets().clear();
+        }
+
         getChildren().clear();
 
         defaultView = new WebFXView(navigationContext);
