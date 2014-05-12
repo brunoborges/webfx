@@ -10,26 +10,18 @@ var Animation = javafx.animation.Animation;
 var TranslateTransition = javafx.animation.TranslateTransition;
 var Duration = javafx.util.Duration;
 
-var anim = new TranslateTransition(new Duration(1000.0), circle);
-anim.setByX(200);
+var anim = new TranslateTransition(new Duration(500.0), circle);
+anim.setFromX(0);
+anim.setToX(220);
 anim.setAutoReverse(true);
 anim.setCycleCount(Animation.INDEFINITE);
 
-function handleStartButtonAction() {
-    anim.play();
-}
-
-function handlePauseButtonAction() {
-    anim.pause();
-}
-
-function handleResumeButtonAction() {
-    anim.play();
-}
-
-function handleStopButtonAction() {
-    anim.stop();
-}
+/*
+function handleStartButtonAction()  {    anim.play(); }
+function handlePauseButtonAction()  {    anim.pause();}
+function handleResumeButtonAction() {    anim.play(); }
+function handleStopButtonAction()   {    anim.stop(); }
+ */
 
 startButton.disableProperty().bind(anim.statusProperty().isNotEqualTo(Animation.Status.STOPPED));
 pauseButton.disableProperty().bind(anim.statusProperty().isNotEqualTo(Animation.Status.RUNNING));

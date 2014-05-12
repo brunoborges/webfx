@@ -1,29 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?language javascript?>
-
+<?import java.net.URL?>
 <?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="370.0" prefWidth="320.0" xmlns:fx="http://javafx.com/fxml">
+<GridPane fx:id="gridpane" alignment="center" hgap="10" styleClass="root" vgap="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+
+    <padding>
+        <Insets bottom="25" left="25" right="25" top="25" />
+    </padding>
     
     <children>
-        <HBox id="HBox" alignment="CENTER" layoutX="36.0" layoutY="328.0" spacing="5.0">
+        <VBox spacing="50" fillWidth="false" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="0" GridPane.halignment="LEFT" GridPane.rowIndex="0" GridPane.valignment="TOP">
             <children>
-                <Button fx:id="startButton" mnemonicParsing="false" onAction="handleStartButtonAction(event);" text="%start" />
-                <Button fx:id="pauseButton" mnemonicParsing="false" onAction="handlePauseButtonAction(event);" text="%pause" />
-                <Button fx:id="resumeButton" mnemonicParsing="false" onAction="handleResumeButtonAction(event);" text="%resume" />
-                <Button fx:id="stopButton" mnemonicParsing="false" onAction="handleStopButtonAction(event);" text="%stop" />
+                <Circle fx:id="circle" fill="BLUE" radius="10.0" stroke="BLACK" strokeType="OUTSIDE" strokeWidth="1.0" />
+                <Circle fx:id="circle_1" fill="RED" radius="10.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="1.0" />
+            </children>
+        </VBox>
+        <HBox id="HBox" alignment="CENTER" spacing="10.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <children>
+                <Button fx:id="startButton" mnemonicParsing="false" onAction="anim.play()" text="%start" />
+                <Button fx:id="pauseButton" mnemonicParsing="false" onAction="anim.pause()" text="%pause" />
+                <Button fx:id="resumeButton" mnemonicParsing="false" onAction="anim.play()" text="%resume" />
+                <Button fx:id="stopButton" mnemonicParsing="false" onAction="anim.stop()" text="%stop" />
             </children>
         </HBox>
-        <Circle fx:id="circle" fill="BLUE" layoutX="64.0" layoutY="58.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
     </children>
+
+    <columnConstraints>
+        <ColumnConstraints />
+    </columnConstraints>
+
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints maxHeight="300.0" minHeight="300.0" prefHeight="300.0" valignment="TOP" vgrow="ALWAYS" />
+    </rowConstraints>
+    
+    <stylesheets>
+        <URL value="@metronome.css"/>
+    </stylesheets>
     
     <fx:script source="metronome.js" />
 
-</AnchorPane>
-
+</GridPane>
