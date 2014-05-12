@@ -2,11 +2,6 @@ root {
   display: block;
 }
 
-.root {
-  display: block;
-  -fx-background-image: url("background.jpg");
-}
-
 #gridpane {
   -fx-background-image: url("background.jpg");
 }
@@ -24,6 +19,7 @@ root {
    -fx-fill: #818181;
    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
 }
+
 #actiontarget {
   -fx-fill: FIREBRICK;
   -fx-font-weight: bold;
