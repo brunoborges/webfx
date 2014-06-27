@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox minWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="webfx.browser.settings.SettingsController">
+   <children>
+      <GridPane VBox.vgrow="ALWAYS">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="40.0" prefHeight="60.0" valignment="TOP" vgrow="ALWAYS" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TextField fx:id="manualProxy" promptText="host.example.com:80" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ChoiceBox fx:id="proxyType" prefWidth="150.0" GridPane.columnIndex="1" />
+            <Label text="Proxy Configuration:" />
+            <Button mnemonicParsing="false" onAction="#saveAndClose" text="Use Settings" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+            <Label text="TLS Versions:" GridPane.rowIndex="2" />
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <CheckBox fx:id="tls12" mnemonicParsing="false" selected="true" text="TLS 1.2 (recommended)" />
+                  <CheckBox fx:id="tls11" mnemonicParsing="false" selected="true" text="TLS 1.1" />
+                  <CheckBox fx:id="tls1" mnemonicParsing="false" selected="true" text="TLS 1" />
+               </children>
+            </VBox>
+         </children>
+      </GridPane>
+   </children>
+</VBox>
