@@ -47,7 +47,6 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
 import javafx.scene.Node;
@@ -76,36 +75,33 @@ public class HTMLTab implements BrowserTab {
         browser = new WebView();
         webEngine = browser.getEngine();
         contentProperty = new SimpleObjectProperty<>((Node) browser);
-        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
-            @Override
-            public void changed(ObservableValue<? extends State> ov, State oldv, State newv) {
-                if (newv == State.SUCCEEDED) {
-                    Document document = (Document) webEngine.executeScript("document");
-                    NodeList nodeList = document.getElementsByTagName("a");
-                    for (int i = 0; i < nodeList.getLength(); i++) {
-                        EventTarget n = (EventTarget) nodeList.item(i);
-                        n.addEventListener("click", new EventListener() {
-                            @Override
-                            public void handleEvent(Event event) {
-                                EventTarget eventTarget = event.getTarget();
-
-                                if (eventTarget instanceof HTMLAnchorElement == false) {
-                                    return;
-                                }
-
-                                HTMLAnchorElement hrefObj = (HTMLAnchorElement) event.getTarget();
-                                String href = hrefObj.getHref();
-                                if (href.endsWith(".fxml")) {
-                                    try {
-                                        getTabManager().openInNewTab(new URL(href));
-                                    } catch (MalformedURLException ex) {
-                                        Logger.getLogger(HTMLTab.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
-                                    event.preventDefault();
-                                }
+        webEngine.getLoadWorker().stateProperty().addListener((ObservableValue<? extends State> ov, State oldv, State newv) -> {
+            if (newv == State.SUCCEEDED) {
+                Document document = (Document) webEngine.executeScript("document");
+                NodeList nodeList = document.getElementsByTagName("a");
+                for (int i = 0; i < nodeList.getLength(); i++) {
+                    EventTarget n = (EventTarget) nodeList.item(i);
+                    n.addEventListener("click", new EventListener() {
+                        @Override
+                        public void handleEvent(Event event) {
+                            EventTarget eventTarget = event.getTarget();
+                            
+                            if (eventTarget instanceof HTMLAnchorElement == false) {
+                                return;
                             }
-                        }, true);
-                    }
+                            
+                            HTMLAnchorElement hrefObj = (HTMLAnchorElement) event.getTarget();
+                            String href = hrefObj.getHref();
+                            if (href.endsWith(".fxml")) {
+                                try {
+                                    getTabManager().openInNewTab(new URL(href));
+                                } catch (MalformedURLException ex) {
+                                    Logger.getLogger(HTMLTab.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                event.preventDefault();
+                            }
+                        }
+                    }, true);
                 }
             }
         });
