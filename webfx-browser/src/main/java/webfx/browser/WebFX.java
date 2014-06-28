@@ -47,6 +47,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -61,7 +62,11 @@ public class WebFX extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("browser.fxml"));
         Parent root = (Parent) fxmlLoader.load();
-
+        stage.getIcons().addAll(
+                new Image("/webfx/browser/icons/globe_16.png", 16, 16, true, true),
+                new Image("webfx/browser/icons/globe_32.png", 32, 32, true, true),
+                new Image("webfx/browser/icons/globe_64.png", 64, 64, true, true)
+                );
         BrowserFXController controller = fxmlLoader.getController();
         controller.setLocale(getCurrentLocale());
         Scene scene = new Scene(root);

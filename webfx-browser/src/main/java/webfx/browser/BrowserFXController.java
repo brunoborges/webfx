@@ -109,6 +109,10 @@ public class BrowserFXController implements TabManager {
         tab.setClosable(true);
         tabPane.getTabs().add(tab);
         selectionTab.selectLast();
+        focusAddressBar();
+    }
+    
+    void focusAddressBar(){
         urlField.requestFocus();
     }
     
@@ -187,7 +191,9 @@ public class BrowserFXController implements TabManager {
             browserTab.setTabManager(this);
             selectionTab.getSelectedItem().contentProperty().bind(browserTab.contentProperty());
             browserMap.put(selectionTab.getSelectedIndex(), browserTab);
-            urlField.textProperty().bind(browserTab.locationProperty());
+            if(!urlField.isFocused()){
+                urlField.textProperty().bind(browserTab.locationProperty());
+            }
             stopButton.disableProperty().set(!browserTab.isStoppable());
             selectionTab.getSelectedItem().textProperty().bind(browserTab.titleProperty());
             LOGGER.log(Level.INFO, "Title used for new tab: {0}", browserTab.titleProperty().get());
