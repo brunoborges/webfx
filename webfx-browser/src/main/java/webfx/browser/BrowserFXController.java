@@ -196,7 +196,6 @@ public class BrowserFXController implements TabManager {
             }
             stopButton.disableProperty().set(!browserTab.isStoppable());
             selectionTab.getSelectedItem().textProperty().bind(browserTab.titleProperty());
-            LOGGER.log(Level.INFO, "Title used for new tab: {0}", browserTab.titleProperty().get());
         });
     }
 
