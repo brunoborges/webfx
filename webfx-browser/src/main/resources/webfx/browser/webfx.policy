@@ -1,0 +1,7 @@
+grant codeBase "file:WEBFX_PATH" {
+    permission java.security.AllPermission;
+};
+
+grant codeBase "file:WEBFX_COMPONENT" {
+
+};
