@@ -98,7 +98,7 @@ public class WebFX extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        turnSecurityManagerOn();
+        //turnSecurityManagerOn();
 
         launch(args);
     }
