@@ -128,7 +128,7 @@ public class WebFXView extends AnchorPane {
     }
 
     public final void load() {
-        Platform.runLater(() -> internalLoad());
+        Platform.runLater(this::internalLoad);
     }
 
     private void internalLoad() {

@@ -39,6 +39,7 @@
  */
 package webfx.browser;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -50,6 +51,10 @@ import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SingleSelectionModel;
@@ -58,6 +63,10 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import webfx.browser.settings.SettingsController;
+import webfx.browser.util.FXUtil;
 
 /**
  *
@@ -100,6 +109,28 @@ public class BrowserFXController implements TabManager {
         tab.setClosable(true);
         tabPane.getTabs().add(tab);
         selectionTab.selectLast();
+        focusAddressBar();
+    }
+    
+    void focusAddressBar(){
+        urlField.requestFocus();
+    }
+    
+    public void openNetworkSettings(){
+        final FXMLLoader settings = FXUtil.load(SettingsController.class);
+        try{
+            final Node node = settings.load();
+            final SettingsController controller = settings.getController();
+            final Stage stage = new Stage();
+            final Scene scene = new Scene(new Group(node));
+            stage.setTitle("Network Settings");
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            controller.setOnClose(e -> stage.close());
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(BrowserFXController.class.getName()).log(Level.SEVERE, "Unable to open settings", ex);
+        }
     }
 
     public void stop() {
@@ -160,10 +191,11 @@ public class BrowserFXController implements TabManager {
             browserTab.setTabManager(this);
             selectionTab.getSelectedItem().contentProperty().bind(browserTab.contentProperty());
             browserMap.put(selectionTab.getSelectedIndex(), browserTab);
-            urlField.textProperty().bind(browserTab.locationProperty());
+            if(!urlField.isFocused()){
+                urlField.textProperty().bind(browserTab.locationProperty());
+            }
             stopButton.disableProperty().set(!browserTab.isStoppable());
             selectionTab.getSelectedItem().textProperty().bind(browserTab.titleProperty());
-            LOGGER.log(Level.INFO, "Title used for new tab: {0}", browserTab.titleProperty().get());
         });
     }
 

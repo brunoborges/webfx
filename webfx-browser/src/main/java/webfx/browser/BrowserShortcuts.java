@@ -59,30 +59,19 @@ public class BrowserShortcuts {
 
     public void setup(final BrowserFXController controller) {
         final ObservableMap<KeyCombination, Runnable> accelerators = scene.getAccelerators();
-
+        accelerators.put(new KeyCodeCombination(KeyCode.F6), controller::focusAddressBar);
+        accelerators.put(new KeyCodeCombination(KeyCode.LEFT, KeyCombination.ALT_DOWN), controller::back);
+        accelerators.put(new KeyCodeCombination(KeyCode.RIGHT, KeyCombination.ALT_DOWN), controller::forward);
         accelerators.put(
-                new KeyCodeCombination(KeyCode.T, KeyCombination.SHORTCUT_DOWN),
-                new Runnable() {
-            @Override
-            public void run() {
-                controller.newTab();
-            }
-        });
+                new KeyCodeCombination(KeyCode.T, KeyCombination.SHORTCUT_DOWN), controller::newTab);
         accelerators.put(
-                new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN),
-                new Runnable() {
-            @Override
-            public void run() {
-                controller.closeTab();
-            }
-        });
+                new KeyCodeCombination(KeyCode.W, KeyCombination.SHORTCUT_DOWN), controller::closeTab);
+        
         accelerators.put(
-                new KeyCodeCombination(KeyCode.Q, KeyCombination.SHORTCUT_DOWN),
-                new Runnable() {
-            @Override
-            public void run() {
-                System.exit(0);
-            }
-        });
+                new KeyCodeCombination(KeyCode.Q, KeyCombination.SHORTCUT_DOWN), this::promptToQuit);
+    }
+    
+    private void promptToQuit(){
+        System.exit(0);
     }
 }

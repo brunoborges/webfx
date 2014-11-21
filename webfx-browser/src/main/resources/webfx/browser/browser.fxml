@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
 DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 
@@ -48,17 +49,22 @@ holder.
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="webfx.browser.BrowserFXController">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="webfx.browser.BrowserFXController">
     <children>
         <MenuBar prefWidth="600.0">
             <menus>
                 <Menu mnemonicParsing="true" text="File">
                     <items>
                         <MenuItem mnemonicParsing="true" onAction="#newTab" text="New Tab" />
-                        <MenuItem disable="true" mnemonicParsing="true" onAction="#closeTab" text="Close" fx:id="closeTab" />
+                        <MenuItem fx:id="closeTab" disable="true" mnemonicParsing="true" onAction="#closeTab" text="Close" />
                         <MenuItem mnemonicParsing="true" onAction="#exit" text="Exit" />
                     </items>
                 </Menu>
+            <Menu mnemonicParsing="false" text="Settings">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#openNetworkSettings" text="Networking" />
+              </items>
+            </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
                         <MenuItem mnemonicParsing="true" text="About" />
