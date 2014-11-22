@@ -39,6 +39,8 @@
  */
 package webfx.scripting;
 
+import groovy.util.Expando;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,7 +61,7 @@ public class ScriptingInitializer {
     private final ScriptEngine scriptEngine;
     private final ResourceBundle resourceBundle;
     private final NavigationContext navigationContext;
-    private String title;
+    private final String title;
 
     public ScriptingInitializer(ScriptEngine scriptEngine, ResourceBundle resourceBundle, NavigationContext navigationContext) {
         this.scriptEngine = scriptEngine;
@@ -134,14 +136,27 @@ public class ScriptingInitializer {
 
         @Override
         public void init() {
-            Bindings wfxb = scriptEngine.getBindings(ScriptContext.GLOBAL_SCOPE);
-            wfxb.put("webfx_i18n", resourceBundle);
-            wfxb.put("webfx_navigation", navigationContext);
+            scriptEngine.put("__webfx_i18n", resourceBundle);
+            scriptEngine.put("__webfx_navigation", navigationContext);
+
+            Expando groovy_webfx = (Expando) scriptEngine.get("$webfx");
+            if (groovy_webfx == null) {
+                scriptEngine.put("$webfx", groovy_webfx = new Expando());
+            }
+
+            groovy_webfx.setProperty("i18n", resourceBundle);
+            groovy_webfx.setProperty("navigation", navigationContext);
         }
 
         @Override
         public String getTitle() {
-            return "Groovy Application: No title";
+            Object objTitle = "Undefined";
+            try {
+                objTitle = scriptEngine.eval("$webfx.title");
+            } catch (ScriptException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
+            return objTitle.toString();
         }
 
     }
