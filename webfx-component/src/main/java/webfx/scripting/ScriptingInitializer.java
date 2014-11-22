@@ -106,12 +106,15 @@ public class ScriptingInitializer {
         @Override
         public void init() {
             try {
-                Bindings wfxb = scriptEngine.getBindings(ScriptContext.GLOBAL_SCOPE);
-                wfxb.put("__webfx_i18n", resourceBundle);
-                wfxb.put("__webfx_navigation", navigationContext);
+                scriptEngine.put("__webfx_i18n", resourceBundle);
+                scriptEngine.put("__webfx_navigation", navigationContext);
 
-                scriptEngine.eval("if (typeof $webfx === 'undefined') $webfx = {title:'Untitled'};");
-                scriptEngine.eval("if (typeof $webfx.initWebFX === 'function') $webfx.initWebFX();");
+                if (scriptEngine.get("$webfx") == null) {
+                    scriptEngine.eval("$webfx = {title:'Untitled'};");
+                } else {
+                    scriptEngine.eval("if (typeof $webfx.initWebFX === 'function') $webfx.initWebFX();");
+                }
+
                 scriptEngine.eval("$webfx.i18n = __webfx_i18n;");
                 scriptEngine.eval("$webfx.navigation = __webfx_navigation;");
             } catch (ScriptException ex) {
