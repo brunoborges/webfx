@@ -191,16 +191,15 @@ public class BrowserFXController implements TabManager {
             browserTab.setTabManager(this);
             selectionTab.getSelectedItem().contentProperty().bind(browserTab.contentProperty());
             browserMap.put(selectionTab.getSelectedIndex(), browserTab);
-            //if(!urlField.isFocused()){
-            //    urlField.textProperty().bind(browserTab.locationProperty());
-            //}
+            if(!urlField.isFocused()){
+                urlField.textProperty().bind(browserTab.locationProperty());
+            }
             stopButton.disableProperty().set(!browserTab.isStoppable());
             selectionTab.getSelectedItem().textProperty().bind(browserTab.titleProperty());
         });
     }
 
     public void initialize() {
-        /*
         urlField.focusedProperty().addListener((ov, oldValue, newValue) -> {
             if (newValue) {
                 urlField.textProperty().unbind();
@@ -208,7 +207,6 @@ public class BrowserFXController implements TabManager {
                 urlField.textProperty().bind(selectedBrowserTab().locationProperty());
             }
         });
-        */
 
         tabPane.getTabs().addListener((ListChangeListener.Change<? extends Tab> change) -> {
             ObservableList<? extends Tab> tabs = change.getList();
@@ -236,7 +234,7 @@ public class BrowserFXController implements TabManager {
                 urlField.setText("");
             } else {
                 LOGGER.info("There's a tab selected");
-                //urlField.textProperty().bind(selectedBrowserTab().locationProperty());
+                urlField.textProperty().bind(selectedBrowserTab().locationProperty());
             }
         });
 
