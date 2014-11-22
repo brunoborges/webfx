@@ -229,7 +229,7 @@ public class BrowserFXController implements TabManager {
             LOGGER.info("Tab selection changed");
             if (selectedBrowserTab() == null) {
                 LOGGER.info("No tab selected");
-                //urlField.textProperty().unbind();
+                urlField.textProperty().unbind();
                 urlField.textProperty().setValue("");
                 urlField.setText("");
             } else {
