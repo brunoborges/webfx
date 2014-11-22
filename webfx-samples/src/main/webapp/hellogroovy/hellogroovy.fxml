@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.text.*?>
+<?import webfx.*?>
 <?import java.net.URL?>
 
 <GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
@@ -23,7 +24,8 @@
                 <Button text="%doGreeting" onAction="doHello()"/>
             </children>
         </HBox>
-        <Text fx:id="greetingField"  GridPane.columnSpan="2" GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.halignment="RIGHT" />
+        <Text fx:id="greetingField" GridPane.columnSpan="2" GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.halignment="RIGHT" />
+        <WebFXRegion fx:id="innerWebFX" url="http://localhost:8080/webfx-samples/login/login.fxml" GridPane.columnSpan="2" GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.halignment="LEFT" />
     </children>
     
     <stylesheets>

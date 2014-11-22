@@ -45,9 +45,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.beans.NamedArg;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -78,11 +80,16 @@ public class WebFXView extends AnchorPane {
     private final SimpleObjectProperty<URL> urlProperty = new SimpleObjectProperty<>();
     private NavigationContext navigationContext;
     private final ReadOnlyStringProperty titleProperty = new SimpleStringProperty();
+    private final AtomicBoolean loaded = new AtomicBoolean(false);
 
     public WebFXView() {
         setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
         getStyleClass().add("webfx-view");
         setFocusTraversable(true);
+    }
+
+    public WebFXView(@NamedArg("url") String url) throws MalformedURLException {
+        this(new URL(url));
     }
 
     public WebFXView(URL url) {
@@ -122,10 +129,18 @@ public class WebFXView extends AnchorPane {
 
     public void setURL(URL url) {
         this.urlProperty.set(url);
+        load();
+    }
+
+    public SimpleObjectProperty<URL> urlProperty() {
+        return this.urlProperty;
     }
 
     public final void load() {
-        Platform.runLater(this::internalLoad);
+        if (loaded.get() == false) {
+            Platform.runLater(this::internalLoad);
+            loaded.set(true);
+        }
     }
 
     private void internalLoad() {
