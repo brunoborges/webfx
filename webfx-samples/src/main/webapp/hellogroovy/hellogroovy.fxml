@@ -27,9 +27,9 @@
     </children>
     
     <stylesheets>
-        <URL value="@helloworld.css"/>
+        <URL value="@hellogroovy.css"/>
     </stylesheets>
 
-    <fx:script source="helloworld.groovy"/>
+    <fx:script source="hellogroovy.groovy"/>
 
 </GridPane>
