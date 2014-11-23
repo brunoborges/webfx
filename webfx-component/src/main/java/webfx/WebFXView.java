@@ -72,6 +72,10 @@ import webfx.scripting.ScriptingInitializer;
 public class WebFXView extends AnchorPane {
 
     private static final Logger LOGGER = Logger.getLogger(WebFXView.class.getName());
+
+    //current page context used for loading embeded WebFXRegions relative to current
+    private static final ThreadLocal<PageContext> curContext = new ThreadLocal<>();
+
     private FXMLLoader fxmlLoader;
     private Locale locale;
     private ScriptEngine scriptEngine;
@@ -108,6 +112,10 @@ public class WebFXView extends AnchorPane {
         this.navigationContext = navContext;
         this.urlProperty.set(url);
         load();
+    }
+
+    public static PageContext getCurrentContext() {
+        return curContext.get();
     }
 
     /**
@@ -149,8 +157,13 @@ public class WebFXView extends AnchorPane {
         initLocalization();
 
         try {
+            PageContext oldPageContext = curContext.get();
+            curContext.set(pageContext);
+
             fxmlLoader = new FXMLLoader(pageContext.getLocation(), resourceBundle);
             Node loadedNode = (Node) fxmlLoader.load();
+
+            curContext.set(oldPageContext);
 
             setTopAnchor(loadedNode, 0.0);
             setBottomAnchor(loadedNode, 0.0);

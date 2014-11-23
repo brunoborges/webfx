@@ -73,7 +73,8 @@ public final class WebFXRegion extends AnchorPane {
     }
 
     public WebFXRegion(@NamedArg("url") String url) throws MalformedURLException {
-        this(new URL(url));
+        this();
+        navigationContext.goTo(url);
     }
 
     public void setUrl(String url) {
@@ -172,6 +173,20 @@ public final class WebFXRegion extends AnchorPane {
             loadUrl(url, true);
         }
 
+        private URL resolveDestination(String relPath) {
+            PageContext pageContext = defaultView != null ? defaultView.getPageContext() : WebFXView.getCurrentContext();
+            if (pageContext == null) return null;
+
+            URL context = pageContext.getLocation();
+            URL destination = null;
+            try {
+                destination = new URL(context, relPath);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(WebFXView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return destination;
+        }
+
         @Override
         public void goTo(String url) {
             URL destination = null;
@@ -182,12 +197,7 @@ public final class WebFXRegion extends AnchorPane {
                     Logger.getLogger(WebFXView.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
-                URL basePath = defaultView.getPageContext().getBasePath();
-                try {
-                    destination = new URL(basePath.toString() + "/" + url);
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(WebFXView.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                destination = resolveDestination(url);
             }
 
             goTo(destination);
