@@ -10,9 +10,16 @@
 
     <artifactId>webfx-samples</artifactId>
     <packaging>war</packaging>
-
     <name>WebFX Samples</name>
 
+    <licenses>
+        <license>
+            <name>Dual license consisting of the CDDL v1.1 and GPL v2</name>
+            <url>http://glassfish.java.net/public/CDDL+GPL_1_1.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

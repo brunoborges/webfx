@@ -10,9 +10,16 @@
     
     <artifactId>webfx-browser</artifactId>
     <packaging>jar</packaging>
-
     <name>WebFX Browser</name>
 
+    <licenses>
+        <license>
+            <name>Dual license consisting of the CDDL v1.1 and GPL v2</name>
+            <url>http://glassfish.java.net/public/CDDL+GPL_1_1.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mainClass>webfx.browser.WebFX</mainClass>

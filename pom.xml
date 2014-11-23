@@ -10,6 +10,14 @@
     <version>1.0-SNAPSHOT</version>
     <name>WebFX Parent Project</name>
 
+    <licenses>
+        <license>
+            <name>Dual license consisting of the CDDL v1.1 and GPL v2</name>
+            <url>http://glassfish.java.net/public/CDDL+GPL_1_1.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <modules>
         <module>webfx-component</module>
         <module>webfx-deck</module>
@@ -26,7 +34,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
 
     <build>
         <pluginManagement>
