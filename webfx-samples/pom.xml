@@ -75,7 +75,7 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>9.3.0.M0</version>
                 <configuration>
-                    <scanIntervalSeconds>1</scanIntervalSeconds>
+                    <scanIntervalSeconds>10</scanIntervalSeconds>
                     <!--<war>${basedir}/target/${project.artifactId}-${project.version}</war>-->
                     <webApp>
                         <contextPath>/webfx-samples</contextPath>
