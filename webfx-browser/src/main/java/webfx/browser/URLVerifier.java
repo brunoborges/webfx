@@ -40,10 +40,25 @@
 package webfx.browser;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.http.HttpHost;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.client.utils.URIUtils;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.LaxRedirectStrategy;
 
 /**
  *
@@ -51,10 +66,19 @@ import java.util.logging.Logger;
  */
 public class URLVerifier {
 
+    private static CloseableHttpClient httpclient;
+
     private URL location;
     private URL basePath;
     private String pageName;
-    private boolean fxml;
+    private String fileExtension;
+    private String contentType;
+
+    static {
+        httpclient = HttpClients.custom().setRedirectStrategy(new LaxRedirectStrategy()).build();
+    }
+
+    private static final Logger LOGGER = Logger.getLogger(URLVerifier.class.getName());
 
     public URLVerifier(String location) throws MalformedURLException {
         try {
@@ -67,44 +91,113 @@ public class URLVerifier {
                 this.location = new URL("http://" + location);
             }
         }
-        this.basePath = extractBasePath();
+
+        try {
+            discoverThroughHeaders();
+            findBasePath();
+            findPageNameAndFileExtension();
+        } catch (URISyntaxException | IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
     }
 
     public URLVerifier(URL location) {
         this.location = location;
-        this.basePath = extractBasePath();
-    }
-
-    private URL extractBasePath() {
-        int lastSlash = location.getPath().lastIndexOf('/');
-
-        if (lastSlash == -1) {
-            pageName = "index";
-            return location;
-        }
-
-        String file = location.getPath();
-        String path = file.substring(0, lastSlash);
-        URL base = null;
 
         try {
-            base = new URL(location.getProtocol(), location.getHost(), location.getPort(), path);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(URLVerifier.class.getName()).log(Level.SEVERE, null, ex);
+            discoverThroughHeaders();
+            findBasePath();
+            findPageNameAndFileExtension();
+        } catch (URISyntaxException | IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void discoverThroughHeaders() throws IOException, URISyntaxException {
+        // relax redirections
+        HttpGet httpGet = new HttpGet(location.toURI());
+        HttpClientContext httpcontext = HttpClientContext.create();
+        try (CloseableHttpResponse response = httpclient.execute(httpGet, httpcontext)) {
+            // get mimetype via Content-Type http header
+            Arrays.stream(response.getHeaders("Content-Type")).findFirst().ifPresent(h -> this.contentType = h.getValue());
+            if (!Objects.isNull(contentType)) {
+                contentType = contentType.contains(";") ? contentType.substring(0, contentType.indexOf(";")).trim() : contentType;
+                LOGGER.log(Level.INFO, "Final Content-Type: {0}", contentType);
+            } else {
+                LOGGER.log(Level.INFO, "Content-Type Header is Empty: {0}", Arrays.toString(response.getHeaders("Content-Type")));
+                // clear field b/c it was used inside lambda as temp var
+                contentType = null;
+            }
+
+            // get filename via Content-Disposition http header
+            Arrays.stream(response.getHeaders("Content-Disposition")).findFirst().ifPresent(h -> this.pageName = h.getValue());
+            if (!Objects.isNull(pageName) && pageName.contains("filename=")) {
+                pageName = pageName.substring(pageName.lastIndexOf("filename=") + 9);
+                LOGGER.log(Level.INFO, "temporary page name: {0}", pageName);
+                if (pageName.indexOf('.') > -1) {
+                    fileExtension = pageName.substring(pageName.indexOf('.') + 1).trim();
+                    LOGGER.log(Level.INFO, "Final file extension: {0}", fileExtension);
+                }
+                pageName = pageName.substring(0, pageName.indexOf('.')).trim();
+                LOGGER.log(Level.INFO, "Final page name: {0}", pageName);
+            } else {
+                // clear field b/c it was used inside lambda as temp var
+                pageName = null;
+            }
+
+            HttpHost target = httpcontext.getTargetHost();
+            List<URI> redirectLocations = httpcontext.getRedirectLocations();
+            URI _loc = URIUtils.resolve(httpGet.getURI(), target, redirectLocations);
+            this.location = _loc.toURL();
+            LOGGER.log(Level.INFO, "Final HTTP location: {0}", _loc.toURL());
+        }
+    }
+
+    private void findBasePath() throws URISyntaxException, IOException {
+        String path = location.getPath();
+        LOGGER.log(Level.INFO, "Location.path: {0}", path);
+
+        int lastSlash = path.lastIndexOf('/');
+
+        if (lastSlash == -1 || "/".equals(path) || path.isEmpty()) {
+            basePath = new URL(location.getProtocol(), location.getHost(), location.getPort(), path);
+            return;
         }
 
-        pageName = file.substring(lastSlash + 1);
-        int indexOfExtension = pageName.indexOf('.');
-        if (indexOfExtension != 1) {
-            String extension = file.substring(file.lastIndexOf('.') + 1);
+        path = path.substring(0, lastSlash);
+        LOGGER.log(Level.INFO, "Path is now {0}", path);
 
-            if ("fxml".equals(extension)) {
-                fxml = true;
+        try {
+            basePath = new URL(location.getProtocol(), location.getHost(), location.getPort(), path + "/");
+            LOGGER.log(Level.INFO, "BasePath is now {0}", basePath);
+        } catch (MalformedURLException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void findPageNameAndFileExtension() {
+        String path = location.getPath();
+        LOGGER.log(Level.INFO, "Path is {0}", path);
+
+        int lastSlash = path.lastIndexOf('/');
+
+        if (pageName == null) {
+            pageName = pageName == null ? location.getPath().substring(lastSlash + 1) : pageName;
+            LOGGER.log(Level.INFO, "pageName is now {0}", pageName);
+        }
+
+        if (pageName != null && fileExtension == null) {
+            int indexOfExtension = pageName.indexOf('.');
+            if (indexOfExtension > 0) {
+                LOGGER.log(Level.INFO, "pageName has ''.'' char at index {0}", indexOfExtension);
+                fileExtension = path.substring(path.lastIndexOf('.') + 1);
                 pageName = pageName.substring(0, indexOfExtension);
             }
-        }
 
-        return base;
+            if (fileExtension == null) {
+                fileExtension = "";
+            }
+        }
     }
 
     public URL getBasePath() {
@@ -118,11 +211,16 @@ public class URLVerifier {
     /**
      * @return the pageName
      */
-    public String getPageName() {
-        return pageName;
+    public Optional<String> getPageName() {
+        return Optional.ofNullable(pageName);
     }
 
-    public boolean isFxml() {
-        return fxml;
+    public Optional<String> getFileExtension() {
+        return Optional.ofNullable(fileExtension);
     }
+
+    public Optional<String> getContentType() {
+        return Optional.ofNullable(contentType);
+    }
+
 }

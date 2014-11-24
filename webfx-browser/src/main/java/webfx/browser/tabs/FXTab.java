@@ -37,7 +37,7 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package webfx.browser;
+package webfx.browser.tabs;
 
 import java.util.Locale;
 import javafx.beans.property.ObjectProperty;
@@ -47,25 +47,30 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
 import webfx.NavigationContext;
 import webfx.WebFXRegion;
+import webfx.browser.BrowserTab;
+import webfx.browser.TabManager;
 
 /**
  *
  * @author Bruno Borges <bruno.borges at oracle.com>
  */
-public class FXTab implements BrowserTab {
+class FXTab extends BrowserTab {
 
     private final ReadOnlyStringWrapper locationProperty = new ReadOnlyStringWrapper();
     private final SimpleObjectProperty<Node> contentProperty = new SimpleObjectProperty<>();
     private final WebFXRegion webfx;
-    private TabManager tabManager;
 
-    public FXTab() {
-        webfx = new WebFXRegion();
-        contentProperty.set(webfx);
+    private static final String[] CONTENT_TYPES = {"text/x-fxml+xml", "text/x-fxml", "application/fxml", "application/xml"};
+    private static final String[] FILE_EXTENSIONS = {"fxml"};
+
+    public static void register() {
+        TabFactory.registerProvider(FXTab::new, FILE_EXTENSIONS, CONTENT_TYPES);
     }
 
-    FXTab(Locale locale) {
-        this();
+    public FXTab(TabManager tabManager, Locale locale) {
+        super(tabManager);
+        webfx = new WebFXRegion();
+        contentProperty.set(webfx);
         webfx.setLocale(locale);
     }
 
@@ -90,11 +95,6 @@ public class FXTab implements BrowserTab {
     }
 
     @Override
-    public void setTabManager(TabManager tm) {
-        this.tabManager = tm;
-    }
-
-    @Override
     public NavigationContext getNavigationContext() {
         return webfx.getNavigationContext();
     }
@@ -102,6 +102,16 @@ public class FXTab implements BrowserTab {
     @Override
     public boolean isStoppable() {
         return false;
+    }
+
+    @Override
+    public String[] getFileExtensions() {
+        return CONTENT_TYPES;
+    }
+
+    @Override
+    public String[] getContentTypes() {
+        return FILE_EXTENSIONS;
     }
 
 }

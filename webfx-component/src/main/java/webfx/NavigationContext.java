@@ -54,7 +54,33 @@ public interface NavigationContext {
     public void goTo(URL url);
 
     public void goTo(String url);
-    
+
     public void reload();
+
+    public static class DefaultNavigationContext implements NavigationContext {
+
+        public DefaultNavigationContext() {
+        }
+
+        @Override
+        public void forward() {
+        }
+
+        @Override
+        public void back() {
+        }
+
+        @Override
+        public void goTo(URL url) {
+        }
+
+        @Override
+        public void goTo(String url) {
+        }
+
+        @Override
+        public void reload() {
+        }
+    }
 
 }

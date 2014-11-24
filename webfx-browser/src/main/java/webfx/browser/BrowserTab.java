@@ -43,25 +43,42 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.scene.Node;
 import webfx.NavigationContext;
+import webfx.browser.TabManager;
 
 /**
  *
  * @author bruno
  */
-public interface BrowserTab {
+public abstract class BrowserTab {
 
-    public ObjectProperty<Node> contentProperty();
+    private final TabManager tabManager;
 
-    public ReadOnlyStringProperty titleProperty();
+    public BrowserTab(TabManager tabManager) {
+        if (tabManager == null) {
+            throw new IllegalArgumentException("TabManager cannot be null");
+        }
 
-    public ReadOnlyStringProperty locationProperty();
+        this.tabManager = tabManager;
+    }
 
-    public void stop();
-    
-    public boolean isStoppable();
+    public TabManager getTabManager() {
+        return tabManager;
+    }
 
-    public void setTabManager(TabManager tm);
+    public abstract ObjectProperty<Node> contentProperty();
 
-    public NavigationContext getNavigationContext();
+    public abstract ReadOnlyStringProperty titleProperty();
+
+    public abstract ReadOnlyStringProperty locationProperty();
+
+    public abstract void stop();
+
+    public abstract boolean isStoppable();
+
+    public abstract NavigationContext getNavigationContext();
+
+    public abstract String[] getFileExtensions();
+
+    public abstract String[] getContentTypes();
 
 }

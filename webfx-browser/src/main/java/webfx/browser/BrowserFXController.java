@@ -66,6 +66,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import webfx.browser.settings.SettingsController;
+import webfx.browser.tabs.TabFactory;
 import webfx.browser.util.FXUtil;
 
 /**
@@ -111,14 +112,14 @@ public class BrowserFXController implements TabManager {
         selectionTab.selectLast();
         focusAddressBar();
     }
-    
-    void focusAddressBar(){
+
+    void focusAddressBar() {
         urlField.requestFocus();
     }
-    
-    public void openNetworkSettings(){
+
+    public void openNetworkSettings() {
         final FXMLLoader settings = FXUtil.load(SettingsController.class);
-        try{
+        try {
             final Node node = settings.load();
             final SettingsController controller = settings.getController();
             final Stage stage = new Stage();
@@ -163,35 +164,29 @@ public class BrowserFXController implements TabManager {
     }
 
     public void openPage(String location) {
-        URLVerifier urlVerifier = null;
-
-        try {
-            urlVerifier = new URLVerifier(location);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(BrowserFXController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        if (urlVerifier == null) {
-            return;
-        }
-
-        final URL url = urlVerifier.getLocation();
-        final boolean isFxml = urlVerifier.isFxml();
-
         Platform.runLater(() -> {
-            BrowserTab browserTab;
-            if (isFxml) {
-                browserTab = new FXTab(locale);
-                browserTab.getNavigationContext().goTo(url);
-            } else {
-                browserTab = new HTMLTab();
-                browserTab.getNavigationContext().goTo(url);
+            URLVerifier urlVerifier = null;
+
+            try {
+                urlVerifier = new URLVerifier(location);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(BrowserFXController.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            browserTab.setTabManager(this);
+            if (urlVerifier == null) {
+                return;
+            }
+
+            final URL url = urlVerifier.getLocation();
+            final String fileExtension = urlVerifier.getFileExtension().orElse(null);
+            final String contentType = urlVerifier.getContentType().orElse(null);
+
+            BrowserTab browserTab = TabFactory.newTab(this, locale, fileExtension, contentType);
+            browserTab.getNavigationContext().goTo(url);
+
             selectionTab.getSelectedItem().contentProperty().bind(browserTab.contentProperty());
             browserMap.put(selectionTab.getSelectedIndex(), browserTab);
-            if(!urlField.isFocused()){
+            if (!urlField.isFocused()) {
                 urlField.textProperty().bind(browserTab.locationProperty());
             }
             stopButton.disableProperty().set(!browserTab.isStoppable());

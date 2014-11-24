@@ -37,10 +37,11 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package webfx.browser;
+package webfx.browser.tabs;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.ObjectProperty;
@@ -55,23 +56,32 @@ import javafx.scene.web.WebView;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.events.Event;
-import org.w3c.dom.events.EventListener;
 import org.w3c.dom.events.EventTarget;
 import org.w3c.dom.html.HTMLAnchorElement;
 import webfx.NavigationContext;
+import webfx.browser.BrowserTab;
+import webfx.browser.TabManager;
 
 /**
  *
  * @author bruno
  */
-public class HTMLTab implements BrowserTab {
+class HTMLTab extends BrowserTab {
 
-    final WebView browser;
-    final WebEngine webEngine;
-    private SimpleObjectProperty<Node> contentProperty;
-    private TabManager tabManager;
+    private static final String[] CONTENT_TYPES = new String[]{"text/html", "text/xhtml"};
+    private static final String[] FILE_EXTENSIONS = new String[]{"htm", "html", "xhtml", "shtml"};
 
-    public HTMLTab() {
+    private final WebView browser;
+    private final WebEngine webEngine;
+    private final SimpleObjectProperty<Node> contentProperty;
+
+    public static void register() {
+        TabFactory.registerProvider(HTMLTab::new, FILE_EXTENSIONS, CONTENT_TYPES);
+    }
+
+    public HTMLTab(TabManager tabManager, Locale locale) {
+        super(tabManager);
+
         browser = new WebView();
         webEngine = browser.getEngine();
         contentProperty = new SimpleObjectProperty<>((Node) browser);
@@ -81,25 +91,22 @@ public class HTMLTab implements BrowserTab {
                 NodeList nodeList = document.getElementsByTagName("a");
                 for (int i = 0; i < nodeList.getLength(); i++) {
                     EventTarget n = (EventTarget) nodeList.item(i);
-                    n.addEventListener("click", new EventListener() {
-                        @Override
-                        public void handleEvent(Event event) {
-                            EventTarget eventTarget = event.getTarget();
-                            
-                            if (eventTarget instanceof HTMLAnchorElement == false) {
-                                return;
+                    n.addEventListener("click", (Event event) -> {
+                        EventTarget eventTarget = event.getTarget();
+
+                        if (eventTarget instanceof HTMLAnchorElement == false) {
+                            return;
+                        }
+
+                        HTMLAnchorElement hrefObj = (HTMLAnchorElement) event.getTarget();
+                        String href = hrefObj.getHref();
+                        if (href.endsWith(".adoc") || href.endsWith(".fxml")) {
+                            try {
+                                getTabManager().openInNewTab(new URL(href));
+                            } catch (MalformedURLException ex) {
+                                Logger.getLogger(HTMLTab.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                            
-                            HTMLAnchorElement hrefObj = (HTMLAnchorElement) event.getTarget();
-                            String href = hrefObj.getHref();
-                            if (href.endsWith(".fxml")) {
-                                try {
-                                    getTabManager().openInNewTab(new URL(href));
-                                } catch (MalformedURLException ex) {
-                                    Logger.getLogger(HTMLTab.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                                event.preventDefault();
-                            }
+                            event.preventDefault();
                         }
                     }, true);
                 }
@@ -129,15 +136,6 @@ public class HTMLTab implements BrowserTab {
     @Override
     public ObjectProperty<Node> contentProperty() {
         return contentProperty;
-    }
-
-    @Override
-    public void setTabManager(TabManager tm) {
-        this.tabManager = tm;
-    }
-
-    public TabManager getTabManager() {
-        return tabManager;
     }
 
     @Override
@@ -175,5 +173,15 @@ public class HTMLTab implements BrowserTab {
     @Override
     public boolean isStoppable() {
         return true;
+    }
+
+    @Override
+    public String[] getFileExtensions() {
+        return CONTENT_TYPES;
+    }
+
+    @Override
+    public String[] getContentTypes() {
+        return FILE_EXTENSIONS;
     }
 }
