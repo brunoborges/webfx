@@ -25,7 +25,7 @@
             </children>
         </HBox>
         <Text fx:id="greetingField" GridPane.columnSpan="2" GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.halignment="RIGHT" />
-        <WebFXRegion fx:id="innerWebFX" url="http://localhost:8080/webfx-samples/login/login.fxml" GridPane.columnSpan="2" GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.halignment="LEFT" />
+        <WebFXRegion fx:id="innerWebFX" url="../login/login.fxml" GridPane.columnSpan="2" GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.halignment="LEFT" />
     </children>
     
     <stylesheets>
