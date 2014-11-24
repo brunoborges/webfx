@@ -43,7 +43,6 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.scene.Node;
 import webfx.NavigationContext;
-import webfx.browser.TabManager;
 
 /**
  *
