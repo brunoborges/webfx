@@ -1,4 +1,7 @@
-$webfx = new groovy.util.Expando([title: "%title"])
+$webfx = new groovy.util.Expando([
+        title: "%title",
+        initWebFX: { -> System.out.println("WebFX initialized in Groovy!") }
+])
 
 def doHello() {
     user = usernameField.getText();

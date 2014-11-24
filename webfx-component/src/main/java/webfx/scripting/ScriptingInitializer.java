@@ -39,13 +39,11 @@
  */
 package webfx.scripting;
 
+import groovy.lang.Script;
 import groovy.util.Expando;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.script.Bindings;
-import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptException;
@@ -145,6 +143,8 @@ public class ScriptingInitializer {
             Expando groovy_webfx = (Expando) scriptEngine.get("$webfx");
             if (groovy_webfx == null) {
                 scriptEngine.put("$webfx", groovy_webfx = new Expando());
+            } else if (groovy_webfx.getProperty("initWebFX") != null) {
+                groovy_webfx.invokeMethod("initWebFX", null);
             }
 
             groovy_webfx.setProperty("i18n", resourceBundle);
