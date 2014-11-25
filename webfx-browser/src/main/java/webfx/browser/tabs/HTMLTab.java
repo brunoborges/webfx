@@ -41,6 +41,7 @@ package webfx.browser.tabs;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -99,8 +100,8 @@ class HTMLTab extends BrowserTab {
                         }
 
                         HTMLAnchorElement hrefObj = (HTMLAnchorElement) event.getTarget();
-                        String href = hrefObj.getHref();
-                        if (href.endsWith(".adoc") || href.endsWith(".fxml")) {
+                        final String href = hrefObj.getHref();
+                        if (Arrays.stream(FILE_EXTENSIONS).filter(s -> !href.endsWith(s)).count() > 0) {
                             try {
                                 getTabManager().openInNewTab(new URL(href));
                             } catch (MalformedURLException ex) {
