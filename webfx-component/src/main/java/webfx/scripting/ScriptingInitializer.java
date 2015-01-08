@@ -47,6 +47,8 @@ import java.util.logging.Logger;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptException;
+
+import javafx.scene.Scene;
 import webfx.NavigationContext;
 
 /**
@@ -59,12 +61,14 @@ public class ScriptingInitializer {
     private final ScriptEngine scriptEngine;
     private final ResourceBundle resourceBundle;
     private final NavigationContext navigationContext;
+    private final Scene scene;
     private final String title;
 
-    public ScriptingInitializer(ScriptEngine scriptEngine, ResourceBundle resourceBundle, NavigationContext navigationContext) {
+    public ScriptingInitializer(ScriptEngine scriptEngine, ResourceBundle resourceBundle, NavigationContext navigationContext, Scene scene) {
         this.scriptEngine = scriptEngine;
         this.resourceBundle = resourceBundle;
         this.navigationContext = navigationContext;
+        this.scene = scene;
 
         ScriptEngineFactory seFactory = scriptEngine.getFactory();
         LOGGER.log(Level.INFO, "ScriptEngine.LANGUAGE_NAME: {0}", seFactory.getLanguageName());
@@ -106,15 +110,16 @@ public class ScriptingInitializer {
             try {
                 scriptEngine.put("__webfx_i18n", resourceBundle);
                 scriptEngine.put("__webfx_navigation", navigationContext);
+                scriptEngine.put("__webfx_scene", scene);
 
                 if (scriptEngine.get("$webfx") == null) {
                     scriptEngine.eval("$webfx = {title:'Untitled'};");
-                } else {
-                    scriptEngine.eval("if (typeof $webfx.initWebFX === 'function') $webfx.initWebFX();");
                 }
 
                 scriptEngine.eval("$webfx.i18n = __webfx_i18n;");
                 scriptEngine.eval("$webfx.navigation = __webfx_navigation;");
+                scriptEngine.eval("$webfx.scene = __webfx_scene;");
+                scriptEngine.eval("if (typeof $webfx.initWebFX === 'function') $webfx.initWebFX();");
             } catch (ScriptException ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
             }
@@ -139,6 +144,7 @@ public class ScriptingInitializer {
         public void init() {
             scriptEngine.put("__webfx_i18n", resourceBundle);
             scriptEngine.put("__webfx_navigation", navigationContext);
+            scriptEngine.put("__webfx_scene", scene);
 
             Expando groovy_webfx = (Expando) scriptEngine.get("$webfx");
             if (groovy_webfx == null) {
@@ -149,6 +155,7 @@ public class ScriptingInitializer {
 
             groovy_webfx.setProperty("i18n", resourceBundle);
             groovy_webfx.setProperty("navigation", navigationContext);
+            groovy_webfx.setProperty("scene", scene);
         }
 
         @Override

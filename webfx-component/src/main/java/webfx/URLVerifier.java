@@ -37,7 +37,7 @@
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
-package webfx.browser;
+package webfx;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,18 +80,23 @@ public class URLVerifier {
 
     private static final Logger LOGGER = Logger.getLogger(URLVerifier.class.getName());
 
-    public URLVerifier(String location) throws MalformedURLException {
+    public static URL verifyURL(String location) throws MalformedURLException {
+        URL url;
         try {
-            this.location = new URL(location);
+            url = new URL(location);
         } catch (MalformedURLException e) {
             File f = new File(location.trim());
             if (f.isAbsolute() && f.exists()) {
-                this.location = f.toURI().toURL();
+                url = f.toURI().toURL();
             } else {
-                this.location = new URL("http://" + location);
+                url = new URL("http://" + location);
             }
         }
+        return url;
+    }
 
+    public URLVerifier(String location) throws MalformedURLException {
+        this.location = verifyURL(location);
         try {
             discoverThroughHeaders();
             findBasePath();

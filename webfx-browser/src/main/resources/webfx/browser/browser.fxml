@@ -58,6 +58,7 @@ holder.
                         <MenuItem mnemonicParsing="true" onAction="#newTab" text="New Tab" />
                         <MenuItem fx:id="closeTab" disable="true" mnemonicParsing="true" onAction="#closeTab" text="Close" />
                         <MenuItem mnemonicParsing="true" onAction="#exit" text="Exit" />
+                        <MenuItem mnemonicParsing="true" onAction="#home" text="Home" />
                     </items>
                 </Menu>
             <Menu mnemonicParsing="false" text="Settings">
@@ -78,6 +79,7 @@ holder.
                 <Button fx:id="forwardButton" mnemonicParsing="false" onAction="#forward" />
                 <Button fx:id="reloadButton" mnemonicParsing="false" onAction="#reload" />
                 <Button fx:id="stopButton" mnemonicParsing="false" onAction="#stop" />
+                <Button fx:id="homeButton" mnemonicParsing="false" onAction="#home" />
                 <TextField fx:id="urlField" onAction="#openFXPage" prefWidth="517.0" HBox.hgrow="ALWAYS">
                     <HBox.margin>
                         <Insets bottom="2.0" left="10.0" right="10.0" top="2.0" fx:id="x1" />

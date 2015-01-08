@@ -5,14 +5,13 @@
  */
 package webfx.browser.tabs;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
 import webfx.browser.BrowserTab;
 import webfx.browser.TabManager;
+import webfx.contentdescriptors.ContentDescriptor;
 
 /**
  *
@@ -20,8 +19,7 @@ import webfx.browser.TabManager;
  */
 public final class TabFactory {
 
-    private static final Map<String, TabConstructor> providersByFileExtension = Collections.synchronizedMap(new HashMap<>());
-    private static final Map<String, TabConstructor> providersByContentType = Collections.synchronizedMap(new HashMap<>());
+    private static final Map<ContentDescriptor, TabConstructor> providersByContentDescriptor = Collections.synchronizedMap(new HashMap<>());
 
     static {
         HTMLTab.register();
@@ -32,37 +30,27 @@ public final class TabFactory {
     private TabFactory() {
     }
 
-    public static void registerProvider(TabConstructor tabConstructor, String[] fileExtensions, String[] contentTypes) {
+    public static void registerProvider(TabConstructor tabConstructor, ContentDescriptor contentDescriptor) {
         if (tabConstructor == null) {
             throw new IllegalArgumentException("TabManager cannot be null");
         }
 
-        String existentExts = Arrays.stream(fileExtensions).filter(providersByFileExtension.keySet()::contains).collect(Collectors.joining());
-        if (existentExts != null && existentExts.isEmpty() == false) {
-            throw new IllegalArgumentException("The following extension(s) is/are already registered by another implementation: " + existentExts);
+        if (contentDescriptor == null) {
+            throw new IllegalArgumentException("ContentDescriptor cannot be null");
         }
 
-        String existentMimes = Arrays.stream(contentTypes).filter(providersByContentType.keySet()::contains).collect(Collectors.joining());
-        if (existentMimes != null && existentMimes.isEmpty() == false) {
-            throw new IllegalArgumentException("The following content type(s) is/are already registered by another implementation: " + existentMimes);
-        }
+        providersByContentDescriptor.put(contentDescriptor, tabConstructor);
 
-        Arrays.stream(fileExtensions).distinct().forEach(ext -> providersByFileExtension.put(ext, tabConstructor));
-        Arrays.stream(contentTypes).distinct().forEach(mime -> providersByContentType.put(mime, tabConstructor));
     }
 
-    public static BrowserTab newTab(TabManager tabManager, Locale locale, String fileExtension, String contentType) {
+    public static BrowserTab newTab(TabManager tabManager, Locale locale, ContentDescriptor contentDescriptor) {
         if (tabManager == null) {
             throw new IllegalArgumentException("TabManager cannot be null");
         }
 
-        TabConstructor tabConstructor = providersByFileExtension.get(fileExtension);
+        TabConstructor tabConstructor = providersByContentDescriptor.get(contentDescriptor);
         if (tabConstructor == null) {
-            tabConstructor = providersByContentType.get(contentType);
-        }
-
-        if (tabConstructor == null) {
-            throw new IllegalArgumentException(String.format("Didn't find a tab provider for fileExtension [%s] nor contentType [%s]", fileExtension, contentType));
+            throw new IllegalArgumentException(String.format("Didn't find a tab provider for contentDescriptor [%s]", contentDescriptor));
         }
 
         return tabConstructor.newBrowserTab(tabManager, locale);

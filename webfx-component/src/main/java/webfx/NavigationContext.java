@@ -55,6 +55,8 @@ public interface NavigationContext {
 
     public void goTo(String url);
 
+    public void goTo(String protocol, String relPath);
+
     public void reload();
 
     public static class DefaultNavigationContext implements NavigationContext {
@@ -76,6 +78,10 @@ public interface NavigationContext {
 
         @Override
         public void goTo(String url) {
+        }
+
+        @Override
+        public void goTo(String protocol, String relPath) {
         }
 
         @Override

@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import webfx.NavigationContext;
 import webfx.browser.BrowserTab;
 import webfx.browser.TabManager;
+import webfx.contentdescriptors.ContentDescriptor;
 
 /**
  *
@@ -20,11 +21,8 @@ import webfx.browser.TabManager;
  */
 class AsciiDocTab extends BrowserTab {
 
-    private static final String[] CONTENT_TYPES = new String[]{"text/x-asciidoc", "text/asciidoc", "application/asciidoc"};
-    private static final String[] FILE_EXTENSIONS = new String[]{"asciidoc", "adoc"};
-
     public static void register() {
-        TabFactory.registerProvider(AsciiDocTab::new, FILE_EXTENSIONS, CONTENT_TYPES);
+        TabFactory.registerProvider(AsciiDocTab::new, ContentDescriptor.AsciiDoc.instance());
     }
 
     public AsciiDocTab(TabManager tabManager, Locale locale) {
@@ -73,13 +71,8 @@ class AsciiDocTab extends BrowserTab {
     }
 
     @Override
-    public String[] getFileExtensions() {
-        return FILE_EXTENSIONS;
-    }
-
-    @Override
-    public String[] getContentTypes() {
-        return CONTENT_TYPES;
+    public ContentDescriptor getContentDescripor() {
+        return ContentDescriptor.AsciiDoc.instance();
     }
 
 }

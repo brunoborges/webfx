@@ -98,7 +98,7 @@ public class WebFX extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //turnSecurityManagerOn();
+//        turnSecurityManagerOn();
 
         launch(args);
     }
@@ -168,13 +168,12 @@ public class WebFX extends Application {
         LOGGER.log(Level.INFO, "Locale: {0}", locale);
 
         if ((languageParamObj != null)
-                && ((String) languageParamObj).trim().length() > 0) {
-            if ((countryParamObj != null)
-                    && ((String) countryParamObj).trim().length() > 0) {
-                locale = new Locale(((String) languageParamObj).trim(),
-                        ((String) countryParamObj).trim());
+                && !languageParamObj.trim().isEmpty()) {
+            if ((countryParamObj != null) && !countryParamObj.trim().isEmpty()) {
+                locale = new Locale(languageParamObj.trim(),
+                        countryParamObj.trim());
             } else {
-                locale = new Locale(((String) languageParamObj).trim());
+                locale = new Locale(languageParamObj.trim());
             }
         }
 

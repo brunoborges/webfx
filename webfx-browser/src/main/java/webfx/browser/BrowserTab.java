@@ -43,6 +43,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.scene.Node;
 import webfx.NavigationContext;
+import webfx.contentdescriptors.ContentDescriptor;
 
 /**
  *
@@ -76,8 +77,6 @@ public abstract class BrowserTab {
 
     public abstract NavigationContext getNavigationContext();
 
-    public abstract String[] getFileExtensions();
-
-    public abstract String[] getContentTypes();
+    public abstract ContentDescriptor getContentDescripor();
 
 }
