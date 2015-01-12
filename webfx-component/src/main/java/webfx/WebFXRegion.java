@@ -39,6 +39,7 @@
  */
 package webfx;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -50,6 +51,9 @@ import javafx.beans.NamedArg;
 import javafx.beans.property.ReadOnlyStringProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.layout.AnchorPane;
+import webfx.contentdescriptors.ContentDescriptor;
+import webfx.urlhandlers.URLHandler;
+import webfx.urlhandlers.URLHandlersRegistry;
 
 /**
  *
@@ -62,6 +66,7 @@ public final class WebFXRegion extends AnchorPane {
     private final NavigationContext navigationContext;
     private final ReadOnlyStringProperty currentTitle = new SimpleStringProperty();
     private Locale locale;
+    private ClassLoader cl = null;
 
     public WebFXRegion() {
         navigationContext = new NavigationContextImpl();
@@ -105,7 +110,7 @@ public final class WebFXRegion extends AnchorPane {
 
         getChildren().clear();
 
-        defaultView = new WebFXView(navigationContext);
+        defaultView = new WebFXView(navigationContext, cl);
         try {
             defaultView.setURL(new URL(getUrl()));
         } catch (MalformedURLException ex) {
@@ -134,14 +139,26 @@ public final class WebFXRegion extends AnchorPane {
 
     private class NavigationContextImpl implements NavigationContext {
 
+        private class HistoryEntry {
+            URL url;
+            ClassLoader cl;
+
+            private HistoryEntry(URL url, ClassLoader cl) {
+                this.url = url;
+                this.cl = cl;
+            }
+        }
+
         private int currentURLHistoryIndex = -1;
-        private List<URL> urlHistory = new ArrayList<>();
+        private List<HistoryEntry> urlHistory = new ArrayList<>();
 
         @Override
         public void forward() {
             int nextIndex = currentURLHistoryIndex + 1;
             if (nextIndex < urlHistory.size()) {
-                URL nextURL = urlHistory.get(nextIndex);
+                HistoryEntry entry = urlHistory.get(nextIndex);
+                URL nextURL = entry.url;
+                cl = entry.cl;
                 currentURLHistoryIndex++;
                 loadUrl(nextURL, false);
             }
@@ -155,7 +172,9 @@ public final class WebFXRegion extends AnchorPane {
             }
 
             currentURLHistoryIndex--;
-            URL previousURL = urlHistory.get(currentURLHistoryIndex);
+            HistoryEntry entry = urlHistory.get(currentURLHistoryIndex);
+            URL previousURL = entry.url;
+            cl = entry.cl;
             loadUrl(previousURL, false);
         }
 
@@ -163,13 +182,34 @@ public final class WebFXRegion extends AnchorPane {
             WebFXRegion.this.loadUrl(url);
 
             if (incrementHistory) {
-                urlHistory.add(url);
-                currentURLHistoryIndex = urlHistory.size() - 1;
+                HistoryEntry history = new HistoryEntry(url, cl);
+                if (currentURLHistoryIndex == urlHistory.size() - 1) {
+                    urlHistory.add(history);
+                    currentURLHistoryIndex = urlHistory.size() - 1;
+                } else {
+                    ++currentURLHistoryIndex;
+                    urlHistory.set(currentURLHistoryIndex, history);
+                }
             }
         }
 
         @Override
         public void goTo(URL url) {
+            URLHandler urlHandler = URLHandlersRegistry.getHandler(url);
+            if (urlHandler != null) {
+                URLHandler.Result handleResult = urlHandler.handle(url);
+                if (handleResult.contentDescriptor == ContentDescriptor.FXML.instance()) {
+                    try {
+                        //resolve destination
+                        url = url.openConnection().getURL();
+                    } catch (IOException e) {
+                    }
+                    cl = handleResult.classLoader;
+                } else {
+                    //cannot render non FXML content
+                    return;
+                }
+            }
             loadUrl(url, true);
         }
 
@@ -189,18 +229,19 @@ public final class WebFXRegion extends AnchorPane {
 
         @Override
         public void goTo(String url) {
-            URL destination = null;
-            if (url.startsWith("file:/") || url.startsWith("jar:/") || url.startsWith("wfx:/") || url.startsWith("http:/") || url.startsWith("https:/")) {
-                try {
-                    destination = new URL(url);
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(WebFXView.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else {
-                destination = resolveDestination(url);
-            }
+            goTo(resolveDestination(url));
+        }
 
-            goTo(destination);
+        @Override
+        public void goTo(String protocol, String relPath) {
+            URL url = resolveDestination(relPath);
+            try {
+                url = url.getProtocol().equals(protocol)? url : new URL(protocol, url.getHost(), url.getPort(), url.getFile());
+            } catch (MalformedURLException e) {
+                Logger.getLogger(WebFXView.class.getName()).log(Level.SEVERE, null, e);
+                return;
+            }
+            goTo(url);
         }
 
         @Override

@@ -9,7 +9,7 @@ Running the WebFX browser
 1. Get the code
 2. Open on NetBeans
 3. Click 'Run'
-4. Go to the following URL: http://dl.dropbox.com/u/8159675/WebFX/samples/index.html
+4. Click 'Home' button
 
 This URL is a pure, static HTML rendered by WebView, with links to sample applications that are pure FXML+CSS+Javascript.
 You may also want to go to a HTML5 website, such as this one from Mozilla HTML5 Showcase:

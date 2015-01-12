@@ -65,8 +65,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import webfx.URLVerifier;
 import webfx.browser.settings.SettingsController;
 import webfx.browser.tabs.TabFactory;
+import webfx.contentdescriptors.ContentDescriptor;
+import webfx.urlhandlers.URLHandler;
+import webfx.urlhandlers.URLHandlersRegistry;
 import webfx.browser.util.FXUtil;
 
 /**
@@ -76,6 +80,8 @@ import webfx.browser.util.FXUtil;
 public class BrowserFXController implements TabManager {
 
     private static final Logger LOGGER = Logger.getLogger(BrowserFXController.class.getName());
+    private static final String HOME_PAGE = "http://learnjavafx.typepad.com/webfx/samples";
+
     /**
      * Components
      */
@@ -93,6 +99,8 @@ public class BrowserFXController implements TabManager {
     private Button backButton;
     @FXML
     private Button forwardButton;
+    @FXML
+    private Button homeButton;
     /**
      * Internal
      */
@@ -103,6 +111,10 @@ public class BrowserFXController implements TabManager {
     public void exit() {
         LOGGER.info("Exiting...");
         System.exit(0);
+    }
+
+    public void home() {
+        openPage(HOME_PAGE);
     }
 
     public void newTab() {
@@ -164,33 +176,31 @@ public class BrowserFXController implements TabManager {
     }
 
     public void openPage(String location) {
+        final URL url;
+        try {
+            url = URLVerifier.verifyURL(location);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(BrowserFXController.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        }
+
+        URLHandler urlHandler = URLHandlersRegistry.getHandler(url);
+        if (urlHandler == null) {
+            return;
+        }
         Platform.runLater(() -> {
-            URLVerifier urlVerifier = null;
-
-            try {
-                urlVerifier = new URLVerifier(location);
-            } catch (MalformedURLException ex) {
-                Logger.getLogger(BrowserFXController.class.getName()).log(Level.SEVERE, null, ex);
+            URLHandler.Result handleResult = urlHandler.handle(url);
+            if (handleResult.contentDescriptor != ContentDescriptor.NoContent.instance()) {
+                BrowserTab browserTab = TabFactory.newTab(this, locale, handleResult.contentDescriptor);
+                browserTab.getNavigationContext().goTo(url);
+                selectionTab.getSelectedItem().contentProperty().bind(browserTab.contentProperty());
+                browserMap.put(selectionTab.getSelectedIndex(), browserTab);
+                if(!urlField.isFocused()){
+                    urlField.textProperty().bind(browserTab.locationProperty());
+                }
+                stopButton.disableProperty().set(!browserTab.isStoppable());
+                selectionTab.getSelectedItem().textProperty().bind(browserTab.titleProperty());
             }
-
-            if (urlVerifier == null) {
-                return;
-            }
-
-            final URL url = urlVerifier.getLocation();
-            final String fileExtension = urlVerifier.getFileExtension().orElse(null);
-            final String contentType = urlVerifier.getContentType().orElse(null);
-
-            BrowserTab browserTab = TabFactory.newTab(this, locale, fileExtension, contentType);
-            browserTab.getNavigationContext().goTo(url);
-
-            selectionTab.getSelectedItem().contentProperty().bind(browserTab.contentProperty());
-            browserMap.put(selectionTab.getSelectedIndex(), browserTab);
-            if (!urlField.isFocused()) {
-                urlField.textProperty().bind(browserTab.locationProperty());
-            }
-            stopButton.disableProperty().set(!browserTab.isStoppable());
-            selectionTab.getSelectedItem().textProperty().bind(browserTab.titleProperty());
         });
     }
 
@@ -238,6 +248,7 @@ public class BrowserFXController implements TabManager {
         setButtonIcon(backButton, "left", size);
         setButtonIcon(forwardButton, "right", size);
         setButtonIcon(reloadButton, "clock", size);
+        setButtonIcon(homeButton, "home", size);
     }
 
     private void setButtonIcon(Button button, String icon, int size) {

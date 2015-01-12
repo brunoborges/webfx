@@ -62,6 +62,7 @@ import org.w3c.dom.html.HTMLAnchorElement;
 import webfx.NavigationContext;
 import webfx.browser.BrowserTab;
 import webfx.browser.TabManager;
+import webfx.contentdescriptors.ContentDescriptor;
 
 /**
  *
@@ -69,15 +70,12 @@ import webfx.browser.TabManager;
  */
 class HTMLTab extends BrowserTab {
 
-    private static final String[] CONTENT_TYPES = new String[]{"text/html", "text/xhtml"};
-    private static final String[] FILE_EXTENSIONS = new String[]{"htm", "html", "xhtml", "shtml"};
-
     private final WebView browser;
     private final WebEngine webEngine;
     private final SimpleObjectProperty<Node> contentProperty;
 
     public static void register() {
-        TabFactory.registerProvider(HTMLTab::new, FILE_EXTENSIONS, CONTENT_TYPES);
+        TabFactory.registerProvider(HTMLTab::new, ContentDescriptor.HTML.instance());
     }
 
     public HTMLTab(TabManager tabManager, Locale locale) {
@@ -101,7 +99,7 @@ class HTMLTab extends BrowserTab {
 
                         HTMLAnchorElement hrefObj = (HTMLAnchorElement) event.getTarget();
                         final String href = hrefObj.getHref();
-                        if (Arrays.stream(FILE_EXTENSIONS).filter(s -> !href.endsWith(s)).count() > 0) {
+                        if (Arrays.stream(getContentDescripor().getFileExtensions()).filter(s -> !href.endsWith(s)).count() > 0) {
                             try {
                                 getTabManager().openInNewTab(new URL(href));
                             } catch (MalformedURLException ex) {
@@ -168,6 +166,11 @@ class HTMLTab extends BrowserTab {
                 webEngine.load(location);
             }
 
+            @Override
+            public void goTo(String protocol, String relPath) {
+                throw new RuntimeException("should not be called");
+            }
+
         };
     }
 
@@ -177,12 +180,8 @@ class HTMLTab extends BrowserTab {
     }
 
     @Override
-    public String[] getFileExtensions() {
-        return CONTENT_TYPES;
+    public ContentDescriptor getContentDescripor() {
+        return ContentDescriptor.HTML.instance();
     }
 
-    @Override
-    public String[] getContentTypes() {
-        return FILE_EXTENSIONS;
-    }
 }

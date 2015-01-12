@@ -87,11 +87,9 @@ public class PageContext {
         if (indexOfExtension != 1) {
             String extension = file.substring(file.lastIndexOf('.') + 1);
 
-            if (!"fxml".equals(extension)) {
-                throw new IllegalArgumentException("This component only loads FXML pages. Point the URL property to an FXML file");
+            if ("fxml".equals(extension)) {
+                pageName = pageName.substring(0, indexOfExtension);
             }
-
-            pageName = pageName.substring(0, indexOfExtension);
         }
 
         this.basePath = base;

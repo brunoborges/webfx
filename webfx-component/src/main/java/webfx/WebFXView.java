@@ -58,7 +58,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
+
 import javax.script.ScriptEngine;
+
 import webfx.scripting.ScriptingInitializer;
 
 /**
@@ -86,6 +88,8 @@ public class WebFXView extends AnchorPane {
     private final ReadOnlyStringProperty titleProperty = new SimpleStringProperty();
     private final AtomicBoolean loaded = new AtomicBoolean(false);
 
+    private ClassLoader cl;
+
     public WebFXView() {
         setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
         getStyleClass().add("webfx-view");
@@ -102,17 +106,12 @@ public class WebFXView extends AnchorPane {
         load();
     }
 
-    WebFXView(NavigationContext navigationContext) {
+    WebFXView(NavigationContext navigationContext, ClassLoader cl) {
         this();
         this.navigationContext = navigationContext;
+        this.cl = cl;
     }
 
-    WebFXView(URL url, NavigationContext navContext) {
-        this();
-        this.navigationContext = navContext;
-        this.urlProperty.set(url);
-        load();
-    }
 
     public static PageContext getCurrentContext() {
         return curContext.get();
@@ -157,11 +156,21 @@ public class WebFXView extends AnchorPane {
         initLocalization();
 
         try {
+            final ClassLoader oldClassloader = Thread.currentThread().getContextClassLoader();
+
+            if (cl != null) {
+                Thread.currentThread().setContextClassLoader(cl);
+            }
+
             PageContext oldPageContext = curContext.get();
             curContext.set(pageContext);
 
             fxmlLoader = new FXMLLoader(pageContext.getLocation(), resourceBundle);
-            Node loadedNode = (Node) fxmlLoader.load();
+            Node loadedNode = fxmlLoader.load();
+
+            if (cl != null) {
+                Thread.currentThread().setContextClassLoader(oldClassloader);
+            }
 
             curContext.set(oldPageContext);
 
@@ -175,11 +184,13 @@ public class WebFXView extends AnchorPane {
             hackScriptEngine(fxmlLoader);
 
             if (scriptEngine != null) {
-                ScriptingInitializer si = new ScriptingInitializer(scriptEngine, resourceBundle, navigationContext);
+                ScriptingInitializer si = new ScriptingInitializer(scriptEngine, resourceBundle, navigationContext, getScene());
                 loadTitle(si.getPageTitle());
+            } else {
+                String path = pageContext.getLocation().getFile();
+                int lastSlash = path.lastIndexOf('/');
+                Platform.runLater(() -> ((SimpleStringProperty) titleProperty).set(path.substring(lastSlash + 1)));
             }
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(WebFXView.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(WebFXView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -219,9 +230,7 @@ public class WebFXView extends AnchorPane {
     }
 
     private void initLocalization() {
-        Locale _locale = locale == null ? Locale.getDefault() : locale;
-        ResourceBundleLoader rbl = new ResourceBundleLoader(pageContext, _locale);
+        ResourceBundleLoader rbl = new ResourceBundleLoader(pageContext, locale);
         resourceBundle = rbl.findBundle();
     }
-
 }
