@@ -195,9 +195,9 @@ public class BrowserFXController implements TabManager {
                 browserTab.getNavigationContext().goTo(url);
                 selectionTab.getSelectedItem().contentProperty().bind(browserTab.contentProperty());
                 browserMap.put(selectionTab.getSelectedIndex(), browserTab);
-                if(!urlField.isFocused()){
+//                if(!urlField.isFocused()){
                     urlField.textProperty().bind(browserTab.locationProperty());
-                }
+//                }
                 stopButton.disableProperty().set(!browserTab.isStoppable());
                 selectionTab.getSelectedItem().textProperty().bind(browserTab.titleProperty());
             }
