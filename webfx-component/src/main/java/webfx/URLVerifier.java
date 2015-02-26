@@ -59,6 +59,8 @@ import org.apache.http.client.utils.URIUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.LaxRedirectStrategy;
+import webfx.contentdescriptors.ContentDescriptor;
+import webfx.contentdescriptors.ContentDescriptorsRegistry;
 
 /**
  *
@@ -226,6 +228,10 @@ public class URLVerifier {
 
     public Optional<String> getContentType() {
         return Optional.ofNullable(contentType);
+    }
+
+    public ContentDescriptor getContentDescriptor() {
+        return ContentDescriptorsRegistry.getContentDescriptor(fileExtension, contentType);
     }
 
 }

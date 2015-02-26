@@ -60,6 +60,7 @@ import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventTarget;
 import org.w3c.dom.html.HTMLAnchorElement;
 import webfx.NavigationContext;
+import webfx.URLVerifier;
 import webfx.browser.BrowserTab;
 import webfx.browser.TabManager;
 import webfx.contentdescriptors.ContentDescriptor;
@@ -93,19 +94,19 @@ class HTMLTab extends BrowserTab {
                     n.addEventListener("click", (Event event) -> {
                         EventTarget eventTarget = event.getTarget();
 
-                        if (eventTarget instanceof HTMLAnchorElement == false) {
+                        if (!(eventTarget instanceof HTMLAnchorElement)) {
                             return;
                         }
 
                         HTMLAnchorElement hrefObj = (HTMLAnchorElement) event.getTarget();
-                        final String href = hrefObj.getHref();
-                        if (Arrays.stream(getContentDescripor().getFileExtensions()).filter(s -> !href.endsWith(s)).count() > 0) {
-                            try {
-                                getTabManager().openInNewTab(new URL(href));
-                            } catch (MalformedURLException ex) {
-                                Logger.getLogger(HTMLTab.class.getName()).log(Level.SEVERE, null, ex);
+                        try {
+                            final URL href = new URL(hrefObj.getHref());
+                            if (new URLVerifier(href).getContentDescriptor() != ContentDescriptor.HTML.instance()) {
+                                getTabManager().openInNewTab(href);
+                                event.preventDefault();
                             }
-                            event.preventDefault();
+                        } catch (MalformedURLException ex) {
+                            Logger.getLogger(HTMLTab.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }, true);
                 }
