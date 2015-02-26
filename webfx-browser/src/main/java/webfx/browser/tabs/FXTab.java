@@ -58,7 +58,6 @@ import java.util.Locale;
  */
 class FXTab extends BrowserTab {
 
-    private final ReadOnlyStringWrapper locationProperty = new ReadOnlyStringWrapper();
     private final SimpleObjectProperty<Node> contentProperty = new SimpleObjectProperty<>();
     private final WebFXRegion webfx;
 
@@ -85,7 +84,7 @@ class FXTab extends BrowserTab {
 
     @Override
     public ReadOnlyStringProperty locationProperty() {
-        return locationProperty;
+        return webfx.urlProperty();
     }
 
     @Override
