@@ -79,10 +79,7 @@ public class URLHandlersRegistry {
 
             @Override
             public Result handle(URL url) {
-                URLVerifier urlVerifier = new URLVerifier(url);
-                String fileExtension = urlVerifier.getFileExtension().orElse(null);
-                String contentType = urlVerifier.getContentType().orElse(null);
-                return new Result(ContentDescriptorsRegistry.getContentDescriptor(fileExtension, contentType), null);
+                return new Result(new URLVerifier(url).getContentDescriptor(), null);
             }
         });
 
