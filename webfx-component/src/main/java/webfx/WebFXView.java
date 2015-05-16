@@ -48,6 +48,8 @@ import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.sun.javafx.scene.control.behavior.TabPaneBehavior;
 import javafx.application.Platform;
 import javafx.beans.NamedArg;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -93,7 +95,6 @@ public class WebFXView extends AnchorPane {
     public WebFXView() {
         setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
         getStyleClass().add("webfx-view");
-        setFocusTraversable(true);
     }
 
     public WebFXView(@NamedArg("url") String url) throws MalformedURLException {
@@ -180,6 +181,8 @@ public class WebFXView extends AnchorPane {
             setRightAnchor(loadedNode, 0.0);
 
             getChildren().add(loadedNode);
+
+            TabPaneBehavior.focusFirstChild(getChildren());
 
             hackScriptEngine(fxmlLoader);
 
