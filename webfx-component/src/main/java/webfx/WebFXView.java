@@ -43,13 +43,13 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.sun.javafx.scene.control.behavior.TabPaneBehavior;
 import javafx.application.Platform;
 import javafx.beans.NamedArg;
 import javafx.beans.property.ReadOnlyObjectProperty;
@@ -59,6 +59,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 
 import javax.script.ScriptEngine;
@@ -151,6 +152,22 @@ public class WebFXView extends AnchorPane {
         }
     }
 
+    public static boolean focusFirstChild(List<Node> children) {
+        for (int i = 0; i < children.size(); i++) {
+            Node n = children.get(i);
+            if (n.isFocusTraversable() && n.impl_isTreeVisible() && !n.isDisabled()) {
+                n.requestFocus();
+                return true;
+            }
+            else if (n instanceof Parent) {
+                if (focusFirstChild(((Parent)n).getChildrenUnmodifiable())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private void internalLoad() {
         pageContext = new PageContext(urlProperty.get());
 
@@ -182,7 +199,7 @@ public class WebFXView extends AnchorPane {
 
             getChildren().add(loadedNode);
 
-            TabPaneBehavior.focusFirstChild(getChildren());
+            focusFirstChild(getChildren());
 
             hackScriptEngine(fxmlLoader);
 
