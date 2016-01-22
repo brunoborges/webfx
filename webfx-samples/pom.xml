@@ -10,7 +10,7 @@
 
     <artifactId>webfx-samples</artifactId>
     <packaging>war</packaging>
-    <name>WebFX Samples</name>
+    <name>WebFX Samples of FXML Pages</name>
 
     <licenses>
         <license>
@@ -20,17 +20,11 @@
         </license>
     </licenses>
     
-    <properties>
-        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-    
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.5</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
@@ -38,10 +32,9 @@
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.3.0.M0</version>
+                <version>9.3.7.v20160115</version>
                 <configuration>
                     <scanIntervalSeconds>10</scanIntervalSeconds>
-                    <!--<war>${basedir}/target/${project.artifactId}-${project.version}</war>-->
                     <webApp>
                         <contextPath>/webfx-samples</contextPath>
                     </webApp>
