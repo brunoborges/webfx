@@ -23,3 +23,7 @@ FXML is the JavaFX markup language used to define user interfaces. UI components
  - [WebFX Overview and Demo on RaspberryPi](https://www.youtube.com/watch?v=bzmdkjnbFkI)
  - [WebFX browser inside WebFX demo](https://www.youtube.com/watch?v=2LUF7lgpKLg#t=11)
 
+## Hybrid JavaFX Application Architecture
+The image below gives developers an idea on how they can leverage existing code, both legacy Applets, and web applications, with modern development approaches of JavaFX Desktop RIA applications. 
+
+![Figure 3](hybrid-javafx-architecture.png)
