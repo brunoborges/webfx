@@ -1,0 +1,87 @@
+<html>
+    <head>
+        <title>Test page for launching the applet</title>
+        <script src="deployAppletFX.js" type="text/javascript"></script>
+        <script language="javascript" type="text/javascript">
+            function encryptText() {
+                textToEncrypt__ = document.getElementById('textToEncrypt').value;
+                newText = dataSummaryApplet.getDataSummary().encryptText(textToEncrypt__);
+                document.getElementById('textToEncrypt').value = newText;
+            }
+
+            var userName = "";
+            function getAge() {
+                // returns number
+                return 25;
+            }
+
+            function address() { // an object
+                this.street = "1566 Greenwood Lane";
+                this.city = "Santa Clara";
+                this.state = "CA";
+            }
+
+            function getPhoneNums() { // returns array
+                return ["408-111-2222", "408-333-4444"];
+            }
+
+            function writeSummary(summary) {
+                summaryElem = document.getElementById("summary");
+                summaryElem.innerHTML = summary;
+            }
+
+            // JAVA INVOKED FROM JAVASCRIPT
+            function callWriteSummaryOnApplet() {
+                // $appletfx.getApplet('dataSummaryApplet').getDataSummary().writeSummary();
+                dataSummaryApplet.getDataSummary().writeSummary();
+            }
+        </script>
+    </head>
+    <body>
+        <script type="text/javascript">
+            var attributes = {
+                name:    "dataSummaryApplet",
+                code:    "sample.applet.DataSummaryApplet",
+                archive: "lib/applet.jar, lib/plugin.jar",
+                width:   1,
+                height:  1
+            };
+            var parameters = {
+                Permissions: "", 
+                permissions: "all-permissions", 
+                cache_archive: "", 
+                classloader_cache: "false", 
+                jnlp_href:"launch.jnlp"};<!-- Applet Parameters -->
+ 
+            var version = "1.8";<!-- Required Java Version -->
+
+                    // deployJava.runApplet(attributes, parameters, version);</script>
+        <!-- Or use the following applet element to launch the applet using jnlp_href -->
+        <!--
+        <applet width="1" height="1">
+            <param name="jnlp_href" value="launch.jnlp"/>
+        </applet>
+        -->
+        <applet name="dataSummaryApplet" code="sample.applet.DataSummaryApplet" 
+            archive="lib/webfx-appletsupport-sample-1.0-SNAPSHOT.jar?t=b" 
+            height="1" width="1">
+                <param name="cache_archive" value="">
+                <param name="classloader_cache" value="false">
+                <param name="jnlp_href" value="launch.jnlp">
+                <param name="codebase_lookup" value="false">
+        </applet>
+    <h1>Java Applet LiveConnect to JavaFX</h1>
+    <p>Result of applet's Java calls to JavaScript on this page</p>
+
+    <h3>Example 1</h3>
+    <p>Button calls a Java method to encrypt a String</p>
+    <input type="text" name="textToEncrypt" id="textToEncrypt" />
+    <input type="button" value="Encrypt Text" onClick="encryptText()" />
+
+    <h3>Example 2</h3>
+    <p>Button calls a Java method to invoke Javascripts methods</p>
+    <input type="button" value="Write from Applet" onClick="callWriteSummaryOnApplet()" />
+
+    <p id="summary"/>
+</body>
+</html>

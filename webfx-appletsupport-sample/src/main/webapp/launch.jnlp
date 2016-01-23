@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jnlp codebase="http://localhost:8080/applet/" href="launch.jnlp" spec="1.0+">
+    <information>
+        <title>Applet through WebView Sample</title>
+        <vendor>Sample</vendor>
+        <homepage href=""/>
+        <description>Applet through WebView Sample</description>
+        <description kind="short">Applet through WebView Sample</description>
+    </information>
+    <update check="always"/>
+    <resources>
+        <j2se version="1.8+"/>
+        <jar href="lib/applet.jar" main="true"/>
+        <jar href="lib/plugin.jar"/>
+    </resources>
+    <applet-desc height="1" main-class="sample.applet.DataSummaryApplet" name="DataSummaryApplet" width="1">
+        <param name="classloader_cache" value="false"/>
+        <param name="cache_archive" value=""/>
+        <param name="permissions" value="all-permissions"/>
+        <param name="Permissions" value=""/>
+    </applet-desc>
+</jnlp>

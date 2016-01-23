@@ -23,6 +23,7 @@
         <module>webfx-deck</module>
         <module>webfx-browser</module>
         <module>webfx-samples</module>
+        <module>webfx-appletsupport-sample</module>
     </modules>
 
     <dependencyManagement>
