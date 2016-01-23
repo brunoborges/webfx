@@ -57,7 +57,7 @@ import javafx.scene.control.TextField;
 /**
  * FXML Controller class
  *
- * @author ecostlow
+ * @author Erik Costlow
  */
 public class SettingsController implements Initializable {
 
@@ -65,6 +65,9 @@ public class SettingsController implements Initializable {
 
     private final String[] proxyTypes = {"No Proxy", "Use System Settings", "Configure as below"};
 
+    @FXML
+    private CheckBox appletSupport;
+    
     @FXML
     private ChoiceBox<String> proxyType;
 
@@ -106,8 +109,13 @@ public class SettingsController implements Initializable {
     public void saveAndClose() {
         doProxyConfig();
         doTLSConfig();
+        doAppletConfig();
 
         onClose.accept(null);
+    }
+    
+    private void doAppletConfig() {
+        System.setProperty("applet.enabled", appletSupport.selectedProperty().getValue().toString());
     }
 
     private void doTLSConfig() {

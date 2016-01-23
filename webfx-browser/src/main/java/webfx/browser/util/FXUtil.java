@@ -44,7 +44,7 @@ import javafx.fxml.Initializable;
 
 /**
  *
- * @author ecostlow
+ * @author Erik Costlow
  */
 public final class FXUtil {
 

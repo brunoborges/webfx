@@ -1,21 +1,18 @@
 package sample.browser;
 
-import sample.applet.DataSummary;
-import sample.applet.DataSummaryProvider;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import webfx.applet.JSObjectWrapper;
-import webfx.applet.JSObjectWrapper.JSObjectWrapperMapper;
+import webfx.applet.JSObjectFX;
 
 /**
  * Sample of a JavaFX browser configured to support execution of 'DataSummaryApplet'.
  * 
  * @author Bruno Borges 
  */
-public class Main extends Application implements DataSummaryProvider {
+public class Main extends Application /*implements DataSummaryProvider*/ {
 
     private static final String APPLET_PAGE = "http://localhost:8080/applet/launch.html";
 
@@ -25,13 +22,8 @@ public class Main extends Application implements DataSummaryProvider {
     public void start(Stage primaryStage) {
         webView.getEngine().load(APPLET_PAGE);
 
-        // Register a known applet from the page to JSObjectWrapperMapper
-        // Advanced implementation may be able to load classes more dynamically
-        JSObjectWrapperMapper mapper = JSObjectWrapper
-                .register(DataSummaryProvider.class, this);
-
         // Initialize the Applet
-        JSObjectWrapper.initAppletsForFX(webView, mapper);
+        JSObjectFX.enableAppletSupport(webView);
 
         StackPane root = new StackPane();
         root.getChildren().add(webView);
@@ -49,10 +41,10 @@ public class Main extends Application implements DataSummaryProvider {
     public static void main(String[] args) {
         launch(args);
     }
-
+/*
     @Override
     public DataSummary getDataSummary() {
-        return new DataSummary(JSObjectWrapper.getWindow(webView.getEngine()));
+        return new DataSummary(JSObjectFX.getWindow(webView.getEngine()));
     }
-
+*/
 }

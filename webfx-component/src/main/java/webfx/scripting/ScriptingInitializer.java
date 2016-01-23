@@ -39,7 +39,6 @@
  */
 package webfx.scripting;
 
-import groovy.lang.Script;
 import groovy.util.Expando;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -53,7 +52,7 @@ import webfx.NavigationContext;
 
 /**
  *
- * @author bruno
+ * @author Bruno Borges <bruno.borges at oracle.com>
  */
 public class ScriptingInitializer {
 

@@ -60,7 +60,7 @@ import javax.management.ObjectName;
 
 /**
  *
- * @author bruno
+ * @author Bruno Borges
  */
 public class DeckMain extends Application {
 

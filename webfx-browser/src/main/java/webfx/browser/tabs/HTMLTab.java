@@ -41,7 +41,6 @@ package webfx.browser.tabs;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,13 +60,14 @@ import org.w3c.dom.events.EventTarget;
 import org.w3c.dom.html.HTMLAnchorElement;
 import webfx.NavigationContext;
 import webfx.URLVerifier;
+import webfx.applet.JSObjectFX;
 import webfx.browser.BrowserTab;
 import webfx.browser.TabManager;
 import webfx.contentdescriptors.ContentDescriptor;
 
 /**
  *
- * @author bruno
+ * @author Bruno Borges
  */
 class HTMLTab extends BrowserTab {
 
@@ -83,6 +83,12 @@ class HTMLTab extends BrowserTab {
         super(tabManager);
 
         browser = new WebView();
+
+        // Support for non-visual Applets
+        if (!"false".equals(System.getProperty("applet.enabled"))) {
+            JSObjectFX.enableAppletSupport(browser);
+        }
+
         webEngine = browser.getEngine();
         contentProperty = new SimpleObjectProperty<>((Node) browser);
         webEngine.getLoadWorker().stateProperty().addListener((ObservableValue<? extends State> ov, State oldv, State newv) -> {

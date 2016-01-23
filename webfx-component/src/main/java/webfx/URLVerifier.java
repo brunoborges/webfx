@@ -64,7 +64,7 @@ import webfx.contentdescriptors.ContentDescriptorsRegistry;
 
 /**
  *
- * @author bruno
+ * @author Bruno Borges <bruno.borges at oracle.com>
  */
 public class URLVerifier {
 

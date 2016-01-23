@@ -40,7 +40,6 @@
 package webfx.urlhandlers;
 
 import webfx.URLVerifier;
-import webfx.contentdescriptors.ContentDescriptorsRegistry;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -89,7 +88,7 @@ public class URLHandlersRegistry {
                 try {
                     Class handlerClass = Class.forName(handler);
                     registerURLHandler((URLHandler) handlerClass.newInstance());
-                } catch (Exception e) {
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
                     LOGGER.log(Level.SEVERE, "Invalid URL handler specified: " + handler, e);
                 }
             }

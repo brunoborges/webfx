@@ -48,7 +48,7 @@ import webfx.WebFXRegion;
 
 /**
  *
- * @author bruno
+ * @author Bruno Borges
  */
 public class DeckServer implements DeckServerMBean {
 

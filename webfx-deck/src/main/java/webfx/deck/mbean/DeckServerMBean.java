@@ -41,7 +41,7 @@ package webfx.deck.mbean;
 
 /**
  *
- * @author bruno
+ * @author Bruno Borges
  */
 public interface DeckServerMBean {
 
