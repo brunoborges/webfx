@@ -26,4 +26,6 @@ FXML is the JavaFX markup language used to define user interfaces. UI components
 ## Hybrid JavaFX Application Architecture
 The image below gives developers an idea on how they can leverage existing code, both legacy Applets, and web applications, with modern development approaches of JavaFX Desktop RIA applications. 
 
+For more information, check my presentation [Migrating from Applets to ava Desktop Applications](http://www.slideshare.net/secret/argcpDl5gchOAE)
+
 ![Figure 3](hybrid-javafx-architecture.png)
