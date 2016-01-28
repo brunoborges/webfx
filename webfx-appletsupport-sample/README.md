@@ -11,7 +11,7 @@ As part of the migration process, a normal browser would interact with this Appl
 To run this proof of concept, first build the entire WebFX project:
 
         $ cd webfx/
-        $ mvn package
+        $ mvn install
 
 Now go to project webfx-appletsupport-sample and then start Jetty server:
 
