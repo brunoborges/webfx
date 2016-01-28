@@ -12,7 +12,7 @@ import webfx.applet.JSObjectFX;
  * 
  * @author Bruno Borges 
  */
-public class Main extends Application /*implements DataSummaryProvider*/ {
+public class Main extends Application {
 
     private static final String APPLET_PAGE = "http://localhost:8080/applet/launch.html";
 
@@ -22,7 +22,7 @@ public class Main extends Application /*implements DataSummaryProvider*/ {
     public void start(Stage primaryStage) {
         webView.getEngine().load(APPLET_PAGE);
 
-        // Initialize the Applet
+        // Initialize the Applet Support to this webview
         JSObjectFX.enableAppletSupport(webView);
 
         StackPane root = new StackPane();
@@ -41,10 +41,5 @@ public class Main extends Application /*implements DataSummaryProvider*/ {
     public static void main(String[] args) {
         launch(args);
     }
-/*
-    @Override
-    public DataSummary getDataSummary() {
-        return new DataSummary(JSObjectFX.getWindow(webView.getEngine()));
-    }
-*/
+    
 }
