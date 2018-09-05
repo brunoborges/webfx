@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.openjfx:javafx-controls:11-ea+25">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/11-ea+25/javafx-controls-11-ea+25.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/11-ea+25/javafx-controls-11-ea+25-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/openjfx/javafx-controls/11-ea+25/javafx-controls-11-ea+25-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/webfx-browser/webfx-browser.iml" filepath="$PROJECT_DIR$/webfx-browser/webfx-browser.iml" />
+      <module fileurl="file://$PROJECT_DIR$/webfx-component/webfx-component.iml" filepath="$PROJECT_DIR$/webfx-component/webfx-component.iml" />
+      <module fileurl="file://$PROJECT_DIR$/webfx-deck/webfx-deck.iml" filepath="$PROJECT_DIR$/webfx-deck/webfx-deck.iml" />
+      <module fileurl="file://$PROJECT_DIR$/webfx-parent.iml" filepath="$PROJECT_DIR$/webfx-parent.iml" />
+    </modules>
+  </component>
+</project>

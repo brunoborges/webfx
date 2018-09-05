@@ -155,7 +155,7 @@ public class WebFXView extends AnchorPane {
     public static boolean focusFirstChild(List<Node> children) {
         for (int i = 0; i < children.size(); i++) {
             Node n = children.get(i);
-            if (n.isFocusTraversable() && n.impl_isTreeVisible() && !n.isDisabled()) {
+            if (n.isFocusTraversable() && !n.isDisabled()) {
                 n.requestFocus();
                 return true;
             }
