@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx</artifactId>
-        <version>11-ea+25</version>
+        <version>21</version>
     </parent>
 
     <groupId>webfx</groupId>
@@ -16,7 +16,10 @@
     <name>WebFX Parent Project</name>
 
     <properties>
-        <openjfx.version>11-ea+25</openjfx.version>
+        <openjfx.version>21</openjfx.version>
+        <openjfx.target.version>25</openjfx.target.version>
+        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.target.release>25</maven.compiler.target.release>
     </properties>
 
     <licenses>
@@ -76,20 +79,46 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.0</version>
+                    <version>3.13.0</version>
                     <configuration>
-                        <release>10</release>
+                        <release>${maven.compiler.release}</release>
                     </configuration>
                     <dependencies>
                         <dependency>
                             <groupId>org.ow2.asm</groupId>
                             <artifactId>asm</artifactId>
-                            <version>6.1.1</version>                            <!-- Use newer version of ASM -->
+                            <version>9.7</version>                            <!-- Use newer version of ASM -->
                         </dependency>
                     </dependencies>
                 </plugin>
             </plugins>
         </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>jdk25</id>
+            <activation>
+                <property>
+                    <name>target.jdk</name>
+                    <value>25</value>
+                </property>
+            </activation>
+            <properties>
+                <maven.compiler.release>25</maven.compiler.release>
+                <openjfx.version>25</openjfx.version>
+            </properties>
+        </profile>
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <maven.compiler.release>17</maven.compiler.release>
+                <openjfx.version>21</openjfx.version>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>

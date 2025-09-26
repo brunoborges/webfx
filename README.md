@@ -29,3 +29,18 @@ The image below gives developers an idea on how they can leverage existing code,
 For more information, check my presentation [Migrating from Applets to Java Desktop Applications](http://www.slideshare.net/brunoborges/migrating-from-applets-to-java-desktop-apps-in-javafx/)
 
 ![Figure 3](hybrid-javafx-architecture.png)
+
+## Java and JavaFX Version Support
+
+This project supports modern Java and JavaFX versions:
+
+- **Current Version**: JavaFX 21 with JDK 17+ (default)
+- **Future Ready**: JavaFX 25 with JDK 25 (when available)
+
+For information about upgrading to newer Java/JavaFX versions, see [UPGRADE_GUIDE.md](UPGRADE_GUIDE.md).
+
+### Building with JDK 25 Profile
+When JDK 25 becomes available, you can use the upgraded configuration:
+```bash
+mvn clean install -Dtarget.jdk=25
+```

@@ -149,7 +149,17 @@ public class JSObjectFX extends JSObject {
         if (LOADED_APPLETS.containsKey(applet)) {
             return new JSObjectFX(LOADED_APPLETS.get(applet));
         } else {
-            return JSObject.getWindow(applet);
+            // Note: JSObject.getWindow(applet) is deprecated and removed in modern JDK
+            // This fallback provides compatibility for legacy applet code using reflection
+            try {
+                java.lang.reflect.Method getWindowMethod = JSObject.class.getMethod("getWindow", Applet.class);
+                return (JSObject) getWindowMethod.invoke(null, applet);
+            } catch (Exception e) {
+                // Fallback for JDK where applet support is removed
+                Logger.getLogger(JSObjectFX.class.getName()).log(Level.WARNING, 
+                    "JSObject.getWindow(applet) is not available in this JDK. Applet support is deprecated.", e);
+                return null;
+            }
         }
     }
 
