@@ -94,6 +94,7 @@
     </build>
 
     <profiles>
+        <!-- Automatic compatibility mode when Maven runs on JDK 17 through 24 -->
         <profile>
             <id>jdk17-auto</id>
             <activation>
@@ -104,6 +105,7 @@
                 <openjfx.version>21</openjfx.version>
             </properties>
         </profile>
+        <!-- Explicit compatibility override for running JDK 17 bytecode/JavaFX 21 on newer JDKs -->
         <profile>
             <id>jdk17-compat</id>
             <activation>
