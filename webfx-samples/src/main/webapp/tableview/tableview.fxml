@@ -29,7 +29,7 @@
                          prefWidth="90"/>
             <TextField fx:id="lastNameField" promptText="Last Name"
                          prefWidth="90"/>
-             <TextField fx:id="emailField" promptText="Email"
+            <TextField fx:id="emailField" promptText="Email"
                          prefWidth="150"/>
             <Button text="Add" onAction="addPerson()"/>
       </HBox>
