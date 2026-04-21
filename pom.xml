@@ -95,6 +95,16 @@
 
     <profiles>
         <profile>
+            <id>jdk17-auto</id>
+            <activation>
+                <jdk>[17,25)</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.release>17</maven.compiler.release>
+                <openjfx.version>21</openjfx.version>
+            </properties>
+        </profile>
+        <profile>
             <id>jdk17-compat</id>
             <activation>
                 <property>
@@ -105,16 +115,6 @@
             <properties>
                 <maven.compiler.release>17</maven.compiler.release>
                 <openjfx.version>21</openjfx.version>
-            </properties>
-        </profile>
-        <profile>
-            <id>default</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <maven.compiler.release>25</maven.compiler.release>
-                <openjfx.version>25</openjfx.version>
             </properties>
         </profile>
     </profiles>
