@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?language javascript?>
 
-<?import javafx.collections.*?> 
 <?import javafx.geometry.Insets?>
-<?import java.lang.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.control.cell.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane alignment="center" hgap="10.0" vgap="10.0" fx:controller="fxmltableview.FXMLTableViewController"
-             xmlns:fx="http://javafx.com/fxml">
+<GridPane alignment="center" hgap="10.0" vgap="10.0" xmlns:fx="http://javafx.com/fxml">
      <padding>
          <Insets bottom="10.0" left="10.0" right ="10.0" top="10.0"/>
      </padding>
@@ -21,43 +17,10 @@
      <TableView fx:id="tableView" GridPane.columnIndex="0" 
                     GridPane.rowIndex="1">
           <columns>
-              <TableColumn fx:id="firstNameColumn" text="First Name" prefWidth="100">
-                  <cellValueFactory>
-                      <PropertyValueFactory property="firstName" />
-                  </cellValueFactory>
-                  <cellFactory>
-                      <FormattedTableCellFactory alignment="center">
-                      </FormattedTableCellFactory>
-                  </cellFactory>
-              </TableColumn>
-              <TableColumn text="Last Name" prefWidth="100">
-                  <cellValueFactory>
-                      <PropertyValueFactory property="lastName" />
-                  </cellValueFactory>
-              </TableColumn>
-              <TableColumn text="Email Address" prefWidth="200">
-                  <cellValueFactory>
-                      <PropertyValueFactory property="email" />
-                  </cellValueFactory>
-              </TableColumn>
+              <TableColumn fx:id="firstNameColumn" id="firstName" text="First Name" prefWidth="100"/>
+              <TableColumn fx:id="lastNameColumn" id="lastName" text="Last Name" prefWidth="100"/>
+              <TableColumn fx:id="emailColumn" id="email" text="Email Address" prefWidth="200"/>
           </columns>    
-          <items>
-              <FXCollections fx:factory="observableHashMap">
-                  <Person firstName="Jacob" lastName="Smith"  
-                          email="jacob.smith@example.com"/>
-                  <Person firstName="Isabella" lastName="Johnson" 
-                          email="isabella.johnson@example.com"/>
-                  <Person firstName="Ethan" lastName="Williams" 
-                          email="ethan.williams@example.com"/>
-                  <Person firstName="Emma" lastName="Jones" 
-                          email="emma.jones@example.com"/>
-                  <Person firstName="Michael" lastName="Brown" 
-                          email="michael.brown@example.com"/>
-              </FXCollections>
-          </items>
-          <sortOrder>
-              <fx:reference source="firstNameColumn"/>
-          </sortOrder> 
      </TableView>
          
      <HBox spacing="10" alignment="bottom_right" GridPane.columnIndex="0" 
@@ -66,9 +29,11 @@
                          prefWidth="90"/>
             <TextField fx:id="lastNameField" promptText="Last Name"
                          prefWidth="90"/>
-            <TextField fx:id="emailField" promptText="Email"
+             <TextField fx:id="emailField" promptText="Email"
                          prefWidth="150"/>
-            <Button text="Add" onAction="#addPerson"/>
+            <Button text="Add" onAction="addPerson()"/>
       </HBox>
+
+      <fx:script source="tableview.js"/>
 
 </GridPane>
