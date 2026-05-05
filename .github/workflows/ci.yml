@@ -60,4 +60,4 @@ jobs:
         cache: 'maven'
         
     - name: Build and verify
-      run: mvn clean verify -B -Dmaven.test.skip=true
+      run: mvn clean verify -B -DskipTests
