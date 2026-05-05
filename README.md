@@ -35,17 +35,10 @@ For more information, check my presentation [Migrating from Applets to Java Desk
 This project has been upgraded to Java 25 and JavaFX 25:
 
 - **Current Version**: JavaFX 25 with JDK 25 (default)
-- **Backward Compatible**: JavaFX 21 with JDK 17 (via profile)
 
 For information about upgrading to newer Java/JavaFX versions, see [UPGRADE_GUIDE.md](UPGRADE_GUIDE.md).
 
 ### Building with Java 25 (Default)
 ```bash
 mvn clean install
-```
-
-### Building with Java 17 (Backward Compatibility)
-If you need to use Java 17, you can use the compatibility profile:
-```bash
-mvn clean install -Dtarget.jdk=17
 ```
