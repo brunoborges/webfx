@@ -26,14 +26,14 @@ public class URLVerifierTest {
         server = HttpServer.create(new InetSocketAddress(0), 0);
         port = server.getAddress().getPort();
 
-        // HTML pages under /browse/ (tests 1 and 2)
+        // HTML pages under /browse/ (testHTMLUrls_Test1 and testHTMLUrls_Test2)
         server.createContext("/browse/", exchange -> {
             exchange.getResponseHeaders().set("Content-Type", "text/html");
             exchange.sendResponseHeaders(200, 0);
             exchange.getResponseBody().close();
         });
 
-        // /samples redirects to /samples/index.html (test 3)
+        // /samples redirects to /samples/index.html (testHTMLUrls_Test3)
         server.createContext("/samples", exchange -> {
             String path = exchange.getRequestURI().getPath();
             if ("/samples".equals(path)) {
@@ -47,14 +47,14 @@ public class URLVerifierTest {
             exchange.getResponseBody().close();
         });
 
-        // FXML file (test 4)
+        // FXML file (testHTMLUrls_Test4)
         server.createContext("/login/login.fxml", exchange -> {
             exchange.getResponseHeaders().set("Content-Type", "application/octet-stream");
             exchange.sendResponseHeaders(200, 0);
             exchange.getResponseBody().close();
         });
 
-        // Plain-text file (test 5)
+        // Plain-text file (testHTMLUrls_Test5)
         server.createContext("/docs/README.adoc", exchange -> {
             exchange.getResponseHeaders().set("Content-Type", "text/plain");
             exchange.sendResponseHeaders(200, 0);
@@ -75,6 +75,8 @@ public class URLVerifierTest {
         return "http://localhost:" + port;
     }
 
+    // These two tests exercise pure URL-string parsing in verifyURL(); no network
+    // connection is made because URLVerifier.verifyURL() only constructs a URL object.
     @Test
     public void testVerifyURL_withoutScheme() throws MalformedURLException {
         URL url = URLVerifier.verifyURL("example.com/path");
