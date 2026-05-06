@@ -93,30 +93,4 @@
         </pluginManagement>
     </build>
 
-    <profiles>
-        <profile>
-            <id>jdk17-compat</id>
-            <activation>
-                <property>
-                    <name>target.jdk</name>
-                    <value>17</value>
-                </property>
-            </activation>
-            <properties>
-                <maven.compiler.release>17</maven.compiler.release>
-                <openjfx.version>21</openjfx.version>
-            </properties>
-        </profile>
-        <profile>
-            <id>default</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <maven.compiler.release>25</maven.compiler.release>
-                <openjfx.version>25</openjfx.version>
-            </properties>
-        </profile>
-    </profiles>
-
 </project>
