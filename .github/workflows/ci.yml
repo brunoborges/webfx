@@ -28,7 +28,6 @@ jobs:
       
     - name: Run tests
       run: mvn test -B
-      continue-on-error: true
       
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
