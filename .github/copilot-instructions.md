@@ -7,7 +7,7 @@ WebFX is a JavaFX-based web browser that can render both standard HTML and FXML-
 ## Working Effectively
 
 ### Prerequisites and Environment Setup
-- Java 17+ is required (OpenJDK 17.0.16+ verified working)
+- Java 25 is required
 - Maven 3.9+ is required (Apache Maven 3.9.11+ verified working)
 - No additional SDK downloads required - Maven handles all JavaFX dependencies automatically
 
